@@ -12,18 +12,11 @@ Engine::Engine(std::string window_title, int window_w, int window_h) :
     time_manager{},
     current_game_state{nullptr}
 {
-    try {
 
-        window = std::make_unique<SDLObject<SDL_Window>>("Slot Game", 500, 700);
-        renderer = std::make_unique<SDLObject<SDL_Renderer>>(window->Get());
-        font = std::make_unique<SDLObject<TTF_Font>>("../src/JetBrainsMono-Bold.ttf", 24.0);
-    }
-    catch (CriticalError& err) {
+    window = std::make_unique<SDLObject<SDL_Window>>("Slot Game", 500, 700);
+    renderer = std::make_unique<SDLObject<SDL_Renderer>>(window->Get());
+    font = std::make_unique<SDLObject<TTF_Font>>("../src/JetBrainsMono-Bold.ttf", 24.0);
 
-        SDL_Log("%s", err.GetMessage().c_str());
-       
-        Quit();
-    }
 }
 
 

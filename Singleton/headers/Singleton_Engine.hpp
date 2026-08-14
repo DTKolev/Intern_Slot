@@ -53,6 +53,7 @@ namespace single {
         void Init() {
 
             static_assert(std::is_base_of<GameState, T>::value);
+
             std::unique_ptr<GameState> start_state = std::make_unique<T>();
             
            current_game_state = std::move(start_state);

@@ -27,11 +27,21 @@ SDLContext::~SDLContext() {
     SDL_Quit();
 }
 
-void SDLDeleter::operator()(SDL_Window* window) const {SDL_DestroyWindow(window);}
-void SDLDeleter::operator()(SDL_Renderer* renderer) const {SDL_DestroyRenderer(renderer);}
-void SDLDeleter::operator()(SDL_Surface* surface) const {SDL_DestroySurface(surface);}
-void SDLDeleter::operator()(SDL_Texture* texture) const {SDL_DestroyTexture(texture);}
-void SDLDeleter::operator()(TTF_Font* font) const {TTF_CloseFont(font);}
+void SDLDeleter::operator()(SDL_Window* window) const {
+    if (window != nullptr) SDL_DestroyWindow(window);
+}
+void SDLDeleter::operator()(SDL_Renderer* renderer) const {
+    if (renderer != nullptr) SDL_DestroyRenderer(renderer);
+}
+void SDLDeleter::operator()(SDL_Surface* surface) const {
+    if (surface != nullptr) SDL_DestroySurface(surface);
+}
+void SDLDeleter::operator()(SDL_Texture* texture) const {
+    if (texture != nullptr) SDL_DestroyTexture(texture);
+}
+void SDLDeleter::operator()(TTF_Font* font) const {
+    if (font != nullptr) TTF_CloseFont(font);
+}
 
 
 
