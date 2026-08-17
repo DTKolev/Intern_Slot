@@ -26,7 +26,11 @@ SDLObject<SDL_Renderer>::SDLObject(SDL_Window* window, const char* name) {
 SDLObject<SDL_Surface>::SDLObject(std::string source_file_path) {
 
     raw_pointer = nullptr;
-    raw_pointer = IMG_Load(source_file_path.c_str());
+
+    std::string base_path {SDL_GetBasePath()};
+    std::string file_path = base_path + source_file_path;
+
+    raw_pointer = IMG_Load(file_path.c_str());
 
     if (raw_pointer == nullptr) throw FailedSurfaceCreate{"Failed to load image from: " + source_file_path};
 }
@@ -68,7 +72,11 @@ SDLObject<SDL_Texture>::SDLObject(SDL_Renderer* renderer, SDL_Surface* surface) 
 SDLObject<TTF_Font>::SDLObject(std::string source_file_path, float size) {
 
     raw_pointer = nullptr;
-    raw_pointer = TTF_OpenFont(source_file_path.c_str(), size);
+
+    std::string base_path {SDL_GetBasePath()};
+    std::string file_path = base_path + source_file_path;
+
+    raw_pointer = TTF_OpenFont(file_path.c_str(), size);
 
     if (raw_pointer == nullptr) throw CriticalError{"Failed to load font from: " + source_file_path};
 }
