@@ -44,10 +44,10 @@ void Betting::Render(single::Engine& eng) {
 
     bet.Update(eng, "Bet: " + std::to_string(common_manager.bet), 32.0);
 
-    eng.RenderText(credits, 50.0, 510.0);
-    eng.RenderText(bet, 50.0, 550.0);
+    eng.RenderText(credits, 50.0, 610.0);
+    eng.RenderText(bet, 50.0, 650.0);
 
-    eng.RenderText(title, 260.0, 590.0);
+    eng.RenderText(title, 260.0, 690.0);
 }
 
 void Betting::OnExit() {}

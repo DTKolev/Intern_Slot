@@ -2,10 +2,11 @@
 
 #include "Grid.hpp"
 #include <vector>
+#include <unordered_map>
 
 struct Combination {
-    std::vector<CellContent> symbols;
-    int multiplier;
+    CellContent type;
+    int matching_symbols;
 };
 
 class Analyzer {
@@ -13,11 +14,13 @@ class Analyzer {
     using Line = std::vector<int>;
 
     private:
-    std::vector<Line> lines;
-    std::vector<Combination> winning_combinations;
+    std::unordered_map<CellContent, std::vector<int>> pay_table;
 
-    std::vector<CellContent> LineSymbols(const Line& ln, const Grid& game_grid) const;
-    int CombinationMultiplier(const std::vector<CellContent>& ln_symbols) const;
+    std::vector<Line> lines;
+
+    Combination LineCombination(const Line& ln, const Grid& game_grid) const;
+
+    int CombinationMultiplier(const Combination& combination) const;
 
     public:
     Analyzer();

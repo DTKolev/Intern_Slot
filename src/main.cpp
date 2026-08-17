@@ -5,7 +5,7 @@
 int main() {
 
     try {
-        single::Engine engine {"Window", 500, 700};
+        single::Engine engine {"Window", 1000, 800};
 
         engine.Init<MainMenu>();
         engine.Run();

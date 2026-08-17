@@ -49,11 +49,11 @@ void Results::Render(single::Engine& eng) {
     std::string bet_str = "Bet: " + std::to_string(common_manager.bet);
     std::string win_str = "Win: " + std::to_string(win_amount);
 
-    eng.RenderText(credits, 50.0, 510.0);
-    eng.RenderText(bet, 50.0, 550.0);
-    eng.RenderText(win, 50.0, 590.0);
+    eng.RenderText(credits, 50.0, 610.0);
+    eng.RenderText(bet, 50.0, 650.0);
+    eng.RenderText(win, 50.0, 690.0);
 
-    eng.RenderText(title, 260.0, 590.0);
+    eng.RenderText(title, 260.0, 690.0);
 }
 
 void Results::OnExit() {

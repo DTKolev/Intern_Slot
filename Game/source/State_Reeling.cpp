@@ -47,8 +47,8 @@ void Reeling::Render(single::Engine& eng) {
 
     std::string score_str = "Score: " + std::to_string(common_manager.credits);
 
-    eng.RenderText(credits, 50.0, 510.0);
-    eng.RenderText(title, 260.0, 590.0);
+    eng.RenderText(credits, 50.0, 610.0);
+    eng.RenderText(title, 260.0, 690.0);
 }
 
 void Reeling::OnExit() {};

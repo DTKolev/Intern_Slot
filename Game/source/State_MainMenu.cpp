@@ -21,7 +21,7 @@ void MainMenu::Update(single::Engine& eng, double delta_t) {}
 
 void MainMenu::Render(single::Engine& eng) {
 
-    float title_x = 250.0f - title.GetWidth() / 2.0f;
+    float title_x = 500.0f - title.GetWidth() / 2.0f;
 
     eng.RenderText(title, title_x, 200.0);
 }

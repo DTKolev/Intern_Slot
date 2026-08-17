@@ -13,7 +13,7 @@ Engine::Engine(std::string window_title, int window_w, int window_h) :
     current_game_state{nullptr}
 {
 
-    window = std::make_unique<SDLObject<SDL_Window>>("Slot Game", 500, 700);
+    window = std::make_unique<SDLObject<SDL_Window>>("Slot Game", window_w, window_h);
     renderer = std::make_unique<SDLObject<SDL_Renderer>>(window->Get());
     font = std::make_unique<SDLObject<TTF_Font>>("../src/JetBrainsMono-Bold.ttf", 24.0);
 
