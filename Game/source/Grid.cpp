@@ -2,7 +2,7 @@
 
 Grid::Grid(int rows, int columns, float size) {
 
-    cells.assign(rows * columns, (Cell){{0, 0, size / 3.0f, size / 3.0f}, CellContent::empty});
+    cells.assign(rows * columns, (Cell){0, {0, 0, size / 3.0f, size / 3.0f}, CellContent::empty});
 
     int current_row = 0;
     int current_column = 0;
@@ -11,6 +11,7 @@ Grid::Grid(int rows, int columns, float size) {
 
         current_column = i % columns;
 
+        cells[i].column = current_column;
         cells[i].location.x += (float)(current_column) * (size / 3.0);
         cells[i].location.y += (float)(current_row) * (size / 3.0);
 
@@ -24,10 +25,15 @@ void Grid::DrawRNG(single::Engine& eng) {
 
     for (Cell& c : cells) {
         
-        int last_idx = static_cast<int>(CellContent::diamond);
-        int rand = eng.RandomNumber(last_idx);
+        int last_idx = static_cast<int>(CellContent::wild);
+        int rand_num;
+        
+        if (c.column == 0) {
+            last_idx--;
+        }
+        rand_num = eng.RandomNumber(last_idx);
 
-        c.content = static_cast<CellContent>(rand);
+        c.content = static_cast<CellContent>(rand_num);
     }
 }
 
@@ -43,6 +49,7 @@ void Grid::RenderGrid(single::Engine& eng) {
             eng.LoadSprite("../src/bell.png"),
             eng.LoadSprite("../src/seven.png"),
             eng.LoadSprite("../src/diamond.png"),
+            eng.LoadSprite("../src/wild.png"),
             eng.LoadSprite("../src/empty.png")
         });
     }

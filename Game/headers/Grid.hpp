@@ -10,10 +10,12 @@ enum class CellContent {
     bell,
     seven,
     diamond,
+    wild,
     empty
 };
 
 struct Cell {
+    int column;
     SDL_FRect location;
     CellContent content;
 };

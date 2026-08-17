@@ -33,7 +33,7 @@ Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid) con
     };
 
     for (const int idx : ln) {
-        if (grid_state[idx] == first_cell_content) new_combination.matching_symbols++;
+        if (grid_state[idx] == first_cell_content || grid_state[idx] == CellContent::wild) new_combination.matching_symbols++;
         else break;
     }
 
