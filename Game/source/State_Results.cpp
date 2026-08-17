@@ -15,8 +15,10 @@ void Results::OnEntry(single::Engine& eng) {
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
     bet = eng.CreateText("Bet: " + std::to_string(common_manager.bet), 32.0);
-    win = eng.CreateText("Win: " + std::to_string(win_amount), 32.0);
+    win = eng.CreateText("Win: ", 32.0);
     title = eng.CreateText("RESULTS", 32.0);
+
+    display_win = 0;
 }
 
 void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -37,7 +39,13 @@ void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     }
 }
 
-void Results::Update(single::Engine& eng, double delta_t) {}
+void Results::Update(single::Engine& eng, double delta_t) {
+
+    if (display_win < win_amount) {
+        display_win++;
+        eng.Delay(10);
+    }
+}
 
 void Results::Render(single::Engine& eng) {
 
@@ -45,9 +53,7 @@ void Results::Render(single::Engine& eng) {
 
     common_manager.GetGrid().RenderGrid(eng);
 
-    std::string score_str = "Score: " + std::to_string(common_manager.credits);
-    std::string bet_str = "Bet: " + std::to_string(common_manager.bet);
-    std::string win_str = "Win: " + std::to_string(win_amount);
+    win.Update(eng, "Win: " + std::to_string(display_win), 32.0);
 
     eng.RenderText(credits, 50.0, 610.0);
     eng.RenderText(bet, 50.0, 650.0);

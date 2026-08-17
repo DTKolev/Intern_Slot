@@ -12,6 +12,8 @@ class Results : public single::GameState {
 
     int win_amount;
 
+    int display_win;
+
     public:
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
