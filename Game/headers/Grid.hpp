@@ -34,6 +34,8 @@ class Grid {
 
     GridData data;
 
+    CellContent RandomContent(single::Engine& eng, int last_idx) const;
+
     public:
     Grid(int rows, int columns, float cell_size);
 

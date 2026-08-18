@@ -23,19 +23,33 @@ Grid::Grid(int rows, int columns, float cell_size) :
 
 
 
+CellContent Grid::RandomContent(single::Engine& eng, int last_idx) const {
+
+    // Values have been calculated externally to acheive wheighted randomness when picking cell content
+    constexpr float scalar = 0.03f;
+
+    last_idx++;
+    float highest_base = SDL_sqrtf((float)last_idx / scalar);
+    int rng_high = (int)SDL_floorf(highest_base * 10.0);
+    
+    float random_base = (float)eng.RandomNumber(rng_high) / 10.0f;
+    float product = scalar * (random_base * random_base);
+
+    return static_cast<CellContent>((int)(SDL_floorf(product)));
+}
+
+
+
 void Grid::DrawRNG(single::Engine& eng) {
 
     for (Cell& c : cells) {
         
         int last_idx = static_cast<int>(CellContent::wild);
-        int rand_num;
         
         if (c.column == 0) {
             last_idx--;
         }
-        rand_num = eng.RandomNumber(last_idx);
-
-        c.content = static_cast<CellContent>(rand_num);
+        c.content = RandomContent(eng, last_idx);
     }
 }
 
