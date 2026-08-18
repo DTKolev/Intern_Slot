@@ -1,8 +1,11 @@
 #pragma once
 
 #include "../../Singleton/Singleton.hpp"
+#include <vector>
 
 class Results : public single::GameState {
+
+    using Line = std::vector<int>;
 
     private:
     single::Text credits;
@@ -10,9 +13,16 @@ class Results : public single::GameState {
     single::Text win;
     single::Text title;
 
+    int win_line_amount;
+    int current_win_line;
+    double timer;
+    single::Color curren_win_line_color;
+
     int win_amount;
 
     int display_win;
+
+    void DrawLine(single::Engine& eng, const Line& ln, single::Color color) const;
 
     public:
     void OnEntry(single::Engine& eng) override;

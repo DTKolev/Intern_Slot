@@ -17,6 +17,7 @@ class Analyzer {
     std::unordered_map<CellContent, std::vector<int>> pay_table;
 
     std::vector<Line> lines;
+    std::vector<Line> winning_lines;
 
     Combination LineCombination(const Line& ln, const Grid& game_grid) const;
 
@@ -25,5 +26,6 @@ class Analyzer {
     public:
     Analyzer();
 
-    int CalculateMultiplier(const Grid& game_grid) const;
+    int CalculateMultiplier(const Grid& game_grid);
+    const std::vector<Line>& GetWinningLines() const;
 };

@@ -6,8 +6,8 @@
 void Reeling::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
-    common_manager.credits -= common_manager.bet;
 
+    target_credits = common_manager.credits - common_manager.bet;
     timer = 1.5;
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
@@ -29,13 +29,19 @@ void Reeling::Update(single::Engine& eng, double delta_t) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    timer -= delta_t;
-    if (timer >= 0.0) {
-        common_manager.GetGrid().DrawRNG(eng);
-        eng.Delay(50);
+    if (common_manager.credits > target_credits) {
+        common_manager.credits--;
+        eng.Delay(15);
     }
     else {
-        eng.StateChange<Results>();
+        timer -= delta_t;
+        if (timer >= 0.0) {
+            common_manager.GetGrid().DrawRNG(eng);
+            eng.Delay(50);
+        }
+        else {
+            eng.StateChange<Results>();
+        }
     }
 }
 
@@ -45,7 +51,7 @@ void Reeling::Render(single::Engine& eng) {
 
     common_manager.GetGrid().RenderGrid(eng);
 
-    std::string score_str = "Score: " + std::to_string(common_manager.credits);
+    credits.Update(eng, "Credits: " + std::to_string(common_manager.credits), 32.0);
 
     eng.RenderText(credits, 50.0, 610.0);
     eng.RenderText(title, 260.0, 690.0);

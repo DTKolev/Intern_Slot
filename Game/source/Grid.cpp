@@ -1,8 +1,10 @@
 #include "../headers/Grid.hpp"
 
-Grid::Grid(int rows, int columns, float size) {
+Grid::Grid(int rows, int columns, float cell_size) :
+    data{rows, columns, cell_size}
+{
 
-    cells.assign(rows * columns, (Cell){0, {0, 0, size / 3.0f, size / 3.0f}, CellContent::empty});
+    cells.assign(rows * columns, (Cell){0, {0, 0, cell_size, cell_size}, CellContent::empty});
 
     int current_row = 0;
     int current_column = 0;
@@ -12,8 +14,8 @@ Grid::Grid(int rows, int columns, float size) {
         current_column = i % columns;
 
         cells[i].column = current_column;
-        cells[i].location.x += (float)(current_column) * (size / 3.0);
-        cells[i].location.y += (float)(current_row) * (size / 3.0);
+        cells[i].location.x += (float)(current_column) * (cell_size);
+        cells[i].location.y += (float)(current_row) * (cell_size);
 
         if ((i + 1) % columns == 0) current_row++;
     }

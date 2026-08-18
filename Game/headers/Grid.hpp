@@ -20,16 +20,26 @@ struct Cell {
     CellContent content;
 };
 
+struct GridData {
+    int rows;
+    int columns;
+    float cell_size;
+};
+
 class Grid {
 
     private:
     std::vector<Cell> cells;
     std::vector<single::Sprite> sprites;
 
+    GridData data;
+
     public:
-    Grid(int rows, int columns, float size);
+    Grid(int rows, int columns, float cell_size);
 
     void DrawRNG(single::Engine& eng);
     void RenderGrid(single::Engine& eng);
     const std::vector<CellContent> ExportState() const;
+
+    const GridData& GetGridData() const {return data;}
 };

@@ -8,6 +8,7 @@ class Reeling : public single::GameState {
     single::Text credits;
     single::Text title;
 
+    int target_credits;
     double timer;
 
     public:

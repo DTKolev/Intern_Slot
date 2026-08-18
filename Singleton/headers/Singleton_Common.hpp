@@ -11,6 +11,10 @@ struct TTF_Font;
 
 namespace single {
 
+    struct Color {
+        int r, g, b, a;
+    };
+
     struct SDLDeleter {
 
         void operator()(SDL_Window* window) const;

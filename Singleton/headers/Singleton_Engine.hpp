@@ -37,6 +37,8 @@ namespace single {
 
         Sprite LoadSprite(const std::string source_file_path) const;
         void RenderSprite(Sprite& sprite, const SDL_FRect* dest_rect, const SDL_FRect* src_rect = nullptr) const;
+        void RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, Color color) const;
+        Color RandomColor() const;
 
         Text CreateText(const std::string txt, float font_sz) const;
         void RenderText(const Text& text, float x, float y) const;

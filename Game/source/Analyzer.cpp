@@ -52,14 +52,25 @@ int Analyzer::CombinationMultiplier(const Combination& combination) const {
 
 
 
-int Analyzer::CalculateMultiplier(const Grid& game_grid) const {
+int Analyzer::CalculateMultiplier(const Grid& game_grid) {
 
     int multiplier = 0;
+    winning_lines.clear();
 
     for (const Line& ln : lines) {
         Combination sample_combination = LineCombination(ln, game_grid);
-        multiplier += CombinationMultiplier(sample_combination);
+        int line_multiplier = CombinationMultiplier(sample_combination);
+
+        multiplier += line_multiplier;
+        if (line_multiplier > 0) winning_lines.push_back(ln);
     }
 
     return multiplier;
+}
+
+
+
+const std::vector<Analyzer::Line>& Analyzer::GetWinningLines() const {
+
+    return winning_lines;
 }
