@@ -24,7 +24,7 @@ void Engine::RenderLine(float begin_x, float begin_y, float end_x, float end_y, 
     SDL_Vertex vertecies[4];
 
     float vertex_r = color.r / 255.0f;
-    float vertex_g = color.b / 255.0f;
+    float vertex_g = color.g / 255.0f;
     float vertex_b = color.b / 255.0f;
     float vertex_a = color.a / 255.0f;
 

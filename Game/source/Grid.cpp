@@ -1,57 +1,40 @@
 #include "../headers/Grid.hpp"
 
-Grid::Grid(int rows, int columns, float cell_size) :
-    data{rows, columns, cell_size}
+Grid::Grid(int rows, int columns, int cell_size) :
+    data{rows, columns, cell_size} 
 {
+    reels.reserve(columns);
 
-    cells.assign(rows * columns, (Cell){0, {0, 0, cell_size, cell_size}, CellContent::empty});
+    for (int i = 0; i < columns; i++) {
 
-    int current_row = 0;
-    int current_column = 0;
-
-    for (int i = 0; i < cells.size(); i++) {
-
-        current_column = i % columns;
-
-        cells[i].column = current_column;
-        cells[i].location.x += (float)(current_column) * (cell_size);
-        cells[i].location.y += (float)(current_row) * (cell_size);
-
-        if ((i + 1) % columns == 0) current_row++;
+        int x_pos = i * cell_size;
+        Reel new_reel {x_pos, data};
+        reels.push_back(new_reel);
     }
 }
 
 
 
-CellContent Grid::RandomContent(single::Engine& eng, int last_idx) const {
+void Grid::PrepareReelSpin(single::Engine& eng) {
 
-    // Values have been calculated externally to acheive wheighted randomness when picking cell content
-    constexpr float scalar = 0.03f;
-
-    last_idx++;
-    float highest_base = SDL_sqrtf((float)last_idx / scalar);
-    int rng_high = (int)SDL_floorf(highest_base * 10.0);
-    
-    float random_base = (float)eng.RandomNumber(rng_high) / 10.0f;
-    float product = scalar * (random_base * random_base);
-
-    return static_cast<CellContent>((int)(SDL_floorf(product)));
+    animation_delay = 0.25;
+    active_reels = 1;
+    for (Reel& reel : reels) reel.StartReelSpin(eng, data);
 }
 
+void Grid::SpinReels(single::Engine& eng, double speed, double delata_time, bool reeling) {
 
+    animation_delay -= delata_time;
+    if (animation_delay <= 0.0 && active_reels < reels.size()) {
+        active_reels++;
+        animation_delay = 0.25;
+    }
 
-void Grid::DrawRNG(single::Engine& eng) {
-
-    for (Cell& c : cells) {
-        
-        int last_idx = static_cast<int>(CellContent::wild);
-        
-        if (c.column == 0) {
-            last_idx--;
-        }
-        c.content = RandomContent(eng, last_idx);
+    for (int i = 0; i < active_reels; i++) {
+        reels[i].SpinReel(eng, data, speed, delata_time, reeling);
     }
 }
+
 
 
 
@@ -66,15 +49,33 @@ void Grid::RenderGrid(single::Engine& eng) {
             eng.LoadSprite("../src/seven.png"),
             eng.LoadSprite("../src/diamond.png"),
             eng.LoadSprite("../src/wild.png"),
-            eng.LoadSprite("../src/empty.png")
+            eng.LoadSprite("../src/empty.png"),
+            eng.LoadSprite("../src/wood.png")
         });
     }
 
-    for (const Cell& c : cells) {
-        
-        int sprite_idx = static_cast<int>(c.content);
-        eng.RenderSprite(sprites[sprite_idx], &c.location);
-    }
+    for (const Reel& reel : reels) {
+        for (int row = -1; row < data.rows; row++) {
+
+            const Cell& cell = reel.GetCellAt(data, row);
+            int sprite_idx = static_cast<int>(cell.content);
+
+            eng.RenderSprite(sprites[sprite_idx], &cell.location);
+        }
+    }    
+
+    SDL_FRect bottom_pannel_rect {0.0f, (float)(data.cell_size * data.rows), (float)(data.cell_size * data.columns), 200.0f};
+    int bottom_pannel_idx = sprites.size() - 1;
+    eng.RenderSprite(sprites[bottom_pannel_idx], &bottom_pannel_rect);
+
+    single::Color border_color {238, 188, 29, 255}; // golden color
+    float grid_x_size = (float)(data.cell_size * data.columns);
+    float grid_y_size = (float)(data.cell_size * data.rows);
+    
+    eng.RenderLine(0.0f, 0.0f, grid_x_size, 0.0f, 10.0f, border_color);
+    eng.RenderLine(0.0f, 0.0f, 0.0f, grid_y_size, 10.0f, border_color);
+    eng.RenderLine(0.0f, grid_y_size, grid_x_size, grid_y_size, 5.0f, border_color);
+    eng.RenderLine(grid_x_size, 0.0f, grid_x_size, grid_y_size, 10.0f, border_color);
 }
 
 
@@ -82,11 +83,29 @@ void Grid::RenderGrid(single::Engine& eng) {
 const std::vector<CellContent> Grid::ExportState() const {
 
     std::vector<CellContent> grid_state;
-    grid_state.reserve(cells.size());
+    grid_state.reserve(data.rows * data.columns);
 
-    for(const Cell& c : cells) {
-        grid_state.push_back(c.content);
-    } 
+    for (int row = 0; row < data.rows; row++) {
+        for (const Reel& reel : reels) {
+
+            const Cell& cell = reel.GetCellAt(data, row);
+            grid_state.push_back(cell.content);
+        }
+    }
 
     return grid_state;
+}
+
+
+
+
+bool Grid::ReelingFinished() const {
+
+    for (const Reel& reel : reels) {
+        if (!reel.AnimationFinished()) {
+            return false;
+        }
+    }
+
+    return true;
 }

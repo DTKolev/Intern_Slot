@@ -10,6 +10,7 @@ class Reeling : public single::GameState {
 
     int target_credits;
     double timer;
+    bool reeling;
 
     public:
     void OnEntry(single::Engine& eng) override;

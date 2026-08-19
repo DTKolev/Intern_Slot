@@ -8,10 +8,13 @@ void Reeling::OnEntry(single::Engine& eng) {
     CommonManager& common_manager = CommonManager::GetInstance();
 
     target_credits = common_manager.credits - common_manager.bet;
-    timer = 1.5;
+    timer = 2.5;
+    reeling = true;
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
     title = eng.CreateText("REELING", 32.0);
+
+    common_manager.GetGrid().PrepareReelSpin(eng);
 }
 
 void Reeling::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -21,13 +24,14 @@ void Reeling::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     input_manager.ProcessInput(input_event);
 
     if (input_manager.IsReleased(Key::enter) || input_manager.IsReleased(Key::escape)) {
-        eng.StateChange<Results>();
+        if (timer <= 1.5) reeling = false;
     }
 }
 
 void Reeling::Update(single::Engine& eng, double delta_t) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
+    Grid& grid = common_manager.GetGrid();
 
     if (common_manager.credits > target_credits) {
         common_manager.credits--;
@@ -35,13 +39,10 @@ void Reeling::Update(single::Engine& eng, double delta_t) {
     }
     else {
         timer -= delta_t;
-        if (timer >= 0.0) {
-            common_manager.GetGrid().DrawRNG(eng);
-            eng.Delay(50);
-        }
-        else {
-            eng.StateChange<Results>();
-        }
+        if (timer <= 0.0f) reeling = false;
+
+        grid.SpinReels(eng, 2000.0, delta_t, reeling); 
+        if (grid.ReelingFinished()) eng.StateChange<Results>();
     }
 }
 
