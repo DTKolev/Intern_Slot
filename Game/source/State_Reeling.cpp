@@ -8,7 +8,7 @@ void Reeling::OnEntry(single::Engine& eng) {
     CommonManager& common_manager = CommonManager::GetInstance();
 
     target_credits = common_manager.credits - common_manager.bet;
-    timer = 2.5;
+    timer = 4.0;
     reeling = true;
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
@@ -20,11 +20,15 @@ void Reeling::OnEntry(single::Engine& eng) {
 void Reeling::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 
     InputManager& input_manager = InputManager::GetInstance();
+    CommonManager& common_manager = CommonManager::GetInstance();
+    
+    int total_columns = common_manager.GetGrid().GetGridData().columns;
+    int active_reels = common_manager.GetGrid().GetActiveReels();
 
     input_manager.ProcessInput(input_event);
 
     if (input_manager.IsReleased(Key::enter) || input_manager.IsReleased(Key::escape)) {
-        if (timer <= 1.5) reeling = false;
+        if (active_reels == total_columns) reeling = false;
     }
 }
 
@@ -41,7 +45,7 @@ void Reeling::Update(single::Engine& eng, double delta_t) {
         timer -= delta_t;
         if (timer <= 0.0f) reeling = false;
 
-        grid.SpinReels(eng, 2000.0, delta_t, reeling); 
+        grid.SpinReels(eng, delta_t, reeling); 
         if (grid.ReelingFinished()) eng.StateChange<Results>();
     }
 }

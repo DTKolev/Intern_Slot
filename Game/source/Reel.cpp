@@ -10,7 +10,7 @@ Reel::Reel(int x_pos, GridData grid_data, CellContent starting_content)
     for (int i = 0; i < grid_data.rows + 1; i++) {
 
         int cell_y_pos = reel_y_pos + i * grid_data.cell_size;
-        SDL_FRect cell_location {reel_x_pos, cell_y_pos, grid_data.cell_size, grid_data.cell_size};
+        single::Rect cell_location {reel_x_pos, cell_y_pos, grid_data.cell_size, grid_data.cell_size};
 
         cells.push_back((Cell){i - 1, cell_location, cell_location.y + grid_data.cell_size, starting_content});
     }
@@ -62,28 +62,28 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
 
 void Reel::SetCellRow(GridData grid_data, Cell& cell) {
 
-    if ((int)cell.location.y < 0) cell.row = -1;
-    else cell.row = (int)cell.location.y / grid_data.cell_size; 
+    if (cell.location.y < 0) cell.row = -1;
+    else cell.row = cell.location.y / grid_data.cell_size; 
 }
 
 
 
-void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, double delta_time, bool reeling) {
+void Reel::SpinReel(single::Engine& eng, GridData grid_data, bool reeling) {
 
     std::bitset<4> cell_alingment_state;
     int set_idx = 0;
 
     for (Cell& cell : cells) {
 
-        if (((int)cell.location.y >= grid_data.cell_size * grid_data.rows) && reeling) {
+        if ((cell.location.y == grid_data.cell_size * grid_data.rows) && reeling) {
             ResetCell(eng, cell);
         }
         
-        if (!animation_finished) cell.location.y += speed * delta_time;
+        if (!animation_finished) cell.location.y++;
 
         SetCellRow(grid_data, cell);
 
-        if (cell.location.y >= cell.next_y_pos) {
+        if (cell.location.y == cell.next_y_pos) {
             if (reeling) {
                 cell.next_y_pos += grid_data.cell_size;
             }

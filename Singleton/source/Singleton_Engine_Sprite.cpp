@@ -3,6 +3,22 @@
 
 using namespace single;
 
+
+// *************************** LOCAL HELPER FUNCTIONS ***************************
+SDL_FRect EngineRectToFRect(const Rect& rect) {
+
+    SDL_FRect output {
+        .x = (float)rect.x,
+        .y = (float)rect.y,
+        .w = (float)rect.w,
+        .h = (float)rect.h
+    };
+
+    return output;
+}
+// ******************************************************************************
+
+
 Sprite Engine::LoadSprite(const std::string source_file_path) const {
 
     Sprite new_sprite;
@@ -26,7 +42,7 @@ Sprite Engine::LoadSprite(const std::string source_file_path) const {
     return new_sprite;
 }
 
-void Engine::RenderSprite(Sprite& sprite, const SDL_FRect* dest_rect, const SDL_FRect* src_rect) const {
+void Engine::RenderSprite(Sprite& sprite, const Rect* dest_rect) const {
 
     if (sprite.texture == nullptr) {
         
@@ -41,5 +57,7 @@ void Engine::RenderSprite(Sprite& sprite, const SDL_FRect* dest_rect, const SDL_
         }
     }
 
-    SDL_RenderTexture(renderer->Get(), sprite.texture->Get(), src_rect, dest_rect);
+    SDL_FRect dest_sdl = EngineRectToFRect(*dest_rect);
+
+    SDL_RenderTexture(renderer->Get(), sprite.texture->Get(), nullptr, &dest_sdl);
 }

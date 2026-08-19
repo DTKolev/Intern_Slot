@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SDL3/SDL_rect.h"
-
 #include <string>
 #include <memory>
 
@@ -36,7 +34,7 @@ namespace single {
         Engine(std::string window_title, int window_w, int window_h);
 
         Sprite LoadSprite(const std::string source_file_path) const;
-        void RenderSprite(Sprite& sprite, const SDL_FRect* dest_rect, const SDL_FRect* src_rect = nullptr) const;
+        void RenderSprite(Sprite& sprite, const Rect* dest_rect) const;
         void RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, Color color) const;
         Color RandomColor() const;
 

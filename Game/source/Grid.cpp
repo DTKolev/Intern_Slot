@@ -17,21 +17,21 @@ Grid::Grid(int rows, int columns, int cell_size) :
 
 void Grid::PrepareReelSpin(single::Engine& eng) {
 
-    animation_delay = 0.25;
+    animation_delay = (double)eng.RandomNumber(6, 2) / 10.0;
     active_reels = 1;
     for (Reel& reel : reels) reel.StartReelSpin(eng, data);
 }
 
-void Grid::SpinReels(single::Engine& eng, double speed, double delata_time, bool reeling) {
+void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
 
-    animation_delay -= delata_time;
+    animation_delay -= delta_time;
     if (animation_delay <= 0.0 && active_reels < reels.size()) {
         active_reels++;
-        animation_delay = 0.25;
+        animation_delay = (double)eng.RandomNumber(6, 2) / 10.0;
     }
 
     for (int i = 0; i < active_reels; i++) {
-        reels[i].SpinReel(eng, data, speed, delata_time, reeling);
+        reels[i].SpinReel(eng, data, reeling);
     }
 }
 
@@ -64,7 +64,7 @@ void Grid::RenderGrid(single::Engine& eng) {
         }
     }    
 
-    SDL_FRect bottom_pannel_rect {0.0f, (float)(data.cell_size * data.rows), (float)(data.cell_size * data.columns), 200.0f};
+    single::Rect bottom_pannel_rect {0, data.cell_size * data.rows, data.cell_size * data.columns, 200};
     int bottom_pannel_idx = sprites.size() - 1;
     eng.RenderSprite(sprites[bottom_pannel_idx], &bottom_pannel_rect);
 

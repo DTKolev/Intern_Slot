@@ -15,6 +15,10 @@ namespace single {
         int r, g, b, a;
     };
 
+    struct Rect {
+        int x, y, w, h;
+    };
+
     struct SDLDeleter {
 
         void operator()(SDL_Window* window) const;

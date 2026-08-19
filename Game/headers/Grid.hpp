@@ -16,7 +16,7 @@ enum class CellContent {
 
 struct Cell {
     int row;
-    SDL_FRect location;
+    single::Rect location;
     int next_y_pos;
     CellContent content;
 };
@@ -45,7 +45,7 @@ class Reel {
     Reel(int x_pos, GridData grid_data, CellContent starting_content = CellContent::empty);
 
     void StartReelSpin(single::Engine& eng,GridData grid_data);
-    void SpinReel(single::Engine& eng, GridData grid_data, double speed, double delta_time, bool reeling);
+    void SpinReel(single::Engine& eng, GridData grid_data, bool reeling);
 
     const Cell& GetCellAt(GridData grid_data, int row) const;
     bool AnimationFinished() const {return animation_finished;}
@@ -66,11 +66,12 @@ class Grid {
     Grid(int rows, int columns, int cell_size);
 
     void PrepareReelSpin(single::Engine& eng);
-    void SpinReels(single::Engine& eng, double speed, double delata_time, bool reeling);
+    void SpinReels(single::Engine& eng, double delta_time, bool reeling);
 
     void RenderGrid(single::Engine& eng);
     const std::vector<CellContent> ExportState() const;
 
     const GridData& GetGridData() const {return data;}
     bool ReelingFinished() const;
+    int GetActiveReels() const {return active_reels;}
 };
