@@ -38,7 +38,7 @@ namespace single {
         void RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, Color color) const;
         Color RandomColor() const;
 
-        Text CreateText(const std::string txt, float font_sz) const;
+        Text CreateText(const std::string& txt, float font_sz, const Color& text_color = {255, 255, 255, 255}) const;
         void RenderText(const Text& text, float x, float y) const;
 
         int RandomNumber(int high, int low = 0) const;

@@ -4,13 +4,13 @@
 
 using namespace single;
 
-Text Engine::CreateText(const std::string txt, float font_sz) const {
+Text Engine::CreateText(const std::string& txt, float font_sz, const Color& text_color) const {
 
     Text new_text{txt, font_sz};
 
     TTF_SetFontSize(font->Get(), font_sz);
 
-    SurfacePtr temp_surface = std::make_unique<SDLObject<SDL_Surface>>(font->Get(), txt);
+    SurfacePtr temp_surface = std::make_unique<SDLObject<SDL_Surface>>(font->Get(), txt, text_color);
     
     try {
         new_text.text_texture = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), temp_surface->Get());

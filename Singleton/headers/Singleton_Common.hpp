@@ -13,6 +13,8 @@ namespace single {
 
     struct Color {
         int r, g, b, a;
+
+        bool operator==(const Color& other) const;
     };
 
     struct Rect {
@@ -112,7 +114,7 @@ namespace single {
     class SDLObject<SDL_Surface> : public SDLObjectRoot<SDL_Surface> {
         public:
         SDLObject(std::string source_file_path);
-        SDLObject(TTF_Font* font, std::string text);
+        SDLObject(TTF_Font* font, std::string text, Color text_color = {255, 255, 255, 255});
 
         // Allow copying for SDL_Surface
         SDLObject(const SDLObject<SDL_Surface>& copy_src);

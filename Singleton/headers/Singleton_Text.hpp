@@ -12,6 +12,7 @@ namespace single {
         private:
         std::string content;
         float font_size;
+        Color color;
 
         TexturePtr text_texture;
 
@@ -22,7 +23,7 @@ namespace single {
 
         public:
         Text() = default;
-        Text(std::string txt, float font_sz);
+        Text(const std::string& txt, float font_sz, const Color& text_color = {255, 255, 255, 255});
 
         Text(const Text& copy_src) = delete;
         Text& operator=(const Text& copy_src) = delete;
@@ -30,7 +31,7 @@ namespace single {
         Text(Text&& move_src);
         Text& operator=(Text&& move_src);
 
-        void Update(Engine& eng, std::string new_txt, float new_sz);
+        void Update(Engine& eng, const std::string& new_txt, float new_sz, const Color& new_color = {255, 255, 255, 255});
 
         float GetWidth() const {return width;}
         float GetHeight() const {return height;}

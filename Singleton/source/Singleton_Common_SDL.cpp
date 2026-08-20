@@ -5,6 +5,26 @@
 
 using namespace single;
 
+SDL_Color EngineColorToSDL(const Color& color) {
+
+    SDL_Color output {
+        .r = (Uint8)color.r,
+        .g = (Uint8)color.g,
+        .b = (Uint8)color.b,
+        .a = (Uint8)color.a
+    };
+
+    return output;
+}
+
+
+
+bool Color::operator==(const Color& other) const {
+
+    return (r == other.r) && (g == other.g) && (b == other.b) && (a == other.a);
+}
+
+
 SDLObject<SDL_Window>::SDLObject(std::string window_title, int width, int height) {
 
     raw_pointer = nullptr;
@@ -34,11 +54,10 @@ SDLObject<SDL_Surface>::SDLObject(std::string source_file_path) {
 
     if (raw_pointer == nullptr) throw FailedSurfaceCreate{"Failed to load image from: " + source_file_path};
 }
-SDLObject<SDL_Surface>::SDLObject(TTF_Font* font, std::string text) {
+SDLObject<SDL_Surface>::SDLObject(TTF_Font* font, std::string text, Color text_color) {
 
     raw_pointer = nullptr;
-    SDL_Color text_color {255, 255, 255, 255};
-    raw_pointer = TTF_RenderText_Blended(font, text.c_str(), 0, text_color);
+    raw_pointer = TTF_RenderText_Blended(font, text.c_str(), 0, EngineColorToSDL(text_color));
 
     if (raw_pointer == nullptr) throw FailedSurfaceCreate{"Failed to render text: " + text};
 }
