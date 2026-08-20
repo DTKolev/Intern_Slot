@@ -47,7 +47,9 @@ void Engine::RenderSprite(Sprite& sprite, const Rect* dest_rect) const {
     if (sprite.texture == nullptr) {
         
         try {
-            sprite.texture = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), sprite.surface->Get());
+            if (sprite.surface != nullptr) {
+                sprite.texture = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), sprite.surface->Get());
+            }
         }
         catch (FailedTextureCreate& err) {
             sprite.texture.reset(nullptr);
@@ -59,5 +61,7 @@ void Engine::RenderSprite(Sprite& sprite, const Rect* dest_rect) const {
 
     SDL_FRect dest_sdl = EngineRectToFRect(*dest_rect);
 
-    SDL_RenderTexture(renderer->Get(), sprite.texture->Get(), nullptr, &dest_sdl);
+    if (sprite.texture != nullptr) {
+        SDL_RenderTexture(renderer->Get(), sprite.texture->Get(), nullptr, &dest_sdl);
+    }
 }

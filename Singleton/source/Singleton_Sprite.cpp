@@ -9,7 +9,9 @@ Sprite::Sprite() : texture{nullptr}, surface{nullptr} {}
 
 Sprite::Sprite(const Sprite& copy_src) : texture{nullptr}, surface{nullptr} {
 
-    surface = std::make_unique<SDLObject<SDL_Surface>>(*copy_src.surface.get());
+    if (copy_src.surface != nullptr) {
+        surface = std::make_unique<SDLObject<SDL_Surface>>(*copy_src.surface.get());
+    }
 }
 
 Sprite& Sprite::operator=(const Sprite& copy_src) {
@@ -18,7 +20,9 @@ Sprite& Sprite::operator=(const Sprite& copy_src) {
         texture.reset(nullptr);
     }
 
-    surface = std::make_unique<SDLObject<SDL_Surface>>(*copy_src.surface.get());
+    if (copy_src.surface != nullptr) {
+        surface = std::make_unique<SDLObject<SDL_Surface>>(*copy_src.surface.get());
+    }
 
     return *this;
 }
