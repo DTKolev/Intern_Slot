@@ -1,6 +1,6 @@
 #include "../headers/Analyzer.hpp"
 
-Analyzer::Analyzer() {
+Analyzer::Analyzer() : scatters{0} {
 
     lines.assign({
         {0, 1, 2, 3, 4},
@@ -22,10 +22,14 @@ Analyzer::Analyzer() {
 
 
 
-Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid) const {
+Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid) {
 
     std::vector<CellContent> grid_state = game_grid.ExportState();
     CellContent first_cell_content = grid_state[ln[0]];
+
+    if (first_cell_content == CellContent::scatter) {
+        return (Combination){CellContent::cherry, 0};
+    }
 
     Combination new_combination {
         .type = first_cell_content,
@@ -73,4 +77,18 @@ int Analyzer::CalculateMultiplier(const Grid& game_grid) {
 const std::vector<Analyzer::Line>& Analyzer::GetWinningLines() const {
 
     return winning_lines;
+}
+
+
+
+int Analyzer::ScatterAmount(const Grid& game_grid) {
+
+    scatters = 0;
+
+    std::vector<CellContent> grid_state = game_grid.ExportState();
+    for (const CellContent& sample : grid_state) {
+        if (sample == CellContent::scatter) scatters++;
+    }
+
+    return scatters;
 }

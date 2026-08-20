@@ -21,7 +21,7 @@ Reel::Reel(int x_pos, GridData grid_data, CellContent starting_content)
 CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
 
     // Values have been calculated externally to acheive wheighted randomness when picking cell content
-    constexpr float scalar = 0.03f;
+    constexpr float scalar = 0.035f;
 
     last_idx++;
     float highest_base = SDL_sqrtf((float)last_idx / scalar);
@@ -40,10 +40,24 @@ void Reel::ResetCell(single::Engine& eng, Cell& cell) {
     cell.location.y = -cell.location.h;
     cell.next_y_pos = cell.location.y + cell.location.h;
 
-    int last_idx = static_cast<int>(CellContent::wild);
-    if (reel_x_pos == 0) last_idx--;
+    bool reel_has_scatter = false;
+    for (const Cell& cell : cells) {
+        if (cell.content == CellContent::scatter) {
+            reel_has_scatter = true;
+            break;
+        }
+    }
 
-    cell.content = RandomContent(eng, last_idx);
+    bool correct_symbol_found;
+    do {
+        correct_symbol_found = true;
+
+        int last_idx = static_cast<int>(CellContent::wild);
+        if (reel_x_pos == 0) last_idx--;
+
+        cell.content = RandomContent(eng, last_idx);
+        if (reel_has_scatter && cell.content == CellContent::scatter) correct_symbol_found = false;
+    } while (!correct_symbol_found);
 }
 
 

@@ -19,7 +19,9 @@ class Analyzer {
     std::vector<Line> lines;
     std::vector<Line> winning_lines;
 
-    Combination LineCombination(const Line& ln, const Grid& game_grid) const;
+    int scatters;
+
+    Combination LineCombination(const Line& ln, const Grid& game_grid);
 
     int CombinationMultiplier(const Combination& combination) const;
 
@@ -28,4 +30,5 @@ class Analyzer {
 
     int CalculateMultiplier(const Grid& game_grid);
     const std::vector<Line>& GetWinningLines() const;
+    int ScatterAmount(const Grid& game_grid);
 };

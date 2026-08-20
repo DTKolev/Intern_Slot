@@ -11,20 +11,37 @@ void Results::OnEntry(single::Engine& eng) {
     Grid& grid = common_manager.GetGrid();
     Analyzer& analyzer = common_manager.GetAnalyzer();
 
+    common_manager.free_spins_mode = false;
+
     win_amount = common_manager.bet * analyzer.CalculateMultiplier(grid);
+    if (common_manager.free_spins > 0) {
+        win_amount *= 3;
+        common_manager.free_spins_mode = true;
+        common_manager.free_spins--;
+    }
+
+    if (analyzer.ScatterAmount(grid) >= 3) {
+        common_manager.free_spins += 10;
+        common_manager.free_spins_mode = true;
+    }
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
     bet = eng.CreateText("Bet: " + std::to_string(common_manager.bet), 32.0);
     win = eng.CreateText("Win: ", 32.0);
     title = eng.CreateText("RESULTS", 32.0);
+    free_spins = eng.CreateText("FREE SPINS: ", 32.0f, (single::Color){0, 255, 0, 255});
 
     display_win = 0;
 
     win_line_amount = analyzer.GetWinningLines().size();
     current_win_line = 0;
-    timer = 2.0;
+    line_display_timer = 2.0;
 
     curren_win_line_color = eng.RandomColor();
+
+    scatter_frame_timer = 0.3;
+    show_frames = true;
+    frame_color = eng.RandomColor();
 }
 
 void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -38,7 +55,7 @@ void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
         eng.StateChange<Reeling>();
     }
     if (input_manager.IsReleased(Key::shift)) {
-        eng.StateChange<Betting>();
+        if (!common_manager.free_spins_mode) eng.StateChange<Betting>();
     }
     if (input_manager.IsReleased(Key::escape)) {
         eng.StateChange<MainMenu>();
@@ -47,14 +64,28 @@ void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 
 void Results::Update(single::Engine& eng, double delta_t) {
 
+    CommonManager& common_manager = CommonManager::GetInstance();
+
     if (win_line_amount > 0) {
-        timer -= delta_t;
-        if (timer <= 0.0) {
+        line_display_timer -= delta_t;
+
+        if (line_display_timer <= 0.0) {
             current_win_line++;
             current_win_line %= win_line_amount;
-            timer = 2.0;
+            line_display_timer = 2.0;
 
             curren_win_line_color = eng.RandomColor();
+        }
+    }
+
+    if (common_manager.free_spins_mode) {
+        scatter_frame_timer -= delta_t;
+        
+        if (scatter_frame_timer <= 0.0) {
+            show_frames = !show_frames;
+            scatter_frame_timer = 0.3;
+
+            frame_color = eng.RandomColor();
         }
     }
 
@@ -80,6 +111,15 @@ void Results::Render(single::Engine& eng) {
     eng.RenderText(win, 50.0, 690.0);
 
     eng.RenderText(title, 260.0, 690.0);
+
+    if (common_manager.free_spins_mode) {
+        for (const Cell& cell : common_manager.GetGrid().ExportCells()) {
+            if (cell.content == CellContent::scatter && show_frames) DrawCellFrame(eng, cell, frame_color);
+        }
+
+        free_spins.Update(eng, "FREE SPINS: " + std::to_string(common_manager.free_spins), 32.0, (single::Color){0, 255, 0, 255});
+        eng.RenderText(free_spins, 260.0f, 650.0f);
+    }
 }
 
 void Results::OnExit() {
@@ -117,4 +157,18 @@ void Results::DrawLine(single::Engine& eng, const Line& ln, single::Color color)
     }
 
     eng.RenderLine(next_cell_center_x, next_cell_center_y, 1000.0, next_cell_center_y, 10.0f, color);
+}
+
+
+
+void Results::DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const {
+
+    float cell_x = (float)cell.location.x;
+    float cell_y = (float)cell.location.y;
+    float cell_size = (float)cell.location.h;
+
+    eng.RenderLine(cell_x, cell_y, cell_x, cell_y + cell_size, 10.0f, color);
+    eng.RenderLine(cell_x, cell_y, cell_x + cell_size, cell_y, 10.0f, color);
+    eng.RenderLine(cell_x, cell_y + cell_size, cell_x + cell_size, cell_y + cell_size, 10.0f, color);
+    eng.RenderLine(cell_x + cell_size, cell_y, cell_x + cell_size, cell_y + cell_size, 10.0f, color);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Singleton/Singleton.hpp"
+#include "Grid.hpp"
 #include <vector>
 
 class Results : public single::GameState {
@@ -12,17 +13,22 @@ class Results : public single::GameState {
     single::Text bet;
     single::Text win;
     single::Text title;
+    single::Text free_spins;
 
     int win_line_amount;
     int current_win_line;
-    double timer;
+    double line_display_timer;
     single::Color curren_win_line_color;
 
     int win_amount;
-
     int display_win;
 
+    bool show_frames;
+    double scatter_frame_timer;
+    single::Color frame_color;
+
     void DrawLine(single::Engine& eng, const Line& ln, single::Color color) const;
+    void DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const;
 
     public:
     void OnEntry(single::Engine& eng) override;

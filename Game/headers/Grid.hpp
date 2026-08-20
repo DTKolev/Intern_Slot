@@ -10,6 +10,7 @@ enum class CellContent {
     bell,
     seven,
     diamond,
+    scatter,
     wild,
     empty
 };
@@ -70,6 +71,7 @@ class Grid {
 
     void RenderGrid(single::Engine& eng);
     const std::vector<CellContent> ExportState() const;
+    const std::vector<Cell> ExportCells() const;
 
     const GridData& GetGridData() const {return data;}
     bool ReelingFinished() const;

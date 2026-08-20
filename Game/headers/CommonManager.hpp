@@ -23,4 +23,7 @@ class CommonManager {
 
     int credits;
     int bet;
+
+    int free_spins;
+    bool free_spins_mode;
 };

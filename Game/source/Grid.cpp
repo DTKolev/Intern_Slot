@@ -48,6 +48,7 @@ void Grid::RenderGrid(single::Engine& eng) {
             eng.LoadSprite("../src/bell.png"),
             eng.LoadSprite("../src/seven.png"),
             eng.LoadSprite("../src/diamond.png"),
+            eng.LoadSprite("../src/scatter.png"),
             eng.LoadSprite("../src/wild.png"),
             eng.LoadSprite("../src/empty.png"),
             eng.LoadSprite("../src/wood.png")
@@ -94,6 +95,24 @@ const std::vector<CellContent> Grid::ExportState() const {
     }
 
     return grid_state;
+}
+
+
+
+const std::vector<Cell> Grid::ExportCells() const {
+
+    std::vector<Cell> cells;
+    cells.reserve(data.rows * data.columns);
+
+    for (int row = 0; row < data.rows; row++) {
+        for (const Reel& reel : reels) {
+
+            const Cell& cell = reel.GetCellAt(data, row);
+            cells.push_back(cell);
+        }
+    }
+
+    return cells;
 }
 
 

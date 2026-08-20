@@ -3,7 +3,8 @@
 CommonManager::CommonManager() : 
     game_grid{3, 5, 200},
     analyzer{},
-    credits{100}, bet{1}
+    credits{100}, bet{1},
+    free_spins{0}, free_spins_mode{false}
 {}
 
 
