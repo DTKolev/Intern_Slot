@@ -18,7 +18,7 @@ namespace single {
     };
 
     struct Rect {
-        int x, y, w, h;
+        float x, y, w, h;
     };
 
     struct SDLDeleter {

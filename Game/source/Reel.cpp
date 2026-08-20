@@ -1,18 +1,18 @@
 #include "../headers/Grid.hpp"
-#include <bitset>
+#include <iostream>
 
-Reel::Reel(int x_pos, GridData grid_data, CellContent starting_content) 
-: reel_x_pos{x_pos}, reel_y_pos{-grid_data.cell_size}, animation_finished{true} 
+Reel::Reel(float x_pos, GridData grid_data, CellContent starting_content) 
+: reel_x_pos{x_pos}, reel_y_pos{-grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 
 {
 
     cells.reserve(grid_data.rows + 1);
 
     for (int i = 0; i < grid_data.rows + 1; i++) {
 
-        int cell_y_pos = reel_y_pos + i * grid_data.cell_size;
+        float cell_y_pos = reel_y_pos + (float)i * grid_data.cell_size;
         single::Rect cell_location {reel_x_pos, cell_y_pos, grid_data.cell_size, grid_data.cell_size};
 
-        cells.push_back((Cell){i - 1, cell_location, cell_location.y + grid_data.cell_size, starting_content});
+        cells.push_back((Cell){i - 1, cell_location, starting_content});
     }
 }
 
@@ -35,10 +35,9 @@ CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
 
 
 
-void Reel::ResetCell(single::Engine& eng, Cell& cell) {
+void Reel::ResetCell(single::Engine& eng, GridData grid_data, Cell& cell) {
 
-    cell.location.y = -cell.location.h;
-    cell.next_y_pos = cell.location.y + cell.location.h;
+    cell.location.y -= (float)(grid_data.rows + 1) * grid_data.cell_size;
 
     bool reel_has_scatter = false;
     for (const Cell& cell : cells) {
@@ -67,8 +66,11 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
     animation_finished = false;
     
     for (Cell& cell : cells) {
-        cell.next_y_pos = cell.location.y + cell.location.h;
-        if (cell.location.y >= grid_data.cell_size * grid_data.rows) ResetCell(eng, cell);
+        if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size) {
+            ResetCell(eng, grid_data, cell);
+            SetCellRow(grid_data, cell);
+            break;
+        }
     }
 }
 
@@ -76,41 +78,51 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
 
 void Reel::SetCellRow(GridData grid_data, Cell& cell) {
 
-    if (cell.location.y < 0) cell.row = -1;
-    else cell.row = cell.location.y / grid_data.cell_size; 
+    if (cell.location.y < 0.0) cell.row = -1;
+    else cell.row = (int)SDL_floorf(cell.location.y) / (int)grid_data.cell_size; 
 }
 
 
 
-void Reel::SpinReel(single::Engine& eng, GridData grid_data, bool reeling) {
+void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, double delta_time, bool reeling) {
 
-    std::bitset<4> cell_alingment_state;
-    int set_idx = 0;
+    float distance_to_travel = speed * delta_time;
 
-    for (Cell& cell : cells) {
+    if (distance_travelled >= grid_data.cell_size) {
 
-        if ((cell.location.y == grid_data.cell_size * grid_data.rows) && reeling) {
-            ResetCell(eng, cell);
-        }
-        
-        if (!animation_finished) cell.location.y++;
+        float diff = distance_travelled - grid_data.cell_size;
 
-        SetCellRow(grid_data, cell);
+        if (reeling) {
 
-        if (cell.location.y == cell.next_y_pos) {
-            if (reeling) {
-                cell.next_y_pos += grid_data.cell_size;
+            for (Cell& cell : cells) {
+                if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size) {
+                    ResetCell(eng, grid_data, cell);
+                    SetCellRow(grid_data, cell);
+                    break;
+                }
             }
-            else {
-                cell.location.y = cell.row * grid_data.cell_size;
-                cell_alingment_state[set_idx] = true;
-            }
-        }
 
-        set_idx++;
+            distance_travelled = diff;
+        }
+        else {
+
+            for (Cell& cell : cells) {
+                cell.location.y -= diff;
+                cell.location.y = SDL_roundf(cell.location.y);
+                SetCellRow(grid_data, cell);
+            }
+            animation_finished = true;
+            distance_travelled = 0.0;
+        }
     }
 
-    if (cell_alingment_state.all()) animation_finished = true;
+    if (!animation_finished) {
+        for (Cell& cell : cells) {
+            cell.location.y += distance_to_travel;
+            SetCellRow(grid_data, cell);
+        }
+        distance_travelled += distance_to_travel;
+    }
 }
 
 
@@ -122,5 +134,17 @@ const Cell& Reel::GetCellAt(GridData grid_data, int row) const {
         if (cell.row == row) return cell;
     }
 
+    std::cout << "Cell not found\n";
     return cells[0];
+}
+
+
+
+void Reel::RenderCells(single::Engine& eng, std::vector<single::Sprite>& source_sprites) const {
+
+    for (const Cell& cell : cells) {
+
+        int sprite_idx = static_cast<int>(cell.content);
+        eng.RenderSprite(source_sprites[sprite_idx], &cell.location);
+    }
 }

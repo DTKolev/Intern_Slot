@@ -1,13 +1,13 @@
 #include "../headers/Grid.hpp"
 
-Grid::Grid(int rows, int columns, int cell_size) :
+Grid::Grid(int rows, int columns, float cell_size) :
     data{rows, columns, cell_size} 
 {
     reels.reserve(columns);
 
     for (int i = 0; i < columns; i++) {
 
-        int x_pos = i * cell_size;
+        float x_pos = (float)i * cell_size;
         Reel new_reel {x_pos, data};
         reels.push_back(new_reel);
     }
@@ -31,7 +31,7 @@ void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
     }
 
     for (int i = 0; i < active_reels; i++) {
-        reels[i].SpinReel(eng, data, reeling);
+        reels[i].SpinReel(eng, data, 1500.0, delta_time, reeling);
     }
 }
 
@@ -56,13 +56,7 @@ void Grid::RenderGrid(single::Engine& eng) {
     }
 
     for (const Reel& reel : reels) {
-        for (int row = -1; row < data.rows; row++) {
-
-            const Cell& cell = reel.GetCellAt(data, row);
-            int sprite_idx = static_cast<int>(cell.content);
-
-            eng.RenderSprite(sprites[sprite_idx], &cell.location);
-        }
+        reel.RenderCells(eng, sprites);
     }    
 
     single::Rect bottom_pannel_rect {0, data.cell_size * data.rows, data.cell_size * data.columns, 200};
