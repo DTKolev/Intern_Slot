@@ -47,7 +47,10 @@ void FreeSpinsResults::HandleInput(single::Engine& eng, SDL_Event& input_event) 
 
     if (input_manager.IsReleased(Key::enter)) {
         if (common_manager.free_spins_mode) eng.StateChange<FreeSpinsReeling>();
-        else eng.OverlayState<TransitionNormal>();
+        else {
+            common_manager.free_spins_winnings += win_amount;
+            eng.OverlayState<TransitionNormal>();
+        }
     }
 }
 
@@ -101,7 +104,7 @@ void FreeSpinsResults::Render(single::Engine& eng) {
     eng.RenderText(win, 50.0f, 690.0f);
     eng.RenderText(free_spins, 260.0f, 650.0f);
 
-    if (common_manager.GetAnalyzer().ScatterAmount(common_manager.GetGrid()) >= 3) {
+    if (common_manager.GetAnalyzer().ScatterAmount(common_manager.GetGrid()) >= 3 && show_frames) {
         for (const Cell& cell : common_manager.GetGrid().ExportCells()) {
             if (cell.content == CellContent::scatter) DrawCellFrame(eng, cell, frame_color);
         }

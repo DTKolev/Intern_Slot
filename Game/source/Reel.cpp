@@ -65,7 +65,7 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
     animation_finished = false;
     
     for (Cell& cell : cells) {
-        if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size) {
+        if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - 10.0f) {
             ResetCell(eng, grid_data, cell);
             SetCellRow(grid_data, cell);
             break;
