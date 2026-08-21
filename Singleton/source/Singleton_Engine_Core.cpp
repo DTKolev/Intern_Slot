@@ -10,7 +10,8 @@ Engine::Engine(std::string window_title, int window_w, int window_h) :
     window{nullptr}, renderer{nullptr}, font{nullptr},
     current_state{EngineState::on},
     time_manager{},
-    current_game_state{nullptr}
+    current_game_state{nullptr},
+    overlay_state{nullptr}
 {
 
     window = std::make_unique<SDLObject<SDL_Window>>("Slot Game", window_w, window_h);
@@ -45,14 +46,18 @@ void Engine::Run() {
 
             if (input_event.type == SDL_EVENT_QUIT) Quit();
 
-            current_game_state->HandleInput(*this, input_event);
+            if (overlay_state != nullptr) overlay_state->HandleInput(*this, input_event);
+            else current_game_state->HandleInput(*this, input_event);
         }
 
         SDL_SetRenderDrawColor(renderer->Get(), 0, 0, 0, 255);
         SDL_RenderClear(renderer->Get());
 
         current_game_state->Update(*this, time_manager.DeltaTime());
+        if (overlay_state != nullptr) overlay_state->Update(*this, time_manager.DeltaTime());
+
         current_game_state->Render(*this);
+        if (overlay_state != nullptr) overlay_state->Render(*this);
 
         SDL_RenderPresent(renderer->Get());
 

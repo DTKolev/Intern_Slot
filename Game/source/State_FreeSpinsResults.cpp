@@ -1,44 +1,44 @@
-#include "../headers/State_Results.hpp"
-#include "../headers/State_Betting.hpp"
-#include "../headers/State_MainMenu.hpp"
-#include "../headers/State_Reeling.hpp"
-#include "../headers/State_TransitionSpins.hpp"
-#include "../headers/InputManager.hpp"
+#include "../headers/State_FreeSpinsResults.hpp"
+#include "../headers/State_FreeSpinsReeling.hpp"
+#include "../headers/State_TransitionNormal.hpp"
 #include "../headers/CommonManager.hpp"
+#include "../headers/InputManager.hpp"
+#include <string>
 
-void Results::OnEntry(single::Engine& eng) {
+void FreeSpinsResults::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
     Grid& grid = common_manager.GetGrid();
     Analyzer& analyzer = common_manager.GetAnalyzer();
 
-    win_amount = common_manager.bet * analyzer.CalculateMultiplier(grid);
+    win_amount = common_manager.bet * analyzer.CalculateMultiplier(grid) * 3;
 
     if (analyzer.ScatterAmount(grid) >= 3) {
         common_manager.free_spins += 10;
-        common_manager.free_spins_mode = true;
+        extra_scatters = true;
     }
+    else extra_scatters = false;
 
-    credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
-    bet = eng.CreateText("Bet: " + std::to_string(common_manager.bet), 32.0);
-    win = eng.CreateText("Win: ", 32.0);
-    title = eng.CreateText("RESULTS", 32.0);
-    free_spins = eng.CreateText("FREE SPINS MODE ACHEIVED", 32.0f, (single::Color){0, 255, 0, 255});
+    if (common_manager.free_spins == 0) common_manager.free_spins_mode = false;
+
+    winnings = eng.CreateText("Free Spin Winnings: " + std::to_string(common_manager.free_spins_winnings), 32.0f);
+    bet = eng.CreateText("Bet: " + std::to_string(common_manager.bet), 32.0f);
+    win = eng.CreateText("Win: ", 32.0f);
+    free_spins = eng.CreateText("Free Spins Remaining: " + std::to_string(common_manager.free_spins), 32.0f, (single::Color){0, 255, 0, 255});
 
     display_win = 0;
 
     win_line_amount = analyzer.GetWinningLines().size();
     current_win_line = 0;
+    current_win_line_color = eng.RandomColor();
     line_display_timer = 2.0;
-
-    curren_win_line_color = eng.RandomColor();
 
     scatter_frame_timer = 0.3;
     show_frames = true;
     frame_color = eng.RandomColor();
 }
 
-void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
+void FreeSpinsResults::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 
     InputManager& input_manager = InputManager::GetInstance();
     CommonManager& common_manager = CommonManager::GetInstance();
@@ -46,18 +46,12 @@ void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     input_manager.ProcessInput(input_event);
 
     if (input_manager.IsReleased(Key::enter)) {
-        if (common_manager.free_spins_mode) eng.OverlayState<TransitionSpins>();
-        else eng.StateChange<Reeling>();
-    }
-    if (input_manager.IsReleased(Key::shift)) {
-        if (!common_manager.free_spins_mode) eng.StateChange<Betting>();
-    }
-    if (input_manager.IsReleased(Key::escape)) {
-        eng.StateChange<MainMenu>();
+        if (common_manager.free_spins_mode) eng.StateChange<FreeSpinsReeling>();
+        else eng.OverlayState<TransitionNormal>();
     }
 }
 
-void Results::Update(single::Engine& eng, double delta_t) {
+void FreeSpinsResults::Update(single::Engine& eng, double delta_t) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
@@ -67,20 +61,20 @@ void Results::Update(single::Engine& eng, double delta_t) {
         if (line_display_timer <= 0.0) {
             current_win_line++;
             current_win_line %= win_line_amount;
-            line_display_timer = 2.0;
+            current_win_line_color = eng.RandomColor();
 
-            curren_win_line_color = eng.RandomColor();
+            line_display_timer = 2.0;
         }
     }
 
-    if (common_manager.free_spins_mode) {
+    if (common_manager.GetAnalyzer().ScatterAmount(common_manager.GetGrid()) >= 3) {
         scatter_frame_timer -= delta_t;
-        
+
         if (scatter_frame_timer <= 0.0) {
             show_frames = !show_frames;
-            scatter_frame_timer = 0.3;
-
             frame_color = eng.RandomColor();
+
+            scatter_frame_timer = 0.3;
         }
     }
 
@@ -90,41 +84,38 @@ void Results::Update(single::Engine& eng, double delta_t) {
     }
 }
 
-void Results::Render(single::Engine& eng) {
+void FreeSpinsResults::Render(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
     common_manager.GetGrid().RenderGrid(eng);
+
     if (win_line_amount > 0) {
-        DrawLine(eng, common_manager.GetAnalyzer().GetWinningLines()[current_win_line], curren_win_line_color);
+        DrawLine(eng, common_manager.GetAnalyzer().GetWinningLines()[current_win_line], current_win_line_color);
     }
 
-    win.Update(eng, "Win: " + std::to_string(display_win), 32.0);
+    win.Update(eng, "Win: " + std::to_string(display_win), 32.0f);
 
-    eng.RenderText(credits, 50.0, 610.0);
-    eng.RenderText(bet, 50.0, 650.0);
-    eng.RenderText(win, 50.0, 690.0);
+    eng.RenderText(winnings, 50.0f, 610.0f);
+    eng.RenderText(bet, 50.0f, 650.0f);
+    eng.RenderText(win, 50.0f, 690.0f);
+    eng.RenderText(free_spins, 260.0f, 650.0f);
 
-    eng.RenderText(title, 260.0, 690.0);
-
-    if (common_manager.free_spins_mode) {
+    if (common_manager.GetAnalyzer().ScatterAmount(common_manager.GetGrid()) >= 3) {
         for (const Cell& cell : common_manager.GetGrid().ExportCells()) {
-            if (cell.content == CellContent::scatter && show_frames) DrawCellFrame(eng, cell, frame_color);
+            if (cell.content == CellContent::scatter) DrawCellFrame(eng, cell, frame_color);
         }
-
-        eng.RenderText(free_spins, 260.0f, 650.0f);
     }
 }
 
-void Results::OnExit() {
+void FreeSpinsResults::OnExit() {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    common_manager.credits += win_amount;
+    common_manager.free_spins_winnings += win_amount;
 }
 
-
-void Results::DrawLine(single::Engine& eng, const Line& ln, single::Color color) const {
+void FreeSpinsResults::DrawLine(single::Engine& eng, const Line& ln, single::Color color) const {
 
     CommonManager& common_manager = CommonManager::GetInstance();
     GridData grid_data = common_manager.GetGrid().GetGridData();
@@ -153,9 +144,7 @@ void Results::DrawLine(single::Engine& eng, const Line& ln, single::Color color)
     eng.RenderLine(next_cell_center_x, next_cell_center_y, 1000.0, next_cell_center_y, 10.0f, color);
 }
 
-
-
-void Results::DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const {
+void FreeSpinsResults::DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const {
 
     float cell_x = (float)cell.location.x;
     float cell_y = (float)cell.location.y;

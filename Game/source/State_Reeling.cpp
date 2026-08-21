@@ -7,10 +7,7 @@ void Reeling::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    if (!common_manager.free_spins_mode) {
-        target_credits = common_manager.credits - common_manager.bet;
-    }
-    else target_credits = common_manager.credits;
+    target_credits = common_manager.credits - common_manager.bet;
 
     timer = 4.0;
     reeling = true;

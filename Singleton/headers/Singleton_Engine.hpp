@@ -29,6 +29,7 @@ namespace single {
         TimeManager time_manager;
 
         std::unique_ptr<GameState> current_game_state;
+        std::unique_ptr<GameState> overlay_state;
 
         public:
         Engine(std::string window_title, int window_w, int window_h);
@@ -69,6 +70,23 @@ namespace single {
             if (current_game_state != nullptr) current_game_state->OnExit();
             current_game_state = std::move(new_state);
             if (current_game_state != nullptr) current_game_state->OnEntry(*this);
+        }
+
+        template<typename T>
+        void OverlayState() {
+
+            static_assert(std::is_base_of<GameState, T>::value);
+            std::unique_ptr<GameState> new_overlay_state = std::make_unique<T>();
+
+            if (overlay_state != nullptr) overlay_state->OnExit();
+            overlay_state = std::move(new_overlay_state);
+            if (overlay_state != nullptr) overlay_state->OnEntry(*this);
+        }
+
+        void StopOverlay() {
+
+            if (overlay_state != nullptr) overlay_state->OnExit();
+            overlay_state.reset(nullptr);
         }
     };
 }
