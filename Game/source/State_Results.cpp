@@ -1,5 +1,6 @@
 #include "../headers/Mode_Regular.hpp"
-#include "../headers/State_TransitionSpins.hpp"
+#include "../headers/Mode_FreeSpins.hpp"
+#include "../headers/Mode_ExtraReel.hpp"
 #include "../headers/InputManager.hpp"
 #include "../headers/CommonManager.hpp"
 
@@ -15,12 +16,16 @@ void Results::OnEntry(single::Engine& eng) {
         common_manager.free_spins += 10;
         common_manager.free_spins_mode = true;
     }
+    else if (grid.ScatterAmount() == 2) {
+        common_manager.extra_reel_mode = true;
+    }
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
     bet = eng.CreateText("Bet: " + std::to_string(common_manager.bet), 32.0);
     win = eng.CreateText("Win: ", 32.0);
     title = eng.CreateText("RESULTS", 32.0);
     free_spins = eng.CreateText("FREE SPINS MODE ACHEIVED", 32.0f, (single::Color){0, 255, 0, 255});
+    extra_reel = eng.CreateText("EXTRA REEL", 32.0f, (single::Color){0, 255, 0, 255});
 
     display_win = 0;
 
@@ -43,7 +48,8 @@ void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     input_manager.ProcessInput(input_event);
 
     if (input_manager.IsReleased(Key::enter)) {
-        if (common_manager.free_spins_mode) eng.OverlayState<TransitionSpins>();
+        if (common_manager.free_spins_mode) eng.OverlayState<FreeSpinsTransitionIn>();
+        else if (common_manager.extra_reel_mode) eng.StateChange<ExtraReelTransitionIn>();
         else eng.StateChange<Reeling>();
     }
     if (input_manager.IsReleased(Key::shift)) {
@@ -70,7 +76,7 @@ void Results::Update(single::Engine& eng, double delta_t) {
         }
     }
 
-    if (common_manager.free_spins_mode) {
+    if (common_manager.free_spins_mode || common_manager.extra_reel_mode) {
         scatter_frame_timer -= delta_t;
         
         if (scatter_frame_timer <= 0.0) {
@@ -110,6 +116,13 @@ void Results::Render(single::Engine& eng) {
         }
 
         eng.RenderText(free_spins, 260.0f, 650.0f);
+    }
+    else if (common_manager.extra_reel_mode) {
+        for (const Cell& cell : common_manager.GetGrid().ExportCells()) {
+            if (cell.content == CellContent::scatter && show_frames) DrawCellFrame(eng, cell, frame_color);
+        }
+
+        eng.RenderText(extra_reel, 260.0f, 650.0f);
     }
 }
 

@@ -60,6 +60,7 @@ class Results : public single::GameState {
     single::Text win;
     single::Text title;
     single::Text free_spins;
+    single::Text extra_reel;
 
     int win_line_amount;
     int current_win_line;

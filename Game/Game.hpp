@@ -7,5 +7,3 @@
 #include "headers/Mode_ExtraReel.hpp"
 #include "headers/Mode_FreeSpins.hpp"
 #include "headers/Mode_Regular.hpp"
-#include "headers/State_TransitionNormal.hpp"
-#include "headers/State_TransitionSpins.hpp"

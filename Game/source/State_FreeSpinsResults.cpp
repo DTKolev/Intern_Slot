@@ -1,5 +1,4 @@
 #include "../headers/Mode_FreeSpins.hpp"
-#include "../headers/State_TransitionNormal.hpp"
 #include "../headers/CommonManager.hpp"
 #include "../headers/InputManager.hpp"
 #include <string>
@@ -48,7 +47,7 @@ void FreeSpinsResults::HandleInput(single::Engine& eng, SDL_Event& input_event) 
         if (common_manager.free_spins_mode) eng.StateChange<FreeSpinsReeling>();
         else {
             common_manager.free_spins_winnings += win_amount;
-            eng.OverlayState<TransitionNormal>();
+            eng.OverlayState<FreeSpinsTransitionOut>();
         }
     }
 }

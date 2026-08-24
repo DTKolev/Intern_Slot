@@ -63,7 +63,7 @@ void Grid::RenderGrid(single::Engine& eng) {
     }
 
     for (const Reel& reel : reels) {
-        reel.RenderCells(eng, sprites);
+        reel.RenderCells(eng, data, sprites);
     }    
 
     single::Rect bottom_pannel_rect {0.0f, 600.0f, 1000.0f, 200.0f};
@@ -139,4 +139,19 @@ bool Grid::ReelingFinished() const {
     }
 
     return true;
+}
+
+
+
+void Grid::RelocateGrid(float new_x, float new_y, float new_cell_size) {
+
+    data.grid_x = new_x;
+    data.grid_y = new_y;
+    data.cell_size = new_cell_size;
+
+    for (int i = 0; i < reels.size(); i++) {
+
+        float new_reel_x = (float)i * data.cell_size;
+        reels[i].RelocateReel(new_reel_x, data);
+    }
 }

@@ -1,9 +1,9 @@
-#include "../headers/State_TransitionNormal.hpp"
+#include "../headers/Mode_FreeSpins.hpp"
 #include "../headers/Mode_Regular.hpp"
 #include "../headers/CommonManager.hpp"
 #include <string>
 
-void TransitionNormal::OnEntry(single::Engine& eng) {
+void FreeSpinsTransitionOut::OnEntry(single::Engine& eng) {
  
     CommonManager& common_manager = CommonManager::GetInstance();
     
@@ -22,9 +22,9 @@ void TransitionNormal::OnEntry(single::Engine& eng) {
     doors_opening = false;
 }
 
-void TransitionNormal::HandleInput(single::Engine& eng, SDL_Event& input_event) {}
+void FreeSpinsTransitionOut::HandleInput(single::Engine& eng, SDL_Event& input_event) {}
 
-void TransitionNormal::Update(single::Engine& eng, double delta_t) {
+void FreeSpinsTransitionOut::Update(single::Engine& eng, double delta_t) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
@@ -65,7 +65,7 @@ void TransitionNormal::Update(single::Engine& eng, double delta_t) {
     }
 }
 
-void TransitionNormal::Render(single::Engine& eng) {
+void FreeSpinsTransitionOut::Render(single::Engine& eng) {
 
     eng.RenderSprite(wooden_door, &left_door_location);
     eng.RenderSprite(wooden_door, &right_door_location);
@@ -80,7 +80,7 @@ void TransitionNormal::Render(single::Engine& eng) {
     }
 }
 
-void TransitionNormal::OnExit() {
+void FreeSpinsTransitionOut::OnExit() {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 

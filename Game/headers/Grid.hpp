@@ -55,7 +55,9 @@ class Reel {
     int GetScatters(GridData grid_data) const;
     bool AnimationFinished() const {return animation_finished;}
 
-    void RenderCells(single::Engine& eng, std::vector<single::Sprite>& source_Sprites) const;
+    void RenderCells(single::Engine& eng, GridData grid_data, std::vector<single::Sprite>& source_Sprites) const;
+
+    void RelocateReel(float new_x, GridData grid_data);
 };
 
 class Grid {
@@ -85,4 +87,6 @@ class Grid {
     int ScatterAmount() const;
     bool ReelingFinished() const;
     int GetActiveReels() const {return active_reels;}
+
+    void RelocateGrid(float new_x, float new_y, float new_cell_size);
 };

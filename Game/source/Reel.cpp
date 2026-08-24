@@ -1,4 +1,5 @@
 #include "../headers/Grid.hpp"
+#include <iostream>
 
 Reel::Reel(float x_pos, GridData grid_data, CellContent starting_content) 
 : reel_x_pos{x_pos}, reel_y_pos{grid_data.grid_y -grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 
@@ -153,11 +154,36 @@ int Reel::GetScatters(GridData grid_data) const {
 
 
 
-void Reel::RenderCells(single::Engine& eng, std::vector<single::Sprite>& source_sprites) const {
+void Reel::RenderCells(single::Engine& eng, GridData grid_data, std::vector<single::Sprite>& source_sprites) const {
 
     for (const Cell& cell : cells) {
 
         int sprite_idx = static_cast<int>(cell.content);
         eng.RenderSprite(source_sprites[sprite_idx], &cell.location);
+    }
+
+    single::Rect bottom_cover {
+        .x = reel_x_pos,
+        .y = grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size,
+        .w = grid_data.cell_size,
+        .h = grid_data.cell_size
+    };
+
+    eng.RenderRect(bottom_cover, (single::Color){0, 0, 0, 255});
+}
+
+
+
+void Reel::RelocateReel(float new_x, GridData grid_data) {
+
+    reel_x_pos = new_x;
+    reel_y_pos = grid_data.grid_y -grid_data.cell_size;
+
+    for (Cell& cell : cells) {
+
+        cell.location.x = new_x;
+        cell.location.y = grid_data.grid_y + cell.row * grid_data.cell_size;
+        cell.location.w = grid_data.cell_size;
+        cell.location.h = grid_data.cell_size;
     }
 }

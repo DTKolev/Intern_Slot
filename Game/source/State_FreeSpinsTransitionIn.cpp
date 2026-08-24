@@ -1,8 +1,7 @@
-#include "../headers/State_TransitionSpins.hpp"
 #include "../headers/Mode_FreeSpins.hpp"
 #include <string>
 
-void TransitionSpins::OnEntry(single::Engine& eng) {
+void FreeSpinsTransitionIn::OnEntry(single::Engine& eng) {
 
     wooden_door = eng.LoadSprite("../src/wooden_tiles.png");
     title = eng.CreateText("FREE SPINS MODE", 64.0f, eng.RandomColor());
@@ -18,9 +17,9 @@ void TransitionSpins::OnEntry(single::Engine& eng) {
     doors_opening = false;
 }
  
-void TransitionSpins::HandleInput(single::Engine& eng, SDL_Event& input_event) {}
+void FreeSpinsTransitionIn::HandleInput(single::Engine& eng, SDL_Event& input_event) {}
 
-void TransitionSpins::Update(single::Engine& eng, double delta_t) {
+void FreeSpinsTransitionIn::Update(single::Engine& eng, double delta_t) {
 
     constexpr double door_movement_speed = 700.0;
 
@@ -58,7 +57,7 @@ void TransitionSpins::Update(single::Engine& eng, double delta_t) {
     }
 }
 
-void TransitionSpins::Render(single::Engine& eng) {
+void FreeSpinsTransitionIn::Render(single::Engine& eng) {
 
     eng.RenderSprite(wooden_door, &left_door_location);
     eng.RenderSprite(wooden_door, &right_door_location);
@@ -71,4 +70,4 @@ void TransitionSpins::Render(single::Engine& eng) {
     }
 }
 
-void TransitionSpins::OnExit() {}
+void FreeSpinsTransitionIn::OnExit() {}

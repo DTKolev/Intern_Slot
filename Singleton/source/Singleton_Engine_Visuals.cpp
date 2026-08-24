@@ -40,6 +40,21 @@ void Engine::RenderLine(float begin_x, float begin_y, float end_x, float end_y, 
 
 
 
+void Engine::RenderRect(Rect rect, Color color) const {
+
+    SDL_FRect rect_sdl {
+        .x = (float)rect.x,
+        .y = (float)rect.y,
+        .w = (float)rect.w,
+        .h = (float)rect.h
+    };
+
+    SDL_SetRenderDrawColor(renderer->Get(), color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(renderer->Get(), &rect_sdl);
+}
+
+
+
 Color Engine::RandomColor() const {
 
     double phase = (double)SDL_rand(100);

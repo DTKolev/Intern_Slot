@@ -27,4 +27,6 @@ class CommonManager {
     int free_spins;
     int free_spins_winnings;
     bool free_spins_mode;
+
+    bool extra_reel_mode;
 };
