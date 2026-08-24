@@ -1,7 +1,4 @@
-#include "../headers/State_Results.hpp"
-#include "../headers/State_Betting.hpp"
-#include "../headers/State_MainMenu.hpp"
-#include "../headers/State_Reeling.hpp"
+#include "../headers/Mode_Regular.hpp"
 #include "../headers/State_TransitionSpins.hpp"
 #include "../headers/InputManager.hpp"
 #include "../headers/CommonManager.hpp"

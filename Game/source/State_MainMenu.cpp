@@ -1,5 +1,4 @@
-#include "../headers/State_MainMenu.hpp"
-#include "../headers/State_Betting.hpp"
+#include "../headers/Mode_Regular.hpp"
 #include "InputManager.hpp"
 
 void MainMenu::OnEntry(single::Engine& eng) {

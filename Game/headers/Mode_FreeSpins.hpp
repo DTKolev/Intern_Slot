@@ -4,6 +4,39 @@
 #include "Grid.hpp"
 #include <vector>
 
+class FreeSpinsEntry : public single::GameState {
+
+    private:
+    single::Text prompt;
+    single::Text bet;
+    single::Text free_spins;
+
+    public:
+    void OnEntry(single::Engine& eng) override;
+    void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
+    void Update(single::Engine& eng, double delta_t) override;
+    void Render(single::Engine& eng) override;
+    void OnExit() override;
+};
+
+class FreeSpinsReeling : public single::GameState {
+
+    private:
+    single::Text winnings;
+    single::Text free_spins;
+
+
+    double timer;
+    bool reeling;
+
+    public:
+    void OnEntry(single::Engine& eng) override;
+    void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
+    void Update(single::Engine& eng, double delta_t) override;
+    void Render(single::Engine& eng) override;
+    void OnExit() override;
+};
+
 class FreeSpinsResults : public single::GameState {
 
     using Line = std::vector<int>;

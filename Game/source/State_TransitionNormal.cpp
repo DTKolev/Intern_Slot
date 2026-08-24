@@ -1,5 +1,5 @@
 #include "../headers/State_TransitionNormal.hpp"
-#include "../headers/State_Betting.hpp"
+#include "../headers/Mode_Regular.hpp"
 #include "../headers/CommonManager.hpp"
 #include <string>
 

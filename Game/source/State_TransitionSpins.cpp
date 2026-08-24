@@ -1,5 +1,5 @@
 #include "../headers/State_TransitionSpins.hpp"
-#include "../headers/State_FreeSpinsEntry.hpp"
+#include "../headers/Mode_FreeSpins.hpp"
 #include <string>
 
 void TransitionSpins::OnEntry(single::Engine& eng) {

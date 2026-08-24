@@ -1,5 +1,4 @@
-#include "../headers/State_FreeSpinsEntry.hpp"
-#include "../headers/State_FreeSpinsReeling.hpp"
+#include "../headers/Mode_FreeSpins.hpp"
 #include "../headers/CommonManager.hpp"
 #include "../headers/InputManager.hpp"
 #include <string>
