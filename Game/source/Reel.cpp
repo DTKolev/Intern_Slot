@@ -96,7 +96,7 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
         if (reeling) {
 
             for (Cell& cell : cells) {
-                if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size) {
+                if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - 10.0f) {
                     ResetCell(eng, grid_data, cell);
                     SetCellRow(grid_data, cell);
                     break;
@@ -112,7 +112,6 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
                 cell.location.y = SDL_roundf(cell.location.y);
                 SetCellRow(grid_data, cell);
             }
-            PruneCells(grid_data);
             animation_finished = true;
             distance_travelled = 0.0;
         }
@@ -127,47 +126,6 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
     }
 }
 
-
-
-void Reel::PruneCells(GridData grid_data) {
-
-    float cell_size = grid_data.cell_size;
-    std::vector<float> y_positions {0.0f, cell_size, 2.0f * cell_size, 3.0f * cell_size};
-    std::vector<int> cell_indecies {0, 1, 2, 3};
-
-    constexpr float reel_is_aligned = -1.0f;
-    float missing_position = reel_is_aligned;
-
-    // Align X
-    for (Cell& cell : cells) {
-        if (cell.location.x != reel_x_pos) cell.location.x = reel_x_pos;
-    }
-
-    // Align Y
-    for (float y_pos : y_positions) {
-
-        bool pos_found = false;
-        for (int i = 0; i < cells.size(); i++) {
-            const Cell& cell = cells[i];
-            if (cell.location.y == y_pos) {
-                
-                pos_found = true;
-                auto it = std::find(cell_indecies.begin(), cell_indecies.end(), i);
-                if (it != cell_indecies.end()) cell_indecies.erase(it);
-            }
-        }
-
-        if (!pos_found) {
-            missing_position = y_pos;
-            break;
-        }
-    }
-
-    if (!cell_indecies.empty()) {
-        std::cout << "Set the Y of cell " << cell_indecies[0] << " from " << cells.at(cell_indecies[0]).location.y << " to " << missing_position << '\n';
-        cells.at(cell_indecies[0]).location.y = missing_position;
-    }
-}
 
 
 

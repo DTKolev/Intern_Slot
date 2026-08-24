@@ -42,7 +42,6 @@ class Reel {
     CellContent RandomContent(single::Engine& eng, int last_idx) const;
 
     void SetCellRow(GridData grid_data, Cell& cell);
-    void PruneCells(GridData grid_data);
     
     public:
     Reel(float x_pos, GridData grid_data, CellContent starting_content = CellContent::empty);
