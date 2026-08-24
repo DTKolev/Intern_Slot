@@ -8,7 +8,7 @@ void FreeSpinsReeling::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    timer = 3.0f;
+    timer = 1.5;
     reeling = true;
 
     common_manager.free_spins--;

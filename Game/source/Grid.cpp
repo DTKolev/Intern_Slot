@@ -17,21 +17,25 @@ Grid::Grid(int rows, int columns, float cell_size) :
 
 void Grid::PrepareReelSpin(single::Engine& eng) {
 
-    animation_delay = (double)eng.RandomNumber(6, 2) / 10.0;
-    active_reels = 1;
+    animation_delay = (double)eng.RandomNumber(4, 2) / 10.0;
+    active_reels = reels.size();
     for (Reel& reel : reels) reel.StartReelSpin(eng, data);
 }
 
 void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
 
-    animation_delay -= delta_time;
-    if (animation_delay <= 0.0 && active_reels < reels.size()) {
-        active_reels++;
-        animation_delay = (double)eng.RandomNumber(6, 2) / 10.0;
+    if (!reeling) {
+        animation_delay -= delta_time;
     }
 
-    for (int i = 0; i < active_reels; i++) {
-        reels[i].SpinReel(eng, data, 1500.0, delta_time, reeling);
+    if (animation_delay <= 0.0 && active_reels > 0) {
+        active_reels--;
+        animation_delay = (double)eng.RandomNumber(4, 2) / 10.0;
+    }
+
+    for (int i = 0; i < reels.size(); i++) {
+        if (i >= reels.size() - active_reels) reels[i].SpinReel(eng, data, 2000.0, delta_time, true);
+        else reels[i].SpinReel(eng, data, 2000.0, delta_time, false);
     }
 }
 

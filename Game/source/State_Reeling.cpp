@@ -9,7 +9,7 @@ void Reeling::OnEntry(single::Engine& eng) {
 
     target_credits = common_manager.credits - common_manager.bet;
 
-    timer = 4.0;
+    timer = 1.5;
     reeling = true;
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
