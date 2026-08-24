@@ -126,8 +126,8 @@ void Results::DrawLine(single::Engine& eng, const Line& ln, single::Color color)
     CommonManager& common_manager = CommonManager::GetInstance();
     GridData grid_data = common_manager.GetGrid().GetGridData();
 
-    float cell_center_x = (ln[0] % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-    float cell_center_y = (ln[0] / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+    float cell_center_x = grid_data.grid_x + (ln[0] % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+    float cell_center_y = grid_data.grid_y + (ln[0] / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
     float next_cell_center_x;
     float next_cell_center_y;
 
@@ -138,11 +138,11 @@ void Results::DrawLine(single::Engine& eng, const Line& ln, single::Color color)
         int cell_id = ln[i];
         int next_cell_id = ln[i + 1];
 
-        cell_center_x = (cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-        cell_center_y = (cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        cell_center_x = grid_data.grid_x + (cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        cell_center_y = grid_data.grid_y + (cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
 
-        next_cell_center_x = (next_cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-        next_cell_center_y = (next_cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        next_cell_center_x = grid_data.grid_x + (next_cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        next_cell_center_y = grid_data.grid_y + (next_cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
 
         eng.RenderLine(cell_center_x, cell_center_y, next_cell_center_x, next_cell_center_y, 10.0f, color);
     }

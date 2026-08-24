@@ -7,8 +7,8 @@ Grid::Grid(float x, float y, int rows, int columns, float cell_size) :
 
     for (int i = 0; i < columns; i++) {
 
-        float x_pos = (float)i * cell_size;
-        Reel new_reel {x_pos, data};
+        float reel_x_pos = x_pos + (float)i * cell_size;
+        Reel new_reel {reel_x_pos, data};
         reels.push_back(new_reel);
     }
 }
@@ -34,8 +34,11 @@ void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
     }
 
     for (int i = 0; i < reels.size(); i++) {
-        if (i >= reels.size() - active_reels) reels[i].SpinReel(eng, data, 2000.0, delta_time, true);
-        else reels[i].SpinReel(eng, data, 2000.0, delta_time, false);
+
+        constexpr double reeling_speed = 10.0;
+
+        if (i >= reels.size() - active_reels) reels[i].SpinReel(eng, data, reeling_speed, delta_time, true);
+        else reels[i].SpinReel(eng, data, reeling_speed, delta_time, false);
     }
 }
 
@@ -63,7 +66,7 @@ void Grid::RenderGrid(single::Engine& eng) {
         reel.RenderCells(eng, sprites);
     }    
 
-    single::Rect bottom_pannel_rect {0, data.cell_size * data.rows, data.cell_size * data.columns, 200};
+    single::Rect bottom_pannel_rect {0.0f, 600.0f, 1000.0f, 200.0f};
     int bottom_pannel_idx = sprites.size() - 1;
     eng.RenderSprite(sprites[bottom_pannel_idx], &bottom_pannel_rect);
 
@@ -71,10 +74,10 @@ void Grid::RenderGrid(single::Engine& eng) {
     float grid_x_size = (float)(data.cell_size * data.columns);
     float grid_y_size = (float)(data.cell_size * data.rows);
     
-    eng.RenderLine(0.0f, 0.0f, grid_x_size, 0.0f, 10.0f, border_color);
-    eng.RenderLine(0.0f, 0.0f, 0.0f, grid_y_size, 10.0f, border_color);
-    eng.RenderLine(0.0f, grid_y_size, grid_x_size, grid_y_size, 5.0f, border_color);
-    eng.RenderLine(grid_x_size, 0.0f, grid_x_size, grid_y_size, 10.0f, border_color);
+    //eng.RenderLine(x_pos, y_pos, x_pos + grid_x_size, y_pos, 10.0f, border_color);
+    //eng.RenderLine(x_pos, y_pos, x_pos, y_pos + grid_y_size, 10.0f, border_color);
+    //eng.RenderLine(x_pos, y_pos + grid_y_size, x_pos + grid_x_size, y_pos + grid_y_size, 5.0f, border_color);
+    //eng.RenderLine(x_pos + grid_x_size, y_pos, x_pos + grid_x_size, y_pos + grid_y_size, 10.0f, border_color);
 }
 
 

@@ -78,14 +78,12 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
 void Reel::SetCellRow(GridData grid_data, Cell& cell) {
 
     if (cell.location.y < grid_data.grid_y) cell.row = -1;
-    else cell.row = (int)SDL_floorf(cell.location.y) / (int)grid_data.cell_size; 
+    else cell.row = (int)SDL_floorf(cell.location.y - grid_data.grid_y) / (int)grid_data.cell_size; 
 }
 
 
 
 void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, double delta_time, bool reeling) {
-
-    float distance_to_travel = speed * delta_time;
 
     if (distance_travelled >= grid_data.cell_size) {
 
@@ -116,6 +114,9 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
     }
 
     if (!animation_finished) {
+
+        float distance_to_travel = grid_data.cell_size * (float)(speed * delta_time);
+
         for (Cell& cell : cells) {
             cell.location.y += distance_to_travel;
             SetCellRow(grid_data, cell);
