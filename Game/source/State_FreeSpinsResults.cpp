@@ -13,7 +13,7 @@ void FreeSpinsResults::OnEntry(single::Engine& eng) {
 
     win_amount = common_manager.bet * analyzer.CalculateMultiplier(grid) * 3;
 
-    if (analyzer.ScatterAmount(grid) >= 3) {
+    if (grid.ScatterAmount() >= 3) {
         common_manager.free_spins += 10;
         extra_scatters = true;
     }
@@ -70,7 +70,7 @@ void FreeSpinsResults::Update(single::Engine& eng, double delta_t) {
         }
     }
 
-    if (common_manager.GetAnalyzer().ScatterAmount(common_manager.GetGrid()) >= 3) {
+    if (common_manager.GetGrid().ScatterAmount() >= 3) {
         scatter_frame_timer -= delta_t;
 
         if (scatter_frame_timer <= 0.0) {
@@ -104,7 +104,7 @@ void FreeSpinsResults::Render(single::Engine& eng) {
     eng.RenderText(win, 50.0f, 690.0f);
     eng.RenderText(free_spins, 260.0f, 650.0f);
 
-    if (common_manager.GetAnalyzer().ScatterAmount(common_manager.GetGrid()) >= 3 && show_frames) {
+    if (common_manager.GetGrid().ScatterAmount() >= 3 && show_frames) {
         for (const Cell& cell : common_manager.GetGrid().ExportCells()) {
             if (cell.content == CellContent::scatter) DrawCellFrame(eng, cell, frame_color);
         }

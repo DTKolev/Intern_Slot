@@ -82,17 +82,3 @@ const std::vector<Analyzer::Line>& Analyzer::GetWinningLines() const {
 
     return winning_lines;
 }
-
-
-
-int Analyzer::ScatterAmount(const Grid& game_grid) {
-
-    scatters = 0;
-
-    std::vector<CellContent> grid_state = game_grid.ExportState();
-    for (const CellContent& sample : grid_state) {
-        if (sample == CellContent::scatter) scatters++;
-    }
-
-    return scatters;
-}

@@ -30,5 +30,4 @@ class Analyzer {
 
     int CalculateMultiplier(const Grid& game_grid);
     const std::vector<Line>& GetWinningLines() const;
-    int ScatterAmount(const Grid& game_grid);
 };

@@ -1,7 +1,7 @@
 #include "../headers/Grid.hpp"
 
-Grid::Grid(int rows, int columns, float cell_size) :
-    data{rows, columns, cell_size} 
+Grid::Grid(float x, float y, int rows, int columns, float cell_size) :
+    x_pos{x}, y_pos{y}, data{rows, columns, x, y, cell_size} 
 {
     reels.reserve(columns);
 
@@ -17,7 +17,7 @@ Grid::Grid(int rows, int columns, float cell_size) :
 
 void Grid::PrepareReelSpin(single::Engine& eng) {
 
-    animation_delay = (double)eng.RandomNumber(4, 2) / 10.0;
+    animation_delay = 0.0;
     active_reels = reels.size();
     for (Reel& reel : reels) reel.StartReelSpin(eng, data);
 }
@@ -26,11 +26,11 @@ void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
 
     if (!reeling) {
         animation_delay -= delta_time;
-    }
-
-    if (animation_delay <= 0.0 && active_reels > 0) {
-        active_reels--;
-        animation_delay = (double)eng.RandomNumber(4, 2) / 10.0;
+    
+        if (animation_delay <= 0.0 && active_reels > 0) {
+            active_reels--;
+            animation_delay = (double)eng.RandomNumber(4, 2) / 10.0;
+        }
     }
 
     for (int i = 0; i < reels.size(); i++) {
@@ -113,6 +113,17 @@ const std::vector<Cell> Grid::ExportCells() const {
     return cells;
 }
 
+
+
+int Grid::ScatterAmount() const {
+
+    int total_scatters = 0;
+    for (const Reel& reel : reels) {
+        total_scatters += reel.GetScatters(data);
+    }
+
+    return total_scatters;
+}
 
 
 

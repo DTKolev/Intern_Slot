@@ -24,6 +24,8 @@ struct Cell {
 struct GridData {
     int rows;
     int columns;
+    float grid_x;
+    float grid_y;
     float cell_size;
 };
 
@@ -50,6 +52,7 @@ class Reel {
     void SpinReel(single::Engine& eng, GridData grid_data, double speed, double delta_time, bool reeling);
 
     const Cell& GetCellAt(GridData grid_data, int row) const;
+    int GetScatters(GridData grid_data) const;
     bool AnimationFinished() const {return animation_finished;}
 
     void RenderCells(single::Engine& eng, std::vector<single::Sprite>& source_Sprites) const;
@@ -61,13 +64,15 @@ class Grid {
     std::vector<Reel> reels;
     std::vector<single::Sprite> sprites;
 
+    float x_pos;
+    float y_pos;
     GridData data;
 
     double animation_delay;
     int active_reels;
 
     public:
-    Grid(int rows, int columns, float cell_size);
+    Grid(float x, float y, int rows, int columns, float cell_size);
 
     void PrepareReelSpin(single::Engine& eng);
     void SpinReels(single::Engine& eng, double delta_time, bool reeling);
@@ -77,6 +82,7 @@ class Grid {
     const std::vector<Cell> ExportCells() const;
 
     const GridData& GetGridData() const {return data;}
+    int ScatterAmount() const;
     bool ReelingFinished() const;
     int GetActiveReels() const {return active_reels;}
 };

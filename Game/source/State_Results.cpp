@@ -14,7 +14,7 @@ void Results::OnEntry(single::Engine& eng) {
 
     win_amount = common_manager.bet * analyzer.CalculateMultiplier(grid);
 
-    if (analyzer.ScatterAmount(grid) >= 3) {
+    if (grid.ScatterAmount() >= 3) {
         common_manager.free_spins += 10;
         common_manager.free_spins_mode = true;
     }

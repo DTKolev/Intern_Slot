@@ -3,7 +3,7 @@
 #include <iostream>
 
 Reel::Reel(float x_pos, GridData grid_data, CellContent starting_content) 
-: reel_x_pos{x_pos}, reel_y_pos{-grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 
+: reel_x_pos{x_pos}, reel_y_pos{grid_data.grid_y -grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 
 {
 
     cells.reserve(grid_data.rows + 1);
@@ -67,7 +67,7 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
     animation_finished = false;
     
     for (Cell& cell : cells) {
-        if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - 10.0f) {
+        if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - grid_data.cell_size / 10.0f) {
             ResetCell(eng, grid_data, cell);
             SetCellRow(grid_data, cell);
             break;
@@ -79,7 +79,7 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
 
 void Reel::SetCellRow(GridData grid_data, Cell& cell) {
 
-    if (cell.location.y < 0.0) cell.row = -1;
+    if (cell.location.y < grid_data.grid_y) cell.row = -1;
     else cell.row = (int)SDL_floorf(cell.location.y) / (int)grid_data.cell_size; 
 }
 
@@ -96,7 +96,7 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
         if (reeling) {
 
             for (Cell& cell : cells) {
-                if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - 10.0f) {
+                if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - grid_data.cell_size / 10.0f) {
                     ResetCell(eng, grid_data, cell);
                     SetCellRow(grid_data, cell);
                     break;
@@ -137,6 +137,19 @@ const Cell& Reel::GetCellAt(GridData grid_data, int row) const {
     }
 
     return cells[0];
+}
+
+
+
+int Reel::GetScatters(GridData grid_data) const {
+
+    int scatter_amount = 0;
+
+    for (const Cell& cell : cells) {
+        if (cell.row < grid_data.rows && cell.content == CellContent::scatter) scatter_amount++;
+    }
+
+    return scatter_amount;
 }
 
 
