@@ -6,7 +6,7 @@
 void ExtraReelReeling::OnEntry(single::Engine& eng) {
 
     Grid& grid = CommonManager::GetInstance().GetGrid();
-    grid.GetReel(grid.GetGridData().columns).StartReelSpin(eng, grid.GetGridData());
+    grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData());
 
     timer = 1.5;
     reeling = true;
@@ -26,7 +26,7 @@ void ExtraReelReeling::HandleInput(single::Engine& eng, SDL_Event& input_event) 
 void ExtraReelReeling::Update(single::Engine& eng, double delta_t) {
 
     Grid& grid = CommonManager::GetInstance().GetGrid();
-    Reel& extra_reel = grid.GetReel(grid.GetGridData().columns);
+    Reel& extra_reel = grid.GetReel(grid.GetGridData().columns - 1);
 
     timer -= delta_t;
     if (timer <= 0.0) reeling = false; 

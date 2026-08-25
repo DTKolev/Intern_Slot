@@ -29,4 +29,5 @@ class CommonManager {
     bool free_spins_mode;
 
     bool extra_reel_mode;
+    bool reverse_lines;
 };

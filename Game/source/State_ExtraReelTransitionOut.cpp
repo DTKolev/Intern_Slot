@@ -13,7 +13,7 @@ void ExtraReelTransitionOut::OnEntry(single::Engine& eng) {
     current_cell_size = grid_data.cell_size;
     current_grid_y = grid_data.grid_y;
 
-    transition_timer = 1.0;
+    transition_timer = 0.5;
 
     size_transition_step = (target_cell_size - current_cell_size) / transition_timer;
     y_transition_step = (target_grid_y - current_grid_y) / transition_timer;

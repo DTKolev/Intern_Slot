@@ -73,11 +73,6 @@ void Grid::RenderGrid(single::Engine& eng) {
     single::Color border_color {238, 188, 29, 255}; // golden color
     float grid_x_size = (float)(data.cell_size * data.columns);
     float grid_y_size = (float)(data.cell_size * data.rows);
-    
-    //eng.RenderLine(x_pos, y_pos, x_pos + grid_x_size, y_pos, 10.0f, border_color);
-    //eng.RenderLine(x_pos, y_pos, x_pos, y_pos + grid_y_size, 10.0f, border_color);
-    //eng.RenderLine(x_pos, y_pos + grid_y_size, x_pos + grid_x_size, y_pos + grid_y_size, 5.0f, border_color);
-    //eng.RenderLine(x_pos + grid_x_size, y_pos, x_pos + grid_x_size, y_pos + grid_y_size, 10.0f, border_color);
 }
 
 
@@ -88,13 +83,29 @@ const std::vector<CellContent> Grid::ExportState() const {
     grid_state.reserve(data.rows * data.columns);
 
     for (int row = 0; row < data.rows; row++) {
-        for (const Reel& reel : reels) {
+        for (auto it = reels.begin(); it != reels.end(); it++) {
 
-            const Cell& cell = reel.GetCellAt(data, row);
+            const Cell& cell = it->GetCellAt(data, row);
             grid_state.push_back(cell.content);
         }
     }
 
+    return grid_state;
+}
+
+const std::vector<CellContent> Grid::ExportStateReverse() const {
+
+    std::vector<CellContent> grid_state;
+    grid_state.reserve(data.rows * data.columns);
+
+    for (int row = 0; row < data.rows; row++) {
+        for (auto it = reels.rbegin(); it != reels.rend(); it++) {
+            
+            const Cell& cell = it->GetCellAt(data, row);
+            grid_state.push_back(cell.content);
+        }
+    }
+    
     return grid_state;
 }
 
@@ -161,11 +172,13 @@ void Grid::RelocateGrid(float new_x, float new_y, float new_cell_size) {
 void Grid::AddExtraReel(float reel_x, CellContent starting_content) {
 
     reels.emplace_back(reel_x, data, starting_content);
+    data.columns++;
 }
 
 void Grid::RemoveExtraReel() {
 
-    if (reels.size() > data.columns) reels.pop_back();
+    reels.pop_back();
+    data.columns--;
 }
 
 Reel& Grid::GetReel(int column) {

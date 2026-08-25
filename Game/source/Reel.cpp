@@ -52,7 +52,10 @@ void Reel::ResetCell(single::Engine& eng, GridData grid_data, Cell& cell) {
         correct_symbol_found = true;
 
         int last_idx = static_cast<int>(CellContent::wild);
-        if (reel_x_pos == 0) last_idx--;
+        
+        float last_column_x = grid_data.grid_x + (float)(grid_data.columns - 1) * grid_data.cell_size;
+
+        if (reel_x_pos == grid_data.grid_x || reel_x_pos == last_column_x) last_idx--;
 
         cell.content = RandomContent(eng, last_idx);
         if (reel_has_scatter && cell.content == CellContent::scatter) correct_symbol_found = false;

@@ -2,6 +2,7 @@
 
 #include "../../Singleton/Singleton.hpp"
 #include "Grid.hpp"
+#include "Analyzer.hpp"
 #include <vector>
 
 class FreeSpinsTransitionIn : public single::GameState {
@@ -62,8 +63,6 @@ class FreeSpinsReeling : public single::GameState {
 };
 
 class FreeSpinsResults : public single::GameState {
-
-    using Line = std::vector<int>;
 
     private:
     single::Text winnings;

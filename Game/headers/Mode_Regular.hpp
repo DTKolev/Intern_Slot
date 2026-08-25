@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Singleton/Singleton.hpp"
+#include "Analyzer.hpp"
 #include "Grid.hpp"
 #include <vector>
 
@@ -51,8 +52,6 @@ class Reeling : public single::GameState {
 };
 
 class Results : public single::GameState {
-
-    using Line = std::vector<int>;
 
     private:
     single::Text credits;

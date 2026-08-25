@@ -9,7 +9,7 @@ void FreeSpinsResults::OnEntry(single::Engine& eng) {
     Grid& grid = common_manager.GetGrid();
     Analyzer& analyzer = common_manager.GetAnalyzer();
 
-    win_amount = common_manager.bet * analyzer.CalculateMultiplier(grid) * 3;
+    win_amount = common_manager.bet * analyzer.CalculateMultiplier(grid, common_manager.reverse_lines) * 3;
 
     if (grid.ScatterAmount() >= 3) {
         common_manager.free_spins += 10;
@@ -121,28 +121,54 @@ void FreeSpinsResults::DrawLine(single::Engine& eng, const Line& ln, single::Col
     CommonManager& common_manager = CommonManager::GetInstance();
     GridData grid_data = common_manager.GetGrid().GetGridData();
 
-    float cell_center_x = (ln[0] % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-    float cell_center_y = (ln[0] / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-    float next_cell_center_x;
-    float next_cell_center_y;
+    int current_cell = ln.line_begin_row * grid_data.columns;
+    int dir_multiplier = 0;
 
-    eng.RenderLine(0.0, cell_center_y, cell_center_x, cell_center_y, 10.0f, color);
+    float current_x = grid_data.grid_x + (current_cell % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+    float current_y = grid_data.grid_y + (current_cell / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
 
-    for (int i = 0; i < ln.size() - 1; i++) {
+    float next_x;
+    float next_y;
 
-        int cell_id = ln[i];
-        int next_cell_id = ln[i + 1];
-
-        cell_center_x = (cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-        cell_center_y = (cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-
-        next_cell_center_x = (next_cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-        next_cell_center_y = (next_cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-
-        eng.RenderLine(cell_center_x, cell_center_y, next_cell_center_x, next_cell_center_y, 10.0f, color);
+    if (!common_manager.reverse_lines) {
+        eng.RenderLine(0.0f, current_y, current_x, current_y, 10.0f, color);
+        dir_multiplier = 1;
+    }
+    else {
+        eng.RenderLine(1000.0f, current_y, current_x, current_y, 10.0f, color);
+        dir_multiplier = -1;
     }
 
-    eng.RenderLine(next_cell_center_x, next_cell_center_y, 1000.0, next_cell_center_y, 10.0f, color);
+    for (const Direction& dir : ln.line_directions) {
+
+        int next_cell = 0;
+        switch (dir) {
+            case Direction::forward:
+                next_cell = current_cell + (1 * dir_multiplier);
+                break;
+            case Direction::down:
+                next_cell = current_cell + (1 + grid_data.columns) * dir_multiplier;
+                break;
+            case Direction::up:
+                next_cell = current_cell + (1 - grid_data.columns) * dir_multiplier;
+                break;
+        }
+        
+        current_x = grid_data.grid_x + (current_cell % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        current_y = grid_data.grid_y + (current_cell / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+
+        next_x = grid_data.grid_x + (next_cell % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        next_y = grid_data.grid_y + (next_cell / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+
+        eng.RenderLine(current_x, current_y, next_x, next_y, 10.0f, color);
+
+        current_cell = next_cell;
+    }
+
+    if (!common_manager.reverse_lines) {
+        eng.RenderLine(next_x, next_y, 1000.0f, next_y, 10.0f, color);
+    }
+    else eng.RenderLine(next_x, next_y, 0.0f, next_y, 10.0f, color);
 }
 
 void FreeSpinsResults::DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const {

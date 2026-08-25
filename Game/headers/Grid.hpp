@@ -81,6 +81,7 @@ class Grid {
 
     void RenderGrid(single::Engine& eng);
     const std::vector<CellContent> ExportState() const;
+    const std::vector<CellContent> ExportStateReverse() const;
     const std::vector<Cell> ExportCells() const;
 
     const GridData& GetGridData() const {return data;}

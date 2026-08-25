@@ -14,7 +14,7 @@ void ExtraReelTransitionIn::OnEntry(single::Engine& eng) {
     current_cell_size = grid_data.cell_size;
     current_grid_y = grid_data.grid_y;
 
-    transition_timer = 1.0;
+    transition_timer = 0.5;
     grid_relocation_finished = false;
 
     size_transition_step = (target_cell_size - current_cell_size) / transition_timer;
@@ -64,11 +64,11 @@ void ExtraReelTransitionIn::Update(single::Engine& eng, double delta_t) {
             extra_reel_x += x_transition_step * delta_t;
         }
         else {
-            extra_reel_x = grid_data.cell_size * (float)grid_data.columns;
+            extra_reel_x = grid_data.cell_size * (float)(grid_data.columns - 1);
             transition_finished = true;
         }
 
-        grid.GetReel(grid_data.columns).RelocateReel(extra_reel_x, grid_data);
+        grid.GetReel(grid_data.columns - 1).RelocateReel(extra_reel_x, grid_data);
     }
 
     if (transition_finished) eng.StateChange<ExtraReelReeling>();

@@ -7,7 +7,7 @@ void ExtraReelResults::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
     Grid& grid = common_manager.GetGrid();
-    Reel& extra_reel = grid.GetReel(grid.GetGridData().columns);
+    Reel& extra_reel = grid.GetReel(grid.GetGridData().columns - 1);
 
     if (extra_reel.GetScatters(grid.GetGridData()) == 1) {
         common_manager.free_spins_mode = true;
