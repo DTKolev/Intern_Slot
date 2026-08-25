@@ -53,8 +53,8 @@ void Engine::Run() {
         SDL_SetRenderDrawColor(renderer->Get(), 0, 0, 0, 255);
         SDL_RenderClear(renderer->Get());
 
-        current_game_state->Update(*this, time_manager.DeltaTime());
         if (overlay_state != nullptr) overlay_state->Update(*this, time_manager.DeltaTime());
+        else current_game_state->Update(*this, time_manager.DeltaTime());
 
         current_game_state->Render(*this);
         if (overlay_state != nullptr) overlay_state->Render(*this);

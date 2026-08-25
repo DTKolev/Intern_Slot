@@ -155,3 +155,20 @@ void Grid::RelocateGrid(float new_x, float new_y, float new_cell_size) {
         reels[i].RelocateReel(new_reel_x, data);
     }
 }
+
+
+
+void Grid::AddExtraReel(float reel_x, CellContent starting_content) {
+
+    reels.emplace_back(reel_x, data, starting_content);
+}
+
+void Grid::RemoveExtraReel() {
+
+    if (reels.size() > data.columns) reels.pop_back();
+}
+
+Reel& Grid::GetReel(int column) {
+
+    return reels.at(column);
+}

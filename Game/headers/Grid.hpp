@@ -89,4 +89,8 @@ class Grid {
     int GetActiveReels() const {return active_reels;}
 
     void RelocateGrid(float new_x, float new_y, float new_cell_size);
+
+    void AddExtraReel(float reel_x, CellContent starting_content = CellContent::empty);
+    void RemoveExtraReel();
+    Reel& GetReel(int column);
 };

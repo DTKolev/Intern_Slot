@@ -169,6 +169,14 @@ void Reel::RenderCells(single::Engine& eng, GridData grid_data, std::vector<sing
         .h = grid_data.cell_size
     };
 
+    single::Rect top_cover {
+        .x = reel_x_pos,
+        .y = grid_data.grid_y - grid_data.cell_size,
+        .w = grid_data.cell_size,
+        .h = grid_data.cell_size
+    };
+
+    eng.RenderRect(top_cover, (single::Color){0, 0, 0, 255});
     eng.RenderRect(bottom_cover, (single::Color){0, 0, 0, 255});
 }
 
