@@ -40,6 +40,9 @@ namespace single {
         void RenderRect(Rect rect, Color color) const;
         Color RandomColor() const;
 
+        void EnableClippedRendering(Rect clip_area);
+        void DisableClipping();
+
         Text CreateText(const std::string& txt, float font_sz, const Color& text_color = {255, 255, 255, 255}) const;
         void RenderText(const Text& text, float x, float y) const;
 

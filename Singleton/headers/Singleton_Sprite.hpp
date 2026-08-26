@@ -23,5 +23,7 @@ namespace single {
         Sprite(Sprite&& move_src);
         Sprite& operator=(const Sprite& copy_src);
         Sprite& operator=(Sprite&& move_src);
+
+        bool Empty() const;
     };
 }

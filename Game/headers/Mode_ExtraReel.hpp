@@ -93,6 +93,11 @@ class ExtraReelTransitionOut : public single::GameState {
     float size_transition_step;
     float y_transition_step;
 
+    float current_reel_x;
+    float x_transition_step;
+    double extra_reel_timer;
+    bool extra_reel_relocated;
+
     double transition_timer;
     bool transition_finished;
 

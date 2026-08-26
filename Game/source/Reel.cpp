@@ -69,7 +69,7 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
     animation_finished = false;
     
     for (Cell& cell : cells) {
-        if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - grid_data.cell_size / 10.0f) {
+        if (cell.location.y >= (grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size) - grid_data.cell_size / 5.0f) {
             ResetCell(eng, grid_data, cell);
             SetCellRow(grid_data, cell);
             break;
@@ -96,7 +96,7 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
         if (reeling) {
 
             for (Cell& cell : cells) {
-                if (cell.location.y >= (float)grid_data.rows * grid_data.cell_size - grid_data.cell_size / 10.0f) {
+                if (cell.location.y >= (grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size) - grid_data.cell_size / 5.0f) {
                     ResetCell(eng, grid_data, cell);
                     SetCellRow(grid_data, cell);
                     break;
@@ -108,9 +108,8 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
         else {
 
             for (Cell& cell : cells) {
-                cell.location.y -= diff;
                 cell.location.y = SDL_roundf(cell.location.y);
-                SetCellRow(grid_data, cell);
+                cell.location.y = grid_data.grid_y + cell.row * grid_data.cell_size;
             }
             animation_finished = true;
             distance_travelled = 0.0;
@@ -164,23 +163,6 @@ void Reel::RenderCells(single::Engine& eng, GridData grid_data, std::vector<sing
         int sprite_idx = static_cast<int>(cell.content);
         eng.RenderSprite(source_sprites[sprite_idx], &cell.location);
     }
-
-    single::Rect bottom_cover {
-        .x = reel_x_pos,
-        .y = grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size,
-        .w = grid_data.cell_size,
-        .h = grid_data.cell_size
-    };
-
-    single::Rect top_cover {
-        .x = reel_x_pos,
-        .y = grid_data.grid_y - grid_data.cell_size,
-        .w = grid_data.cell_size,
-        .h = grid_data.cell_size
-    };
-
-    eng.RenderRect(top_cover, (single::Color){0, 0, 0, 255});
-    eng.RenderRect(bottom_cover, (single::Color){0, 0, 0, 255});
 }
 
 

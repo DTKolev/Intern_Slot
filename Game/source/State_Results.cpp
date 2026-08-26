@@ -140,7 +140,10 @@ float Results::CalculateX(int cell_id, GridData grid_data, bool reverse) const {
     if (!reverse) {
         return grid_data.grid_x + (float)(cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
     }
-    else return 1000.0f - (float)(cell_id % grid_data.columns) * grid_data.cell_size - grid_data.cell_size / 2.0f;
+    else {
+        float grid_x_border = (float)grid_data.columns * grid_data.cell_size;
+        return grid_x_border - (float)(cell_id % grid_data.columns) * grid_data.cell_size - grid_data.cell_size / 2.0f;
+    }
 }
 
 float Results::CalculateY(int cell_id, GridData grid_data, bool reverse) const {

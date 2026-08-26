@@ -58,17 +58,23 @@ void Grid::RenderGrid(single::Engine& eng) {
             eng.LoadSprite("../src/scatter.png"),
             eng.LoadSprite("../src/wild.png"),
             eng.LoadSprite("../src/empty.png"),
-            eng.LoadSprite("../src/wood.png")
         });
     }
 
+    if (bottom_pannel.Empty()) bottom_pannel = eng.LoadSprite("../src/wood.png");
+    if (background.Empty()) background = eng.LoadSprite("../src/background.png");
+
+    single::Rect background_rect {0.0f, 0.0f, 1000.0f, 600.0f};
+    eng.RenderSprite(background, &background_rect);
+
+    eng.EnableClippedRendering((single::Rect){0.0f, data.grid_y, 1000.0f, (float)data.rows * data.cell_size});
     for (const Reel& reel : reels) {
         reel.RenderCells(eng, data, sprites);
-    }    
+    }
+    eng.DisableClipping();
 
     single::Rect bottom_pannel_rect {0.0f, 600.0f, 1000.0f, 200.0f};
-    int bottom_pannel_idx = sprites.size() - 1;
-    eng.RenderSprite(sprites[bottom_pannel_idx], &bottom_pannel_rect);
+    eng.RenderSprite(bottom_pannel, &bottom_pannel_rect);
 
     single::Color border_color {238, 188, 29, 255}; // golden color
     float grid_x_size = (float)(data.cell_size * data.columns);
@@ -156,14 +162,27 @@ bool Grid::ReelingFinished() const {
 
 void Grid::RelocateGrid(float new_x, float new_y, float new_cell_size) {
 
+    float x_diff = new_x - data.grid_x;
+    float size_diff = new_cell_size - data.cell_size;
+
     data.grid_x = new_x;
     data.grid_y = new_y;
     data.cell_size = new_cell_size;
 
     for (int i = 0; i < reels.size(); i++) {
 
-        float new_reel_x = (float)i * data.cell_size;
+        float prev_x = reels[i].GetPosX();
+        float new_reel_x = prev_x + (float)i * size_diff + x_diff;
         reels[i].RelocateReel(new_reel_x, data);
+    }
+}
+
+void Grid::AlignReels() {
+
+    for (int i = 0; i < reels.size(); i++) {
+
+        float reel_x = data.grid_x + (float)i * data.cell_size;
+        reels[i].RelocateReel(reel_x, data);
     }
 }
 

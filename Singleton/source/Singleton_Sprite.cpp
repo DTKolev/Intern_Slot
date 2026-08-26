@@ -42,3 +42,11 @@ Sprite& Sprite::operator=(Sprite&& move_src) {
     
     return *this;
 }
+
+
+
+bool Sprite::Empty() const {
+
+    if (surface == nullptr) return true;
+    else return false;
+}

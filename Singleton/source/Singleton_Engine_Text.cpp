@@ -38,5 +38,16 @@ void Engine::RenderText(const Text& text, float x, float y) const {
         .h = text.height
     };
 
+    SDL_FRect shadow_dest {
+        .x = dest.x + 2.0f,
+        .y = dest.y + 2.0f,
+        .w = dest.w,
+        .h = dest.h
+    };
+
+    SDL_SetTextureColorMod(text.text_texture->Get(), 0, 0, 0);
+    SDL_RenderTexture(renderer->Get(), text.text_texture->Get(), nullptr, &shadow_dest);
+
+    SDL_SetTextureColorMod(text.text_texture->Get(), 255, 255, 255);
     SDL_RenderTexture(renderer->Get(), text.text_texture->Get(), nullptr, &dest);
 }

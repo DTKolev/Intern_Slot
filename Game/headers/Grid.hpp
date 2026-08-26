@@ -58,6 +58,7 @@ class Reel {
     void RenderCells(single::Engine& eng, GridData grid_data, std::vector<single::Sprite>& source_Sprites) const;
 
     void RelocateReel(float new_x, GridData grid_data);
+    float GetPosX() const {return reel_x_pos;}
 };
 
 class Grid {
@@ -65,6 +66,8 @@ class Grid {
     private:
     std::vector<Reel> reels;
     std::vector<single::Sprite> sprites;
+    single::Sprite bottom_pannel;
+    single::Sprite background;
 
     float x_pos;
     float y_pos;
@@ -90,6 +93,7 @@ class Grid {
     int GetActiveReels() const {return active_reels;}
 
     void RelocateGrid(float new_x, float new_y, float new_cell_size);
+    void AlignReels();
 
     void AddExtraReel(float reel_x, CellContent starting_content = CellContent::empty);
     void RemoveExtraReel();

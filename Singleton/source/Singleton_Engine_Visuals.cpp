@@ -65,3 +65,22 @@ Color Engine::RandomColor() const {
 
     return (Color){red, green, blue, 255};
 }
+
+
+
+void Engine::EnableClippedRendering(Rect clip_area) {
+
+    SDL_Rect clip_sdl {
+        .x = (int)clip_area.x,
+        .y = (int)clip_area.y,
+        .w = (int)clip_area.w,
+        .h = (int)clip_area.h
+    };
+
+    SDL_SetRenderClipRect(renderer->Get(), &clip_sdl);
+}
+
+void Engine::DisableClipping() {
+
+    SDL_SetRenderClipRect(renderer->Get(), nullptr);
+}
