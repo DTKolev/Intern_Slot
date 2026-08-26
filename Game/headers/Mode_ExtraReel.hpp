@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Singleton/Singleton.hpp"
+#include "MasterState_Reeling.hpp"
 #include "Grid.hpp"
 #include "Analyzer.hpp"
 
@@ -34,18 +35,12 @@ class ExtraReelTransitionIn : public single::GameState {
     void OnExit() override;
 };
 
-class ExtraReelReeling : public single::GameState {
-
-    private:
-    double timer;
-    bool reeling;
+class ExtraReelReeling : public MasterReeling {
 
     public:
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
-    void OnExit() override;
 };
 
 class ExtraReelResults : public single::GameState {

@@ -4,7 +4,7 @@
 
 void ExtraReelReeling::OnEntry(single::Engine& eng) {
 
-    Grid& grid = CommonManager::GetInstance().GetGrid();
+    Grid& grid = common_manager.GetGrid();
     grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData());
 
     timer = 1.5;
@@ -24,7 +24,7 @@ void ExtraReelReeling::HandleInput(single::Engine& eng, SDL_Event& input_event) 
 
 void ExtraReelReeling::Update(single::Engine& eng, double delta_t) {
 
-    Grid& grid = CommonManager::GetInstance().GetGrid();
+    Grid& grid = common_manager.GetGrid();
     Reel& extra_reel = grid.GetReel(grid.GetGridData().columns - 1);
 
     timer -= delta_t;
@@ -34,12 +34,3 @@ void ExtraReelReeling::Update(single::Engine& eng, double delta_t) {
 
     if (extra_reel.AnimationFinished()) eng.StateChange<ExtraReelResults>();
 }
-
-void ExtraReelReeling::Render(single::Engine& eng) {
-
-    Grid& grid = CommonManager::GetInstance().GetGrid();
-
-    grid.RenderGrid(eng);
-}
-
-void ExtraReelReeling::OnExit() {}

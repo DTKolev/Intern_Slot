@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Singleton/Singleton.hpp"
+#include "MasterState_Reeling.hpp"
 #include "Analyzer.hpp"
 #include "Grid.hpp"
 #include <vector>
@@ -33,22 +34,16 @@ class MainMenu : public single::GameState {
     void OnExit() override;
 };
 
-class Reeling : public single::GameState {
+class Reeling : public MasterReeling{
 
     private:
     single::Text credits;
     single::Text title;
 
-    int target_credits;
-    double timer;
-    bool reeling;
-
     public:
     void OnEntry(single::Engine& eng) override;
-    void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render(single::Engine& eng) override;
-    void OnExit() override;
 };
 
 class Results : public single::GameState {
