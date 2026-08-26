@@ -1,6 +1,5 @@
 #include "../headers/Analyzer.hpp"
 #include "../headers/CommonManager.hpp"
-#include <iostream>
 
 Analyzer::Analyzer() : scatters{0} {
 

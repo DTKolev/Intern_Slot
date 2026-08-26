@@ -1,7 +1,6 @@
 #include "../headers/Mode_ExtraReel.hpp"
 #include "../headers/CommonManager.hpp"
 #include "../headers/InputManager.hpp"
-#include <iostream>
 
 void ExtraReelReeling::OnEntry(single::Engine& eng) {
 
