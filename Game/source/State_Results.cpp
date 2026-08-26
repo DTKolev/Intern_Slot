@@ -159,7 +159,6 @@ void Results::DrawLine(single::Engine& eng, const Line& ln, single::Color color)
     GridData grid_data = common_manager.GetGrid().GetGridData();
 
     int current_cell = ln.line_begin_row * grid_data.columns;
-    int dir_multiplier = 0;
 
     float current_x = CalculateX(current_cell, grid_data, common_manager.reverse_lines);
     float current_y = CalculateY(current_cell, grid_data, common_manager.reverse_lines);
@@ -169,12 +168,10 @@ void Results::DrawLine(single::Engine& eng, const Line& ln, single::Color color)
 
     if (!common_manager.reverse_lines) {
         eng.RenderLine(grid_data.grid_x, current_y, current_x, current_y, 10.0f, color);
-        dir_multiplier = 1;
     }
     else {
         float grid_x_border = grid_data.grid_x + (float)grid_data.columns * grid_data.cell_size;
         eng.RenderLine(grid_x_border, current_y, current_x, current_y, 10.0f, color);
-        dir_multiplier = -1;
     }
 
     for (const Direction& dir : ln.line_directions) {
