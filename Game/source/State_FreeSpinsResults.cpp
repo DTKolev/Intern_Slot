@@ -151,11 +151,12 @@ void FreeSpinsResults::DrawLine(single::Engine& eng, const Line& ln, single::Col
     float next_y;
 
     if (!common_manager.reverse_lines) {
-        eng.RenderLine(0.0f, current_y, current_x, current_y, 10.0f, color);
+        eng.RenderLine(grid_data.grid_x, current_y, current_x, current_y, 10.0f, color);
         dir_multiplier = 1;
     }
     else {
-        eng.RenderLine(1000.0f, current_y, current_x, current_y, 10.0f, color);
+        float grid_x_border = grid_data.grid_x + (float)grid_data.columns * grid_data.cell_size;
+        eng.RenderLine(grid_x_border, current_y, current_x, current_y, 10.0f, color);
         dir_multiplier = -1;
     }
 
@@ -186,9 +187,10 @@ void FreeSpinsResults::DrawLine(single::Engine& eng, const Line& ln, single::Col
     }
 
     if (!common_manager.reverse_lines) {
-        eng.RenderLine(next_x, next_y, 1000.0f, next_y, 10.0f, color);
+        float grid_x_border = grid_data.grid_x + (float)grid_data.columns * grid_data.cell_size;
+        eng.RenderLine(next_x, next_y, grid_x_border, next_y, 10.0f, color);
     }
-    else eng.RenderLine(next_x, next_y, 0.0f, next_y, 10.0f, color);
+    else eng.RenderLine(next_x, next_y, grid_data.grid_x, next_y, 10.0f, color);
 }
 
 void FreeSpinsResults::DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const {
