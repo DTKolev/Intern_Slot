@@ -116,6 +116,23 @@ void FreeSpinsResults::OnExit() {
     common_manager.free_spins_winnings += win_amount;
 }
 
+
+
+float FreeSpinsResults::CalculateX(int cell_id, GridData grid_data, bool reverse) const {
+
+    if (!reverse) {
+        return grid_data.grid_x + (float)(cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+    }
+    else return 1000.0f - (float)(cell_id % grid_data.columns) * grid_data.cell_size - grid_data.cell_size / 2.0f;
+}
+
+float FreeSpinsResults::CalculateY(int cell_id, GridData grid_data, bool reverse) const {
+
+    return grid_data.grid_y + (float)(cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+}
+
+
+
 void FreeSpinsResults::DrawLine(single::Engine& eng, const Line& ln, single::Color color) const {
 
     CommonManager& common_manager = CommonManager::GetInstance();
@@ -124,8 +141,8 @@ void FreeSpinsResults::DrawLine(single::Engine& eng, const Line& ln, single::Col
     int current_cell = ln.line_begin_row * grid_data.columns;
     int dir_multiplier = 0;
 
-    float current_x = grid_data.grid_x + (current_cell % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-    float current_y = grid_data.grid_y + (current_cell / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+    float current_x = CalculateX(current_cell, grid_data, common_manager.reverse_lines);
+    float current_y = CalculateY(current_cell, grid_data, common_manager.reverse_lines);
 
     float next_x;
     float next_y;
@@ -144,21 +161,21 @@ void FreeSpinsResults::DrawLine(single::Engine& eng, const Line& ln, single::Col
         int next_cell = 0;
         switch (dir) {
             case Direction::forward:
-                next_cell = current_cell + (1 * dir_multiplier);
+                next_cell = current_cell + 1;
                 break;
             case Direction::down:
-                next_cell = current_cell + (1 + grid_data.columns) * dir_multiplier;
+                next_cell = current_cell + 1 + grid_data.columns;
                 break;
             case Direction::up:
-                next_cell = current_cell + (1 - grid_data.columns) * dir_multiplier;
+                next_cell = current_cell + 1 - grid_data.columns;
                 break;
         }
         
-        current_x = grid_data.grid_x + (current_cell % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-        current_y = grid_data.grid_y + (current_cell / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        current_x = CalculateX(current_cell, grid_data, common_manager.reverse_lines);
+        current_y = CalculateY(current_cell, grid_data, common_manager.reverse_lines);
 
-        next_x = grid_data.grid_x + (next_cell % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
-        next_y = grid_data.grid_y + (next_cell / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
+        next_x = CalculateX(next_cell, grid_data, common_manager.reverse_lines);
+        next_y = CalculateY(next_cell, grid_data, common_manager.reverse_lines);
 
         eng.RenderLine(current_x, current_y, next_x, next_y, 10.0f, color);
 

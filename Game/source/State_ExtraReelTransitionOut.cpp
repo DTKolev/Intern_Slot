@@ -63,5 +63,6 @@ void ExtraReelTransitionOut::OnExit() {
     Grid& grid = common_manager.GetGrid();
 
     common_manager.extra_reel_mode = false;
+    common_manager.reverse_lines = false;
     grid.RemoveExtraReel();
 }

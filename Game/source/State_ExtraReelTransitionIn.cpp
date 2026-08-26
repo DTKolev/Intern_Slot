@@ -81,4 +81,8 @@ void ExtraReelTransitionIn::Render(single::Engine& eng) {
     grid.RenderGrid(eng);
 }
 
-void ExtraReelTransitionIn::OnExit() {}
+void ExtraReelTransitionIn::OnExit() {
+
+    CommonManager& common_manager = CommonManager::GetInstance();
+    common_manager.reverse_lines = true;
+}

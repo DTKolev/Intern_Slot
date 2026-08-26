@@ -135,7 +135,7 @@ void Results::OnExit() {
 
 
 
-float CalculateX(int cell_id, GridData grid_data, bool reverse) {
+float Results::CalculateX(int cell_id, GridData grid_data, bool reverse) const {
 
     if (!reverse) {
         return grid_data.grid_x + (float)(cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
@@ -143,7 +143,7 @@ float CalculateX(int cell_id, GridData grid_data, bool reverse) {
     else return 1000.0f - (float)(cell_id % grid_data.columns) * grid_data.cell_size - grid_data.cell_size / 2.0f;
 }
 
-float CalculateY(int cell_id, GridData grid_data, bool reverse) {
+float Results::CalculateY(int cell_id, GridData grid_data, bool reverse) const {
 
     return grid_data.grid_y + (float)(cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
 }

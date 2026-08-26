@@ -2,6 +2,7 @@
 
 #include "../../Singleton/Singleton.hpp"
 #include "Grid.hpp"
+#include "Analyzer.hpp"
 
 class ExtraReelTransitionIn : public single::GameState {
 
@@ -51,6 +52,8 @@ class ExtraReelResults : public single::GameState {
 
     private:
     single::Text outcome;
+    single::Text bet;
+    single::Text win;
 
     bool scatter_found;
     
@@ -58,6 +61,17 @@ class ExtraReelResults : public single::GameState {
     double frame_timer;
     bool show_frames;
 
+    int win_amount;
+
+    int winning_lines_amount;
+    double line_display_timer;
+    int display_line_id;
+    single::Color line_color;
+
+    float CalculateX(int cell_id, GridData grid_data, bool reverse) const;
+    float CalculateY(int cell_id, GridData grid_data, bool reverse) const;
+
+    void DrawLine(single::Engine& eng, const Line& ln, single::Color color) const;
     void DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const;
 
     public:

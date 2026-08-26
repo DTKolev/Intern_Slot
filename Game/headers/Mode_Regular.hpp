@@ -73,6 +73,9 @@ class Results : public single::GameState {
     double scatter_frame_timer;
     single::Color frame_color;
 
+    float CalculateX(int cell_id, GridData grid_data, bool reverse) const;
+    float CalculateY(int cell_id, GridData grid_data, bool reverse) const;
+
     void DrawLine(single::Engine& eng, const Line& ln, single::Color color) const;
     void DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const;
 
