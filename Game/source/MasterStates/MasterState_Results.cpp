@@ -21,7 +21,7 @@ void MasterResults::OnEntry(single::Engine& eng) {
 
     winning_lines_amount = analyzer.GetWinningLines().size();
     display_line_id = 0;
-    line_display_timer = 1.5;
+    line_display_timer = 1.0;
     line_color = eng.RandomColor();
 
     show_frames = true;
@@ -67,7 +67,7 @@ void MasterResults::Update(single::Engine& eng, double delta_t) {
             display_line_id %= winning_lines_amount;
             line_color = eng.RandomColor();
 
-            line_display_timer = 2.0;
+            line_display_timer = 1.0;
         }
     }
 }

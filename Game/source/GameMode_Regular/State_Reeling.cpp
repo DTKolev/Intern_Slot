@@ -1,8 +1,11 @@
 #include "../../headers/GameModes/Mode_Regular.hpp"
+#include "GameObjects/CommonManager.hpp"
 
 void Reeling::OnEntry(single::Engine& eng) {
 
     MasterReeling::OnEntry(eng);
+
+    common_manager.credits -= common_manager.bet;
 
     credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
     title = eng.CreateText("REELING", 32.0);

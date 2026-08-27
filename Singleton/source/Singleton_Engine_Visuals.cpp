@@ -21,7 +21,10 @@ void Engine::RenderLine(float begin_x, float begin_y, float end_x, float end_y, 
     float offset_x = normal_x * (thickness / 2.0f);
     float offset_y = normal_y * (thickness / 2.0f);
 
-    SDL_Vertex vertecies[4];
+    float cap_offset_x = normalized_x * (thickness / 2.0f);
+    float cap_offset_y = normalized_y * (thickness / 2.0f);
+
+    SDL_Vertex vertecies[6];
 
     float vertex_r = color.r / 255.0f;
     float vertex_g = color.g / 255.0f;
@@ -32,10 +35,12 @@ void Engine::RenderLine(float begin_x, float begin_y, float end_x, float end_y, 
     vertecies[1] = {{begin_x + offset_x, begin_y + offset_y}, {vertex_r, vertex_g, vertex_b, vertex_a}, {0, 0}};
     vertecies[2] = {{end_x - offset_x, end_y - offset_y}, {vertex_r, vertex_g, vertex_b, vertex_a}, {0, 0}};
     vertecies[3] = {{end_x + offset_x, end_y + offset_y}, {vertex_r, vertex_g, vertex_b, vertex_a}, {0, 0}};
+    vertecies[4] = {{begin_x - cap_offset_x, begin_y - cap_offset_y}, {vertex_r, vertex_g, vertex_b, vertex_a}, {0, 0}};
+    vertecies[5] = {{end_x + cap_offset_x, end_y - cap_offset_y}, {vertex_r, vertex_g, vertex_b, vertex_a}, {0, 0}};
 
-    int indecies[] = {0, 1, 2, 1, 2, 3};
+    int indecies[] = {0, 1, 2, 1, 2, 3, 0, 1, 4, 2, 3, 5};
 
-    SDL_RenderGeometry(renderer->Get(), nullptr, vertecies, 4, indecies, 6);
+    SDL_RenderGeometry(renderer->Get(), nullptr, vertecies, 6, indecies, 12);
 }
 
 
