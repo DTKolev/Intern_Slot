@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../../Singleton/Singleton.hpp"
 #include "../GameObjects/CommonManager.hpp"
 #include "../GameObjects/InputManager.hpp"
 

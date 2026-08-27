@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../../Singleton/Singleton.hpp"
 #include "Grid.hpp"
 #include "Analyzer.hpp"
 
