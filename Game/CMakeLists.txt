@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 4.0.0)
 
-file(GLOB GAME_SRC "source/*.cpp")
+file(GLOB GAME_SRC
+    "source/GameMode_ExtraReel/*.cpp"
+    "source/GameMode_FreeSpins/*.cpp"
+    "source/GameMode_Regular/*.cpp"
+    "source/GameObjects/*.cpp"
+    "source/MasterStates/*.cpp"
+)
 
 add_library(
     Game STATIC

@@ -1,4 +1,4 @@
-#include "../headers/GameModes/Mode_Regular.hpp"
+#include "../../headers/GameModes/Mode_Regular.hpp"
 
 void Reeling::OnEntry(single::Engine& eng) {
 

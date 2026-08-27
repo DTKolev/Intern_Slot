@@ -1,6 +1,6 @@
-#include "../headers/GameModes/Mode_Regular.hpp"
-#include "../headers/GameObjects/InputManager.hpp"
-#include "../headers/GameObjects/CommonManager.hpp"
+#include "../../headers/GameModes/Mode_Regular.hpp"
+#include "../../headers/GameObjects/InputManager.hpp"
+#include "../../headers/GameObjects/CommonManager.hpp"
 
 void Betting::OnEntry(single::Engine& eng) {
 

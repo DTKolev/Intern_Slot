@@ -1,4 +1,4 @@
-#include "../headers/GameObjects/Grid.hpp"
+#include "../../headers/GameObjects/Grid.hpp"
 
 Reel::Reel(float x_pos, GridData grid_data, CellContent starting_content) 
 : reel_x_pos{x_pos}, reel_y_pos{grid_data.grid_y -grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 

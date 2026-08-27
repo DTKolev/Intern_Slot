@@ -1,5 +1,5 @@
-#include "../headers/GameObjects/Analyzer.hpp"
-#include "../headers/GameObjects/CommonManager.hpp"
+#include "../../headers/GameObjects/Analyzer.hpp"
+#include "../../headers/GameObjects/CommonManager.hpp"
 
 Analyzer::Analyzer() : scatters{0} {
 
