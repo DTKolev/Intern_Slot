@@ -1,6 +1,6 @@
-#include "../headers/Mode_FreeSpins.hpp"
-#include "../headers/CommonManager.hpp"
-#include "../headers/InputManager.hpp"
+#include "../headers/GameModes/Mode_FreeSpins.hpp"
+#include "../headers/GameObjects/CommonManager.hpp"
+#include "../headers/GameObjects/InputManager.hpp"
 #include <string>
 
 void FreeSpinsEntry::OnEntry(single::Engine& eng) {

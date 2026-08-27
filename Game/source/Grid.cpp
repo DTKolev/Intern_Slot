@@ -1,4 +1,4 @@
-#include "../headers/Grid.hpp"
+#include "../headers/GameObjects/Grid.hpp"
 
 Grid::Grid(float x, float y, int rows, int columns, float cell_size) :
     x_pos{x}, y_pos{y}, data{rows, columns, x, y, cell_size} 

@@ -1,6 +1,6 @@
-#include "../headers/Mode_Regular.hpp"
-#include "../headers/Mode_FreeSpins.hpp"
-#include "../headers/Mode_ExtraReel.hpp"
+#include "../headers/GameModes/Mode_Regular.hpp"
+#include "../headers/GameModes/Mode_FreeSpins.hpp"
+#include "../headers/GameModes/Mode_ExtraReel.hpp"
 
 void Results::OnEntry(single::Engine& eng) {
 

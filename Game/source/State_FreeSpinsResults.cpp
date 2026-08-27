@@ -1,4 +1,4 @@
-#include "../headers/Mode_FreeSpins.hpp"
+#include "../headers/GameModes/Mode_FreeSpins.hpp"
 #include <string>
 
 void FreeSpinsResults::OnEntry(single::Engine& eng) {

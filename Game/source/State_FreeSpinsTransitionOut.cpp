@@ -1,6 +1,6 @@
-#include "../headers/Mode_FreeSpins.hpp"
-#include "../headers/Mode_Regular.hpp"
-#include "../headers/CommonManager.hpp"
+#include "../headers/GameModes/Mode_FreeSpins.hpp"
+#include "../headers/GameModes/Mode_Regular.hpp"
+#include "../headers/GameObjects/CommonManager.hpp"
 #include <string>
 
 void FreeSpinsTransitionOut::OnEntry(single::Engine& eng) {

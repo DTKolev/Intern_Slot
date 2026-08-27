@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Singleton/Singleton.hpp"
-#include "CommonManager.hpp"
-#include "InputManager.hpp"
+#include "../../../Singleton/Singleton.hpp"
+#include "../GameObjects/CommonManager.hpp"
+#include "../GameObjects/InputManager.hpp"
 
 class MasterResults : public single::GameState {
 

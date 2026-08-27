@@ -1,7 +1,7 @@
-#include "../headers/Mode_ExtraReel.hpp"
-#include "../headers/Mode_Regular.hpp"
-#include "../headers/Mode_FreeSpins.hpp"
-#include "../headers/CommonManager.hpp"
+#include "../headers/GameModes/Mode_ExtraReel.hpp"
+#include "../headers/GameModes/Mode_Regular.hpp"
+#include "../headers/GameModes/Mode_FreeSpins.hpp"
+#include "../headers/GameObjects/CommonManager.hpp"
 
 void ExtraReelTransitionOut::OnEntry(single::Engine& eng) {
 

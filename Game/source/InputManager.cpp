@@ -1,4 +1,4 @@
-#include "../headers/InputManager.hpp"
+#include "../headers/GameObjects/InputManager.hpp"
 
 InputManager::InputManager() {
 
