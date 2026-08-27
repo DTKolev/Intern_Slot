@@ -12,12 +12,12 @@ Analyzer::Analyzer() : scatters{0} {
         {2, {Direction::up, Direction::forward, Direction::forward, Direction::up}}
     });
 
-    pay_table[CellContent::cherry] = {1, 2, 10};
-    pay_table[CellContent::lemon] = {1, 3, 10};
-    pay_table[CellContent::orange] = {2, 5, 20};
-    pay_table[CellContent::bell] = {2, 10, 50};
-    pay_table[CellContent::seven] = {1, 3, 20, 100};
-    pay_table[CellContent::diamond] = {1, 5, 20, 180};
+    pay_table[CellContent::cherry] = {0, 0, 0, 1, 2, 10};
+    pay_table[CellContent::lemon] = {0, 0, 0,1, 3, 10};
+    pay_table[CellContent::orange] = {0, 0,0,2, 5, 20};
+    pay_table[CellContent::bell] = {0, 0, 0, 2, 10, 50};
+    pay_table[CellContent::seven] = {0, 0, 1, 3, 20, 100};
+    pay_table[CellContent::diamond] = {0, 0, 1, 5, 20, 180};
 }
 
 
@@ -71,14 +71,9 @@ Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, boo
 
 int Analyzer::CombinationMultiplier(const Combination& combination) const {
 
-    constexpr int max_matching = 5;
-    int diff = max_matching - pay_table.at(combination.type).size() + 1;
+    if (combination.matching_symbols > 5) return pay_table.at(combination.type)[5];
 
-    int pay_table_idx = combination.matching_symbols - diff;
-
-    if (pay_table_idx < 0) return 0;
-
-    return pay_table.at(combination.type)[pay_table_idx];
+    return pay_table.at(combination.type)[combination.matching_symbols];
 }
 
 
