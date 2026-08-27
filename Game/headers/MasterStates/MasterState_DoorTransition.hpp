@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Singleton/Singleton.hpp"
+#include "Singleton.hpp"
 
 class MasterDoorTransition : public single::GameState {
 

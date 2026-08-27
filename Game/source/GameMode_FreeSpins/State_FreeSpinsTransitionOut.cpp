@@ -1,6 +1,6 @@
-#include "../../headers/GameModes/Mode_FreeSpins.hpp"
-#include "../../headers/GameModes/Mode_Regular.hpp"
-#include "../../headers/GameObjects/CommonManager.hpp"
+#include "GameModes/Mode_FreeSpins.hpp"
+#include "GameModes/Mode_Regular.hpp"
+#include "GameObjects/CommonManager.hpp"
 #include "MasterStates/MasterState_DoorTransition.hpp"
 #include <string>
 

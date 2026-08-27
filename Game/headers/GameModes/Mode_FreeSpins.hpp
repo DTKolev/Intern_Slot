@@ -1,11 +1,8 @@
 #pragma once
 
-#include "../MasterStates/MasterState_Reeling.hpp"
-#include "../MasterStates/MasterState_Results.hpp"
-#include "../MasterStates/MasterState_DoorTransition.hpp"
-#include "Singleton_Text.hpp"
-
-
+#include "MasterStates/MasterState_Reeling.hpp"
+#include "MasterStates/MasterState_Results.hpp"
+#include "MasterStates/MasterState_DoorTransition.hpp"
 
 class FreeSpinsTransitionIn : public MasterDoorTransition {
 

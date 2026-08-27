@@ -1,5 +1,4 @@
-#include "../../headers/GameModes/Mode_Regular.hpp"
-#include "GameObjects/CommonManager.hpp"
+#include "GameModes/Mode_Regular.hpp"
 
 void Reeling::OnEntry(single::Engine& eng) {
 

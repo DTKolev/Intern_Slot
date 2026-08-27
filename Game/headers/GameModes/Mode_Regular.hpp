@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../MasterStates/MasterState_Reeling.hpp"
-#include "../MasterStates/MasterState_Results.hpp"
+#include "MasterStates/MasterState_Reeling.hpp"
+#include "MasterStates/MasterState_Results.hpp"
+#include "Singleton.hpp"
 
 class Betting : public single::GameState {
 

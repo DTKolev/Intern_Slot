@@ -1,4 +1,4 @@
-#include "../../headers/GameObjects/Analyzer.hpp"
+#include "GameObjects/Analyzer.hpp"
 
 Analyzer::Analyzer() : scatters{0} {
 

@@ -1,4 +1,4 @@
-#include "../../headers/MasterStates/MasterState_Results.hpp"
+#include "MasterStates/MasterState_Results.hpp"
 #include <string>
 
 void MasterResults::OnEntry(single::Engine& eng) {

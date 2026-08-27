@@ -20,6 +20,7 @@ target_sources(
 target_include_directories(
     Game
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/headers
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}../Singleton
 )
 
 target_link_libraries(

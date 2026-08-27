@@ -1,4 +1,4 @@
-#include "../../headers/GameModes/Mode_FreeSpins.hpp"
+#include "GameModes/Mode_FreeSpins.hpp"
 #include "MasterStates/MasterState_DoorTransition.hpp"
 #include <string>
 

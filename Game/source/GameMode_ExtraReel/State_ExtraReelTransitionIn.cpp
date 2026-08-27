@@ -1,5 +1,5 @@
-#include "../../headers/GameModes/Mode_ExtraReel.hpp"
-#include "../../headers/GameObjects/CommonManager.hpp"
+#include "GameModes/Mode_ExtraReel.hpp"
+#include "GameObjects/CommonManager.hpp"
 
 void ExtraReelTransitionIn::OnEntry(single::Engine& eng) {
 

@@ -1,5 +1,5 @@
-#include "../../headers/GameModes/Mode_Regular.hpp"
-#include "../../headers/GameObjects/InputManager.hpp"
+#include "GameModes/Mode_Regular.hpp"
+#include "GameObjects/InputManager.hpp"
 
 void MainMenu::OnEntry(single::Engine& eng) {
 

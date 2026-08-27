@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../GameObjects/CommonManager.hpp"
-#include "../GameObjects/InputManager.hpp"
+#include "GameObjects/CommonManager.hpp"
+#include "GameObjects/InputManager.hpp"
 
 class MasterReeling : public single::GameState {
 

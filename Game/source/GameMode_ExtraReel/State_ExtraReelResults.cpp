@@ -1,4 +1,4 @@
-#include "../../headers/GameModes/Mode_ExtraReel.hpp"
+#include "GameModes/Mode_ExtraReel.hpp"
 #include <string>
 
 void ExtraReelResults::OnEntry(single::Engine& eng) {

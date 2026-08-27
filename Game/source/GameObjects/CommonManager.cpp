@@ -1,4 +1,4 @@
-#include "../../headers/GameObjects/CommonManager.hpp"
+#include "GameObjects/CommonManager.hpp"
 
 CommonManager::CommonManager() : 
     game_grid{0.0f, 0.0f, 3, 5, 200.0f},

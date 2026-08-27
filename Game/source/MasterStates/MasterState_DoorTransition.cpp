@@ -1,4 +1,4 @@
-#include "../../headers/MasterStates/MasterState_DoorTransition.hpp"
+#include "MasterStates/MasterState_DoorTransition.hpp"
 
 void MasterDoorTransition::OnEntry(single::Engine& eng) {
 
