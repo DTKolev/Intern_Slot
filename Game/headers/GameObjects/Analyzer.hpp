@@ -28,7 +28,11 @@ class Analyzer {
     std::vector<Line> lines;
     std::vector<Line> winning_lines;
 
+    std::vector<int> used_cell_indecies;
+
     int scatters;
+
+    bool CellHasBeenUsed(int cell_id);
 
     Combination LineCombination(const Line& ln, const Grid& game_grid, bool reverse_lines);
 

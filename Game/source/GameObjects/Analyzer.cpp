@@ -1,4 +1,6 @@
 #include "GameObjects/Analyzer.hpp"
+#include <algorithm>
+#include <cmath>
 
 Analyzer::Analyzer() : scatters{0} {
 
@@ -18,6 +20,19 @@ Analyzer::Analyzer() : scatters{0} {
     pay_table[CellContent::bell] = {0, 0, 0, 2, 10, 50};
     pay_table[CellContent::seven] = {0, 0, 1, 3, 15, 100};
     pay_table[CellContent::diamond] = {0, 0, 1, 5, 20, 200};
+}
+
+
+
+bool Analyzer::CellHasBeenUsed(int cell_id) {
+
+    if (std::find(used_cell_indecies.begin(), used_cell_indecies.end(), cell_id) != used_cell_indecies.end()) {
+        return true;
+    }
+    else {
+        used_cell_indecies.push_back(cell_id);
+        return false;
+    }
 }
 
 
@@ -43,6 +58,7 @@ Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, boo
         .matching_symbols = 1
     };
 
+    bool all_cells_used = CellHasBeenUsed(starting_cell);
     int current_cell = starting_cell;
     for (const Direction& dir : ln.line_directions) {
         
@@ -60,9 +76,15 @@ Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, boo
 
         if (grid_state[current_cell] == new_combination.type || grid_state[current_cell] == CellContent::wild) {
             new_combination.matching_symbols++;
+
+            if (all_cells_used) {
+                all_cells_used = CellHasBeenUsed(current_cell);
+            }
         }
         else break;
     }
+
+    if (all_cells_used) new_combination.matching_symbols = 1;
 
     return new_combination;
 }
@@ -82,6 +104,7 @@ int Analyzer::CalculateMultiplier(const Grid& game_grid, bool reverse_lines) {
 
     int multiplier = 0;
     winning_lines.clear();
+    used_cell_indecies.clear();
 
     for (const Line& ln : lines) {
         Combination sample_combination = LineCombination(ln, game_grid, reverse_lines);
