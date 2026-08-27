@@ -1,6 +1,4 @@
 #include "../headers/Mode_FreeSpins.hpp"
-#include "../headers/CommonManager.hpp"
-#include "../headers/InputManager.hpp"
 #include <string>
 
 void FreeSpinsReeling::OnEntry(single::Engine& eng) {

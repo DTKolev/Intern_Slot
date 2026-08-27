@@ -1,6 +1,4 @@
 #include "../headers/Mode_Regular.hpp"
-#include "../headers/InputManager.hpp"
-#include "../headers/CommonManager.hpp"
 
 void Reeling::OnEntry(single::Engine& eng) {
 

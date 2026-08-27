@@ -4,7 +4,7 @@
 
 using namespace single;
 
-void Engine::RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, Color color) const {
+void Engine::RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, const Color& color) const {
 
     float dir_x = end_x - begin_x;
     float dir_y = end_y - begin_y;
@@ -40,7 +40,7 @@ void Engine::RenderLine(float begin_x, float begin_y, float end_x, float end_y, 
 
 
 
-void Engine::RenderRect(Rect rect, Color color) const {
+void Engine::RenderRect(Rect rect, const Color& color) const {
 
     SDL_FRect rect_sdl {
         .x = (float)rect.x,

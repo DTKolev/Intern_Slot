@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../../Singleton/Singleton.hpp"
 #include "MasterState_Reeling.hpp"
-#include "Grid.hpp"
-#include "Analyzer.hpp"
+#include "MasterState_Results.hpp"
 
 class ExtraReelTransitionIn : public single::GameState {
 
@@ -43,38 +41,15 @@ class ExtraReelReeling : public MasterReeling {
     void Update(single::Engine& eng, double delta_t) override;
 };
 
-class ExtraReelResults : public single::GameState {
+class ExtraReelResults : public MasterResults {
 
     private:
     single::Text outcome;
-    single::Text bet;
-    single::Text win;
-
-    bool scatter_found;
-    
-    single::Color frame_color;
-    double frame_timer;
-    bool show_frames;
-
-    int win_amount;
-
-    int winning_lines_amount;
-    double line_display_timer;
-    int display_line_id;
-    single::Color line_color;
-
-    float CalculateX(int cell_id, GridData grid_data, bool reverse) const;
-    float CalculateY(int cell_id, GridData grid_data, bool reverse) const;
-
-    void DrawLine(single::Engine& eng, const Line& ln, single::Color color) const;
-    void DrawCellFrame(single::Engine& eng, const Cell& cell, single::Color color) const;
 
     public:
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
-    void Update(single::Engine& eng, double delta_t) override;
     void Render(single::Engine& eng) override;
-    void OnExit() override;
 };
 
 class ExtraReelTransitionOut : public single::GameState {
