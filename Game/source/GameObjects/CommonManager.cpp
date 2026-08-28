@@ -8,7 +8,7 @@ CommonManager::CommonManager() :
     extra_reel_mode{false},
     reverse_lines{false}
 {
-    GridData grid_data = game_grid.GetGridData();
+    const GridData& grid_data = game_grid.GetGridData();
 
     float cell_size = 175.0f;
     float pos_x = 500.0f - ((float)grid_data.columns * cell_size) / 2.0f;

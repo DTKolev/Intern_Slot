@@ -1,13 +1,13 @@
 #include "GameObjects/Grid.hpp"
 
 Grid::Grid(float x, float y, int rows, int columns, float cell_size) :
-    x_pos{x}, y_pos{y}, data{rows, columns, x, y, cell_size} 
+    data{rows, columns, x, y, cell_size}, reeling_finished{false} 
 {
     reels.reserve(columns);
 
     for (int i = 0; i < columns; i++) {
 
-        float reel_x_pos = x_pos + (float)i * cell_size;
+        float reel_x_pos = data.grid_x + (float)i * cell_size;
         Reel new_reel {reel_x_pos, data};
         reels.push_back(new_reel);
     }
@@ -40,8 +40,41 @@ void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
         if (i >= reels.size() - active_reels) reels[i].SpinReel(eng, data, reeling_speed, delta_time, true);
         else reels[i].SpinReel(eng, data, reeling_speed, delta_time, false);
     }
+
+    for (const Reel& reel : reels) {
+        if (!reel.AnimationFinished()) {
+            reeling_finished = false;
+            break;
+        }
+
+        reeling_finished = true;
+    }
 }
 
+
+
+void Grid::UpdateGridState() {
+
+    grid_state.clear();
+    grid_state_reverse.clear();
+    cells.clear();
+
+    for (int row = 0; row < data.rows; row++) {
+
+        for (auto it = reels.begin(); it != reels.end(); it++) {
+
+            const Cell& cell = it->GetCellAt(data, row);
+            grid_state.push_back(cell.content);
+            cells.push_back(cell);
+        }
+
+        for (auto rit = reels.rbegin(); rit != reels.rend(); rit++) {
+
+            const Cell& cell = rit->GetCellAt(data, row);
+            grid_state_reverse.push_back(cell.content);
+        }
+    }
+}
 
 
 
@@ -83,58 +116,6 @@ void Grid::RenderGrid(single::Engine& eng) {
 
 
 
-const std::vector<CellContent> Grid::ExportState() const {
-
-    std::vector<CellContent> grid_state;
-    grid_state.reserve(data.rows * data.columns);
-
-    for (int row = 0; row < data.rows; row++) {
-        for (auto it = reels.begin(); it != reels.end(); it++) {
-
-            const Cell& cell = it->GetCellAt(data, row);
-            grid_state.push_back(cell.content);
-        }
-    }
-
-    return grid_state;
-}
-
-const std::vector<CellContent> Grid::ExportStateReverse() const {
-
-    std::vector<CellContent> grid_state;
-    grid_state.reserve(data.rows * data.columns);
-
-    for (int row = 0; row < data.rows; row++) {
-        for (auto it = reels.rbegin(); it != reels.rend(); it++) {
-            
-            const Cell& cell = it->GetCellAt(data, row);
-            grid_state.push_back(cell.content);
-        }
-    }
-    
-    return grid_state;
-}
-
-
-
-const std::vector<Cell> Grid::ExportCells() const {
-
-    std::vector<Cell> cells;
-    cells.reserve(data.rows * data.columns);
-
-    for (int row = 0; row < data.rows; row++) {
-        for (const Reel& reel : reels) {
-
-            const Cell& cell = reel.GetCellAt(data, row);
-            cells.push_back(cell);
-        }
-    }
-
-    return cells;
-}
-
-
-
 int Grid::ScatterAmount() const {
 
     int total_scatters = 0;
@@ -143,19 +124,6 @@ int Grid::ScatterAmount() const {
     }
 
     return total_scatters;
-}
-
-
-
-bool Grid::ReelingFinished() const {
-
-    for (const Reel& reel : reels) {
-        if (!reel.AnimationFinished()) {
-            return false;
-        }
-    }
-
-    return true;
 }
 
 

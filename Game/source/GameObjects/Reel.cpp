@@ -1,7 +1,7 @@
 #include "GameObjects/Grid.hpp"
 #include <cmath>
 
-Reel::Reel(float x_pos, GridData grid_data, CellContent starting_content) 
+Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content) 
 : reel_x_pos{x_pos}, reel_y_pos{grid_data.grid_y -grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 
 {
 
@@ -38,7 +38,7 @@ CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
 
 
 
-void Reel::ResetCell(single::Engine& eng, GridData grid_data, Cell& cell) {
+void Reel::ResetCell(single::Engine& eng, const GridData& grid_data, Cell& cell) {
 
     cell.location.y -= (float)(grid_data.rows + 1) * grid_data.cell_size;
 
@@ -67,7 +67,7 @@ void Reel::ResetCell(single::Engine& eng, GridData grid_data, Cell& cell) {
 
 
 
-void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
+void Reel::StartReelSpin(single::Engine& eng, const GridData& grid_data) {
 
     animation_finished = false;
     
@@ -82,7 +82,7 @@ void Reel::StartReelSpin(single::Engine& eng, GridData grid_data) {
 
 
 
-void Reel::SetCellRow(GridData grid_data, Cell& cell) {
+void Reel::SetCellRow(const GridData& grid_data, Cell& cell) {
 
     if (cell.location.y < grid_data.grid_y) cell.row = -1;
     else cell.row = (int)SDL_floorf(cell.location.y - grid_data.grid_y) / (int)grid_data.cell_size; 
@@ -90,7 +90,7 @@ void Reel::SetCellRow(GridData grid_data, Cell& cell) {
 
 
 
-void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, double delta_time, bool reeling) {
+void Reel::SpinReel(single::Engine& eng, const GridData& grid_data, double speed, double delta_time, bool reeling) {
 
     if (distance_travelled >= grid_data.cell_size) {
 
@@ -134,7 +134,7 @@ void Reel::SpinReel(single::Engine& eng, GridData grid_data, double speed, doubl
 
 
 
-const Cell& Reel::GetCellAt(GridData grid_data, int row) const {
+const Cell& Reel::GetCellAt(const GridData& grid_data, int row) const {
 
     for (const Cell& cell : cells) {
 
@@ -146,7 +146,7 @@ const Cell& Reel::GetCellAt(GridData grid_data, int row) const {
 
 
 
-int Reel::GetScatters(GridData grid_data) const {
+int Reel::GetScatters(const GridData& grid_data) const {
 
     int scatter_amount = 0;
 
@@ -159,7 +159,7 @@ int Reel::GetScatters(GridData grid_data) const {
 
 
 
-void Reel::RenderCells(single::Engine& eng, GridData grid_data, std::vector<single::Sprite>& source_sprites) const {
+void Reel::RenderCells(single::Engine& eng, const GridData& grid_data, std::vector<single::Sprite>& source_sprites) const {
 
     for (const Cell& cell : cells) {
 
@@ -170,7 +170,7 @@ void Reel::RenderCells(single::Engine& eng, GridData grid_data, std::vector<sing
 
 
 
-void Reel::RelocateReel(float new_x, GridData grid_data) {
+void Reel::RelocateReel(float new_x, const GridData& grid_data) {
 
     reel_x_pos = new_x;
     reel_y_pos = grid_data.grid_y -grid_data.cell_size;

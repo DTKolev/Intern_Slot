@@ -4,7 +4,7 @@
 void ExtraReelTransitionIn::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
-    GridData grid_data = common_manager.GetGrid().GetGridData();
+    const GridData& grid_data = common_manager.GetGrid().GetGridData();
 
     target_cell_size = ((float)grid_data.columns * grid_data.cell_size) / (float)(grid_data.columns + 1);
     target_grid_y = 300.0f - (float)grid_data.rows * target_cell_size / 2.0f;
@@ -29,7 +29,7 @@ void ExtraReelTransitionIn::HandleInput(single::Engine& eng, SDL_Event& input_ev
 void ExtraReelTransitionIn::Update(single::Engine& eng, double delta_t) {
 
     Grid& grid = CommonManager::GetInstance().GetGrid();
-    GridData grid_data = grid.GetGridData();
+    const GridData& grid_data = grid.GetGridData();
 
     if (!grid_relocation_finished) {
 
@@ -53,7 +53,6 @@ void ExtraReelTransitionIn::Update(single::Engine& eng, double delta_t) {
     if (grid_relocation_finished && !extra_reel_created) {
 
         grid.AddExtraReel(1000.0f);
-        grid_data = grid.GetGridData();
         extra_reel_x = 1000.0f;
         x_transition_step = ((grid_data.grid_x + (float)(grid_data.columns - 1) * grid_data.cell_size) - 1000.0f) / extra_reel_timer;
         extra_reel_created = true;

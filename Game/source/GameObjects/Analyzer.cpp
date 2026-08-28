@@ -26,7 +26,7 @@ Analyzer::Analyzer() : scatters{0} {
 
 Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, bool reverse_lines) {
 
-    GridData grid_data = game_grid.GetGridData();
+    const GridData& grid_data = game_grid.GetGridData();
 
     std::vector<CellContent> grid_state;
 

@@ -56,7 +56,7 @@ namespace single {
         virtual ~SDLObjectRoot() {SDLDeleter{}(raw_pointer);}
         [[nodiscard]] T* Get() const {return raw_pointer;}
 
-        // Placeholde shallow copy constructor and operator=
+        // Placeholder shallow copy constructor and operator=
         SDLObjectRoot(const SDLObjectRoot& copy_src) : raw_pointer{copy_src.raw_pointer} {};
         SDLObjectRoot& operator=(const SDLObjectRoot& copy_src) {
             raw_pointer = copy_src.raw_pointer;

@@ -118,7 +118,7 @@ float MasterResults::CalculateY(int cell_id, const GridData& grid_data, bool rev
 
 void MasterResults::DrawLine(single::Engine& eng, const Line& ln, const single::Color& color) const {
 
-    GridData grid_data = common_manager.GetGrid().GetGridData();
+    const GridData& grid_data = common_manager.GetGrid().GetGridData();
 
     int current_cell = ln.line_begin_row * grid_data.columns;
 

@@ -26,6 +26,8 @@ void MasterReeling::Update(single::Engine& eng, double delta_t) {
     else reeling = false;
 
     common_manager.GetGrid().SpinReels(eng, delta_t, reeling);
+
+    if (common_manager.GetGrid().ReelingFinished()) common_manager.GetGrid().UpdateGridState();
 }
 
 void MasterReeling::Render(single::Engine& eng) {

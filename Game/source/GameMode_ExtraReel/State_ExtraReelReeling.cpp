@@ -30,5 +30,8 @@ void ExtraReelReeling::Update(single::Engine& eng, double delta_t) {
 
     extra_reel.SpinReel(eng, grid.GetGridData(), 12.0, delta_t, reeling);
 
-    if (extra_reel.AnimationFinished()) eng.StateChange<ExtraReelResults>();
+    if (extra_reel.AnimationFinished()) {
+        grid.UpdateGridState();
+        eng.StateChange<ExtraReelResults>();
+    }
 }

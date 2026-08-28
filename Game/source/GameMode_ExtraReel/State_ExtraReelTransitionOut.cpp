@@ -6,7 +6,7 @@
 void ExtraReelTransitionOut::OnEntry(single::Engine& eng) {
 
     Grid& grid = CommonManager::GetInstance().GetGrid();
-    GridData grid_data = grid.GetGridData();
+    const GridData& grid_data = grid.GetGridData();
 
     target_cell_size = 175.0f;
     target_grid_y = 300.0f - ((float)grid_data.rows * target_cell_size) / 2.0f;

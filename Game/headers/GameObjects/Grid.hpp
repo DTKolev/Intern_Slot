@@ -2,6 +2,7 @@
 
 #include "Singleton.hpp"
 #include <vector>
+#include <iostream>
 
 enum class CellContent {
     cherry,
@@ -40,24 +41,24 @@ class Reel {
 
     bool animation_finished;
 
-    void ResetCell(single::Engine& eng, GridData grid_data, Cell& cell);
+    void ResetCell(single::Engine& eng, const GridData& grid_data, Cell& cell);
     CellContent RandomContent(single::Engine& eng, int last_idx) const;
 
-    void SetCellRow(GridData grid_data, Cell& cell);
+    void SetCellRow(const GridData& grid_data, Cell& cell);
     
     public:
-    Reel(float x_pos, GridData grid_data, CellContent starting_content = CellContent::empty);
+    Reel(float x_pos, const GridData& grid_data, CellContent starting_content = CellContent::empty);
 
-    void StartReelSpin(single::Engine& eng,GridData grid_data);
-    void SpinReel(single::Engine& eng, GridData grid_data, double speed, double delta_time, bool reeling);
+    void StartReelSpin(single::Engine& eng, const GridData& grid_data);
+    void SpinReel(single::Engine& eng, const GridData& grid_data, double speed, double delta_time, bool reeling);
 
-    const Cell& GetCellAt(GridData grid_data, int row) const;
-    int GetScatters(GridData grid_data) const;
+    const Cell& GetCellAt(const GridData& grid_data, int row) const;
+    int GetScatters(const GridData& grid_data) const;
     bool AnimationFinished() const {return animation_finished;}
 
-    void RenderCells(single::Engine& eng, GridData grid_data, std::vector<single::Sprite>& source_Sprites) const;
+    void RenderCells(single::Engine& eng, const GridData& grid_data, std::vector<single::Sprite>& source_Sprites) const;
 
-    void RelocateReel(float new_x, GridData grid_data);
+    void RelocateReel(float new_x, const GridData& grid_data);
     float GetPosX() const {return reel_x_pos;}
 };
 
@@ -69,12 +70,15 @@ class Grid {
     single::Sprite bottom_pannel;
     single::Sprite background;
 
-    float x_pos;
-    float y_pos;
     GridData data;
 
     double animation_delay;
     int active_reels;
+
+    std::vector<CellContent> grid_state;
+    std::vector<CellContent> grid_state_reverse;
+    std::vector<Cell> cells;
+    bool reeling_finished;
 
     public:
     Grid(float x, float y, int rows, int columns, float cell_size);
@@ -83,13 +87,15 @@ class Grid {
     void SpinReels(single::Engine& eng, double delta_time, bool reeling);
 
     void RenderGrid(single::Engine& eng);
-    const std::vector<CellContent> ExportState() const;
-    const std::vector<CellContent> ExportStateReverse() const;
-    const std::vector<Cell> ExportCells() const;
+
+    void UpdateGridState();
+    const std::vector<CellContent>& ExportState() const {return grid_state;}
+    const std::vector<CellContent>& ExportStateReverse() const {return grid_state_reverse;}
+    const std::vector<Cell>& ExportCells() const {return cells;}
 
     const GridData& GetGridData() const {return data;}
     int ScatterAmount() const;
-    bool ReelingFinished() const;
+    bool ReelingFinished() const {return reeling_finished;}
     int GetActiveReels() const {return active_reels;}
 
     void RelocateGrid(float new_x, float new_y, float new_cell_size);
