@@ -32,8 +32,6 @@ class Analyzer {
 
     int scatters;
 
-    bool CellHasBeenUsed(int cell_id);
-
     Combination LineCombination(const Line& ln, const Grid& game_grid, bool reverse_lines);
 
     int CombinationMultiplier(const Combination& combination) const;

@@ -1,5 +1,5 @@
 #include "GameObjects/Analyzer.hpp"
-#include <algorithm>
+#include "GameObjects/Grid.hpp"
 #include <cmath>
 
 Analyzer::Analyzer() : scatters{0} {
@@ -14,25 +14,12 @@ Analyzer::Analyzer() : scatters{0} {
         {2, {Direction::up, Direction::forward, Direction::forward, Direction::up}}
     });
 
-    pay_table[CellContent::cherry] = {0, 0, 0, 1, 2, 5};
-    pay_table[CellContent::lemon] = {0, 0, 0,1, 3, 10};
-    pay_table[CellContent::orange] = {0, 0,0,2, 5, 20};
-    pay_table[CellContent::bell] = {0, 0, 0, 2, 10, 50};
+    pay_table[CellContent::cherry] = {0, 0, 0, 0, 1, 3};
+    pay_table[CellContent::lemon] = {0, 0, 0,1, 2, 5};
+    pay_table[CellContent::orange] = {0, 0,0,1, 3, 10};
+    pay_table[CellContent::bell] = {0, 0, 0, 2, 5, 20};
     pay_table[CellContent::seven] = {0, 0, 1, 3, 15, 100};
     pay_table[CellContent::diamond] = {0, 0, 1, 5, 20, 200};
-}
-
-
-
-bool Analyzer::CellHasBeenUsed(int cell_id) {
-
-    if (std::find(used_cell_indecies.begin(), used_cell_indecies.end(), cell_id) != used_cell_indecies.end()) {
-        return true;
-    }
-    else {
-        used_cell_indecies.push_back(cell_id);
-        return false;
-    }
 }
 
 
@@ -58,8 +45,8 @@ Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, boo
         .matching_symbols = 1
     };
 
-    bool all_cells_used = CellHasBeenUsed(starting_cell);
     int current_cell = starting_cell;
+
     for (const Direction& dir : ln.line_directions) {
         
         switch (dir) {
@@ -76,15 +63,9 @@ Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, boo
 
         if (grid_state[current_cell] == new_combination.type || grid_state[current_cell] == CellContent::wild) {
             new_combination.matching_symbols++;
-
-            if (all_cells_used) {
-                all_cells_used = CellHasBeenUsed(current_cell);
-            }
         }
         else break;
     }
-
-    if (all_cells_used) new_combination.matching_symbols = 1;
 
     return new_combination;
 }

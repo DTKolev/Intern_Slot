@@ -1,4 +1,5 @@
 #include "GameObjects/Grid.hpp"
+#include <cmath>
 
 Reel::Reel(float x_pos, GridData grid_data, CellContent starting_content) 
 : reel_x_pos{x_pos}, reel_y_pos{grid_data.grid_y -grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 
@@ -20,16 +21,19 @@ Reel::Reel(float x_pos, GridData grid_data, CellContent starting_content)
 CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
 
     // Values have been calculated externally to acheive wheighted randomness when picking cell content
-    constexpr float scalar = 0.035f;
+    constexpr float scalar = 0.09f;
 
     last_idx++;
-    float highest_base = SDL_sqrtf((float)last_idx / scalar);
-    int rng_high = (int)SDL_floorf(highest_base * 10.0);
-    
-    float random_base = (float)eng.RandomNumber(rng_high) / 10.0f;
-    float product = scalar * (random_base * random_base);
 
-    return static_cast<CellContent>((int)(SDL_floorf(product)));
+    float max_x = std::cbrt((float)last_idx / scalar) - 0.05;
+    int rng_high = (int)std::floor(max_x * 10.0f);
+
+    int rng_base = eng.RandomNumber(rng_high);
+    float base_x = (float)rng_base / 10.0f;
+
+    int content_idx = (int)std::floor(scalar * base_x * base_x * base_x);
+
+    return static_cast<CellContent>(content_idx);
 }
 
 
