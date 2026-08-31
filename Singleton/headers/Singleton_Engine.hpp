@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <string>
 #include <memory>
 
@@ -29,7 +30,7 @@ namespace single {
         TimeManager time_manager;
 
         std::unique_ptr<GameState> current_game_state;
-        std::unique_ptr<GameState> overlay_state;
+        OverlayStack overlay_states;
 
         public:
         Engine(std::string window_title, int window_w, int window_h);
@@ -77,20 +78,27 @@ namespace single {
         }
 
         template<typename T>
-        void OverlayState() {
+        void AddOverlayState() {
 
             static_assert(std::is_base_of<GameState, T>::value);
             std::unique_ptr<GameState> new_overlay_state = std::make_unique<T>();
 
-            if (overlay_state != nullptr) overlay_state->OnExit();
-            overlay_state = std::move(new_overlay_state);
-            if (overlay_state != nullptr) overlay_state->OnEntry(*this);
+            overlay_states.Push(std::move(new_overlay_state));
+            if (overlay_states.Top() != nullptr) overlay_states.Top()->OnEntry(*this);
+        }
+
+        void RemoveOverlayState() {
+
+            if (overlay_states.Top() != nullptr) overlay_states.Top()->OnExit();
+            overlay_states.Pop();
         }
 
         void StopOverlay() {
 
-            if (overlay_state != nullptr) overlay_state->OnExit();
-            overlay_state.reset(nullptr);
+            if (!overlay_states.Empty()) {
+                for (int i = 0; i < overlay_states.Size(); i++) overlay_states.At(i)->OnExit();
+                overlay_states.Flush();
+            }
         }
     };
 }

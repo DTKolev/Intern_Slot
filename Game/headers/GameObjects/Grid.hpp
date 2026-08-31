@@ -2,7 +2,6 @@
 
 #include "Singleton.hpp"
 #include <vector>
-#include <iostream>
 
 enum class CellContent {
     cherry,

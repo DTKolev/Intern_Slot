@@ -24,7 +24,7 @@ void FreeSpinsTransitionOut::Update(single::Engine& eng, double delta_t) {
         common_manager.credits += common_manager.free_spins_winnings;
         eng.StateChange<Betting>();
     }
-    if (transition_finished) eng.StopOverlay();
+    if (transition_finished) eng.RemoveOverlayState();
 }
 
 void FreeSpinsTransitionOut::Render(single::Engine& eng) {

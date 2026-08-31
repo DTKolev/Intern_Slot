@@ -22,7 +22,7 @@ void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     MasterResults::HandleInput(eng, input_event);
 
     if (input_manager.IsReleased(Key::enter)) {
-        if (common_manager.free_spins_mode) eng.OverlayState<FreeSpinsTransitionIn>();
+        if (common_manager.free_spins_mode) eng.AddOverlayState<FreeSpinsTransitionIn>();
         else if (common_manager.extra_reel_mode) eng.StateChange<ExtraReelTransitionIn>();
         else eng.StateChange<Reeling>();
     }

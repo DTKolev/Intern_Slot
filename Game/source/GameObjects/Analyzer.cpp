@@ -10,8 +10,8 @@ Analyzer::Analyzer() : scatters{0} {
         {2, {Direction::forward, Direction::forward, Direction::forward, Direction::forward}},
         {0, {Direction::down, Direction::down, Direction::up, Direction::up}},
         {2, {Direction::up, Direction::up, Direction::down, Direction::down}},
-        {0, {Direction::down, Direction::forward, Direction::forward, Direction::down}},
-        {2, {Direction::up, Direction::forward, Direction::forward, Direction::up}}
+        {1, {Direction::down, Direction::up, Direction::up, Direction::down}},
+        {1, {Direction::up, Direction::down, Direction::down, Direction::up}}
     });
 
     pay_table[CellContent::cherry] = {0, 0, 0, 0, 1, 3};

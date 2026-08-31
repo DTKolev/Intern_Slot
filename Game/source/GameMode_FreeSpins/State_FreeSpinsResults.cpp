@@ -21,7 +21,7 @@ void FreeSpinsResults::HandleInput(single::Engine& eng, SDL_Event& input_event) 
         if (common_manager.free_spins_mode) eng.StateChange<FreeSpinsReeling>();
         else {
             common_manager.free_spins_winnings += win_amount;
-            eng.OverlayState<FreeSpinsTransitionOut>();
+            eng.AddOverlayState<FreeSpinsTransitionOut>();
         }
     }
 }

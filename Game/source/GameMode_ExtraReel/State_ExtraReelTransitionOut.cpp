@@ -68,7 +68,7 @@ void ExtraReelTransitionOut::Update(single::Engine& eng, double delta_t) {
 
     if (transition_finished) {
         grid.AlignReels();
-        if (common_manager.free_spins_mode) eng.OverlayState<FreeSpinsTransitionIn>();
+        if (common_manager.free_spins_mode) eng.AddOverlayState<FreeSpinsTransitionIn>();
         else eng.StateChange<Betting>();
     }
 }

@@ -8,6 +8,7 @@ class FreeSpinsTransitionIn : public MasterDoorTransition {
 
     private:
     single::Text title;
+    bool test;
 
     public:
     void OnEntry(single::Engine& eng) override;
