@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Singleton.hpp"
+#include "Singleton_Engine.hpp"
 #include <vector>
 
 enum class CellContent {
@@ -44,6 +45,8 @@ class Reel {
     CellContent RandomContent(single::Engine& eng, int last_idx) const;
 
     void SetCellRow(const GridData& grid_data, Cell& cell);
+
+    void RenderFrame(single::Engine& eng, const GridData& grid_data) const;
     
     public:
     Reel(float x_pos, const GridData& grid_data, CellContent starting_content = CellContent::empty);

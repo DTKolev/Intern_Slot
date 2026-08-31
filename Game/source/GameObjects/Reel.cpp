@@ -21,17 +21,15 @@ Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content)
 CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
 
     // Values have been calculated externally to acheive wheighted randomness when picking cell content
-//    last_idx++;
+    last_idx++;
 
-    //float max_x = std::sqrt((float)last_idx) - 0.05;
-    //int rng_high = (int)std::floor(max_x * 10.0f);
+    float max_x = std::sqrt((float)last_idx) - 0.05;
+    int rng_high = (int)std::floor(max_x * 10.0f);
 
-    //int rng_base = eng.RandomNumber(rng_high);
-    //float base_x = (float)rng_base / 10.0f;
+    int rng_base = eng.RandomNumber(rng_high);
+    float base_x = (float)rng_base / 10.0f;
 
-    //int content_idx = (int)std::floor(base_x * base_x);
-
-    int content_idx = eng.RandomNumber(last_idx);
+    int content_idx = (int)std::floor(base_x * base_x);
 
     return static_cast<CellContent>(content_idx);
 }
@@ -85,7 +83,7 @@ void Reel::StartReelSpin(single::Engine& eng, const GridData& grid_data) {
 void Reel::SetCellRow(const GridData& grid_data, Cell& cell) {
 
     if (cell.location.y < grid_data.grid_y) cell.row = -1;
-    else cell.row = (int)SDL_floorf(cell.location.y - grid_data.grid_y) / (int)grid_data.cell_size; 
+    else cell.row = (int)std::ceil(cell.location.y - grid_data.grid_y) / (int)grid_data.cell_size; 
 }
 
 
@@ -159,13 +157,69 @@ int Reel::GetScatters(const GridData& grid_data) const {
 
 
 
+void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
+
+    constexpr single::Color golden_brown {153, 101, 21, 255};
+    constexpr single::Color shadow{76, 50, 10, 255};
+
+    constexpr float thickness = 8.0f;
+
+    float visible_reel_y = reel_y_pos + grid_data.cell_size;
+
+    eng.RenderLine(
+        reel_x_pos, visible_reel_y, 
+        reel_x_pos + grid_data.cell_size, visible_reel_y, 
+        thickness, shadow
+    );
+    eng.RenderLine(
+        reel_x_pos, visible_reel_y, 
+        reel_x_pos, visible_reel_y + (float)grid_data.rows * grid_data.cell_size, 
+        thickness, shadow
+    );
+    eng.RenderLine(
+        reel_x_pos + grid_data.cell_size, visible_reel_y,
+        reel_x_pos + grid_data.cell_size, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
+        thickness, shadow
+    );
+    eng.RenderLine(
+        reel_x_pos, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
+        reel_x_pos + grid_data.cell_size, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
+        thickness, shadow
+    );
+
+    eng.RenderLine(
+        reel_x_pos + 2.0f, visible_reel_y,
+        reel_x_pos + grid_data.cell_size - 2.0f, visible_reel_y,
+        thickness - 4.0f, golden_brown
+    );
+    eng.RenderLine(
+        reel_x_pos, visible_reel_y + 2.0f,
+        reel_x_pos, visible_reel_y + (float)grid_data.rows * grid_data.cell_size - 2.0f,
+        thickness - 4.0f, golden_brown
+    );
+    eng.RenderLine(
+        reel_x_pos + grid_data.cell_size, visible_reel_y + 2.0f,
+        reel_x_pos + grid_data.cell_size, visible_reel_y + (float)grid_data.rows * grid_data.cell_size - 2.0f,
+        thickness -  4.0f, golden_brown
+    );
+    eng.RenderLine(
+        reel_x_pos + 2.0f, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
+        reel_x_pos + grid_data.cell_size - 2.0f, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
+        thickness - 4.0f, golden_brown
+    );
+}
+
 void Reel::RenderCells(single::Engine& eng, const GridData& grid_data, std::vector<single::Sprite>& source_sprites) const {
 
+    eng.EnableClippedRendering((single::Rect){0.0f, grid_data.grid_y, 1000.0f, (float)grid_data.rows * grid_data.cell_size});
     for (const Cell& cell : cells) {
 
         int sprite_idx = static_cast<int>(cell.content);
         eng.RenderSprite(source_sprites[sprite_idx], &cell.location);
     }
+    eng.DisableClipping();
+
+    RenderFrame(eng, grid_data);
 }
 
 

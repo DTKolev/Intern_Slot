@@ -100,11 +100,9 @@ void Grid::RenderGrid(single::Engine& eng) {
     single::Rect background_rect {0.0f, 0.0f, 1000.0f, 600.0f};
     eng.RenderSprite(background, &background_rect);
 
-    eng.EnableClippedRendering((single::Rect){0.0f, data.grid_y, 1000.0f, (float)data.rows * data.cell_size});
     for (const Reel& reel : reels) {
         reel.RenderCells(eng, data, sprites);
     }
-    eng.DisableClipping();
 
     single::Rect bottom_pannel_rect {0.0f, 600.0f, 1000.0f, 200.0f};
     eng.RenderSprite(bottom_pannel, &bottom_pannel_rect);
