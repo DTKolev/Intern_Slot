@@ -2,7 +2,7 @@
 
 #include "Singleton.hpp"
 
-class MasterDoorTransition : public single::GameState {
+class MasterDoorTransition : public single::OverlayState {
 
     protected:
     single::Sprite wooden_door;
@@ -22,7 +22,6 @@ class MasterDoorTransition : public single::GameState {
 
     public:
     void OnEntry(single::Engine& eng) override;
-    void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render(single::Engine& eng) override;
     void OnExit() override;

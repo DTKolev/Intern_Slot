@@ -18,4 +18,21 @@ namespace single {
         virtual void Render(Engine& eng) = 0;
         virtual void OnExit() = 0;
     };
+
+    class OverlayState {
+
+        protected:
+        bool covers_entire_screen;
+
+        friend class Engine;
+
+        public:
+        OverlayState() : covers_entire_screen{false} {}
+        ~OverlayState() = default;
+
+        virtual void OnEntry(Engine& eng) = 0;
+        virtual void Update(Engine& eng, double delta_t) = 0;
+        virtual void Render(Engine& eng) = 0;
+        virtual void OnExit() = 0;
+    };
 }

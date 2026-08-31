@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Singleton.hpp"
+#include "Singleton_GameState.hpp"
 
 class AnotherTestState;
 
-class TestState : public single::GameState {
+class TestState : public single::OverlayState {
 
     private:
     single::Text log;
@@ -18,7 +19,6 @@ class TestState : public single::GameState {
         timer = 1.5;
 
     }
-    void HandleInput(single::Engine& eng, SDL_Event& input_event) override {}
     void Update(single::Engine& eng, double delta_t) override {
 
         timer -= delta_t;
@@ -35,7 +35,7 @@ class TestState : public single::GameState {
     void OnExit() override {};
 };
 
-class AnotherTestState : public single::GameState {
+class AnotherTestState : public single::OverlayState {
 
     private:
     single::Text log;
@@ -46,12 +46,15 @@ class AnotherTestState : public single::GameState {
 
         log = eng.CreateText("3RD OVERLAY STATE!!!", 23.0f, (single::Color){0, 0, 255, 255});
         timer = 1.5;
+        covers_entire_screen = true;
     }
-    void HandleInput(single::Engine& eng, SDL_Event& input_event) override {}
     void Update(single::Engine& eng, double delta_t) override {
 
         timer -= delta_t;
-        if (timer <= 0.0) eng.RemoveOverlayState();
+        if (timer <= 0.0) {
+            eng.RemoveOverlayState();
+            covers_entire_screen = false;
+        }
     }
     void Render(single::Engine& eng) override {
 

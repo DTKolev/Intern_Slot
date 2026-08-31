@@ -30,7 +30,10 @@ namespace single {
         TimeManager time_manager;
 
         std::unique_ptr<GameState> current_game_state;
-        std::list<std::unique_ptr<GameState>> overlay_states;
+        std::list<std::unique_ptr<OverlayState>> overlay_states;
+
+        void RenderOverlayStates(std::list<std::unique_ptr<OverlayState>>::iterator start);
+        std::list<std::unique_ptr<OverlayState>>::iterator FindHighestFullCover();
 
         public:
         Engine(std::string window_title, int window_w, int window_h);
@@ -80,8 +83,8 @@ namespace single {
         template<typename T>
         void AddOverlayState() {
 
-            static_assert(std::is_base_of<GameState, T>::value);
-            std::unique_ptr<GameState> new_overlay_state = std::make_unique<T>();
+            static_assert(std::is_base_of<OverlayState, T>::value);
+            std::unique_ptr<OverlayState> new_overlay_state = std::make_unique<T>();
 
             overlay_states.push_back(std::move(new_overlay_state));
             if (overlay_states.back() != nullptr) overlay_states.back()->OnEntry(*this);

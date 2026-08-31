@@ -18,8 +18,6 @@ void MasterDoorTransition::OnEntry(single::Engine& eng) {
     transition_finished = false;
 }
 
-void MasterDoorTransition::HandleInput(single::Engine& eng, SDL_Event& input_event) {}
-
 void MasterDoorTransition::Update(single::Engine& eng, double delta_t) {
 
     constexpr double door_movement_speed = 700.0;
@@ -38,6 +36,8 @@ void MasterDoorTransition::Update(single::Engine& eng, double delta_t) {
             doors_closed = true;
 
             change_state = true;
+
+            covers_entire_screen = true;
         }
     }
 
@@ -47,6 +47,7 @@ void MasterDoorTransition::Update(single::Engine& eng, double delta_t) {
         if (title_display_timer <= 0.0) {
             doors_closed = false;
             doors_opening = true;
+            covers_entire_screen = false;
         }
     }
 

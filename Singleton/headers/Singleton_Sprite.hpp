@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 #include "Singleton_Common.hpp"
 
 namespace single {
