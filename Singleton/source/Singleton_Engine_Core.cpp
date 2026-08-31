@@ -46,19 +46,21 @@ void Engine::Run() {
 
             if (input_event.type == SDL_EVENT_QUIT) Quit();
 
-            if (!overlay_states.Empty()) overlay_states.Top()->HandleInput(*this, input_event);
+            if (!overlay_states.empty()) overlay_states.back()->HandleInput(*this, input_event);
             else current_game_state->HandleInput(*this, input_event);
         }
 
         SDL_SetRenderDrawColor(renderer->Get(), 0, 0, 0, 255);
         SDL_RenderClear(renderer->Get());
 
-        if (!overlay_states.Empty()) overlay_states.Top()->Update(*this, time_manager.DeltaTime());
+        if (!overlay_states.empty()) overlay_states.back()->Update(*this, time_manager.DeltaTime());
         else current_game_state->Update(*this, time_manager.DeltaTime());
 
         current_game_state->Render(*this);
-        if (!overlay_states.Empty()) {
-            for (int i = 0; i < overlay_states.Size(); i++) overlay_states.At(i)->Render(*this);
+        if (!overlay_states.empty()) {
+            for (auto& state : overlay_states) {
+                if (state != nullptr) state->Render(*this);
+            }
         }
 
         SDL_RenderPresent(renderer->Get());

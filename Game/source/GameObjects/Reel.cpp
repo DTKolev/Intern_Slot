@@ -21,15 +21,17 @@ Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content)
 CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
 
     // Values have been calculated externally to acheive wheighted randomness when picking cell content
-    last_idx++;
+//    last_idx++;
 
-    float max_x = std::sqrt((float)last_idx) - 0.05;
-    int rng_high = (int)std::floor(max_x * 10.0f);
+    //float max_x = std::sqrt((float)last_idx) - 0.05;
+    //int rng_high = (int)std::floor(max_x * 10.0f);
 
-    int rng_base = eng.RandomNumber(rng_high);
-    float base_x = (float)rng_base / 10.0f;
+    //int rng_base = eng.RandomNumber(rng_high);
+    //float base_x = (float)rng_base / 10.0f;
 
-    int content_idx = (int)std::floor(base_x * base_x);
+    //int content_idx = (int)std::floor(base_x * base_x);
+
+    int content_idx = eng.RandomNumber(last_idx);
 
     return static_cast<CellContent>(content_idx);
 }

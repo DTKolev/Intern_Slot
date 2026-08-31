@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstddef>
 #include <string>
+#include <list>
 #include <memory>
 
 #include "Singleton_Common.hpp"
@@ -30,7 +30,7 @@ namespace single {
         TimeManager time_manager;
 
         std::unique_ptr<GameState> current_game_state;
-        OverlayStack overlay_states;
+        std::list<std::unique_ptr<GameState>> overlay_states;
 
         public:
         Engine(std::string window_title, int window_w, int window_h);
@@ -83,21 +83,25 @@ namespace single {
             static_assert(std::is_base_of<GameState, T>::value);
             std::unique_ptr<GameState> new_overlay_state = std::make_unique<T>();
 
-            overlay_states.Push(std::move(new_overlay_state));
-            if (overlay_states.Top() != nullptr) overlay_states.Top()->OnEntry(*this);
+            overlay_states.push_back(std::move(new_overlay_state));
+            if (overlay_states.back() != nullptr) overlay_states.back()->OnEntry(*this);
         }
 
         void RemoveOverlayState() {
 
-            if (overlay_states.Top() != nullptr) overlay_states.Top()->OnExit();
-            overlay_states.Pop();
+            if (overlay_states.back() != nullptr) overlay_states.back()->OnExit();
+            overlay_states.pop_back();
         }
 
         void StopOverlay() {
 
-            if (!overlay_states.Empty()) {
-                for (int i = 0; i < overlay_states.Size(); i++) overlay_states.At(i)->OnExit();
-                overlay_states.Flush();
+            if (!overlay_states.empty()) {
+
+                for (auto& state : overlay_states) {
+                    if (state != nullptr) state->OnExit();
+                }
+
+                overlay_states.clear();
             }
         }
     };
