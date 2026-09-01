@@ -1,4 +1,5 @@
 #include "GameObjects/Grid.hpp"
+#include "Singleton_Common.hpp"
 #include <cmath>
 
 Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content) 
@@ -225,6 +226,8 @@ void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
     );
 }
 
+
+
 void Reel::RenderCells(single::Engine& eng, const GridData& grid_data, std::vector<single::Sprite>& source_sprites) const {
 
     eng.EnableClippedRendering((single::Rect){0.0f, grid_data.grid_y, 1000.0f, (float)grid_data.rows * grid_data.cell_size});
@@ -233,6 +236,16 @@ void Reel::RenderCells(single::Engine& eng, const GridData& grid_data, std::vect
         int sprite_idx = static_cast<int>(cell.content);
         eng.RenderSprite(source_sprites[sprite_idx], &cell.location);
     }
+
+    single::Rect reel_rect {
+        .x = reel_x_pos,
+        .y = reel_y_pos + grid_data.cell_size - grid_data.cell_size / 2.0f,
+        .w = grid_data.cell_size,
+        .h = (float)(grid_data.rows + 1) * grid_data.cell_size
+    };
+
+    eng.RenderGradient(reel_rect, 170, single::GradientType::centered_vertical);
+
     eng.DisableClipping();
 
     RenderFrame(eng, grid_data);

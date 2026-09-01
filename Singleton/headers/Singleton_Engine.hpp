@@ -3,6 +3,7 @@
 #include <string>
 #include <list>
 #include <memory>
+#include <vector>
 
 #include "Singleton_Common.hpp"
 #include "Singleton_Sprite.hpp"
@@ -35,6 +36,8 @@ namespace single {
         void RenderOverlayStates(std::list<std::unique_ptr<OverlayState>>::iterator start);
         std::list<std::unique_ptr<OverlayState>>::iterator FindHighestFullCover();
 
+        std::vector<TexturePtr> gradient_textures;
+
         public:
         Engine(std::string window_title, int window_w, int window_h);
 
@@ -42,6 +45,7 @@ namespace single {
         void RenderSprite(Sprite& sprite, const Rect* dest_rect) const;
         void RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, const Color& color) const;
         void RenderRect(Rect rect, const Color& color) const;
+        void RenderGradient(Rect dest, uint8_t brightness, const GradientType& type) const;
         Color RandomColor() const;
 
         void EnableClippedRendering(Rect clip_area);

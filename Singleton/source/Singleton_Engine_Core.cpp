@@ -2,8 +2,10 @@
 #include "SDL3/SDL.h"
 #include "SDL3_image/SDL_image.h"
 #include "SDL3_ttf/SDL_ttf.h"
+#include "Singleton_Common.hpp"
 #include "Singleton_GameState.hpp"
 #include <memory>
+#include <utility>
 
 using namespace single;
 
@@ -20,6 +22,23 @@ Engine::Engine(std::string window_title, int window_w, int window_h) :
     renderer = std::make_unique<SDLObject<SDL_Renderer>>(window->Get());
     font = std::make_unique<SDLObject<TTF_Font>>("../src/JetBrainsMono-Bold.ttf", 24.0);
 
+    TexturePtr lin_v = std::make_unique<SDLObject<SDL_Texture>>(
+        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::linear_vertical
+    );
+    TexturePtr lin_h = std::make_unique<SDLObject<SDL_Texture>>(
+        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::linear_horizontal
+    );
+    TexturePtr cen_v = std::make_unique<SDLObject<SDL_Texture>>(
+        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::centered_vertical
+    );
+     TexturePtr cen_h = std::make_unique<SDLObject<SDL_Texture>>(
+        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::centered_horizontal
+    );
+
+    gradient_textures.push_back(std::move(lin_v));
+    gradient_textures.push_back(std::move(lin_h));
+    gradient_textures.push_back(std::move(cen_v));
+    gradient_textures.push_back(std::move(cen_h));
 }
 
 

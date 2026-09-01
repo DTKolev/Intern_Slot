@@ -1,5 +1,9 @@
 #include "../headers/Singleton_Engine.hpp"
 #include "SDL3/SDL.h"
+#include "Singleton_Common.hpp"
+#include <SDL3/SDL_blendmode.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 #include <cmath>
 
 using namespace single;
@@ -56,6 +60,22 @@ void Engine::RenderRect(Rect rect, const Color& color) const {
 
     SDL_SetRenderDrawColor(renderer->Get(), color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(renderer->Get(), &rect_sdl);
+}
+
+
+
+void Engine::RenderGradient(Rect dest, uint8_t brightness, const GradientType& type) const {
+
+    SDL_FRect sdl_rect {
+        .x = dest.x,
+        .y = dest.y,
+        .w = dest.w,
+        .h = dest.h
+    };
+
+    int gradient_idx = static_cast<int>(type);
+
+    SDL_RenderTexture(renderer->Get(), gradient_textures[gradient_idx]->Get(), nullptr, &sdl_rect);
 }
 
 
