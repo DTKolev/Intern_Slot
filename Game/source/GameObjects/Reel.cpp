@@ -186,7 +186,7 @@ void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
     eng.RenderLine(
         reel_x_pos, visible_reel_y, 
         reel_x_pos + grid_data.cell_size, visible_reel_y, 
-        thickness, shadow
+        thickness + 2.0f, shadow
     );
     eng.RenderLine(
         reel_x_pos, visible_reel_y, 
@@ -201,13 +201,13 @@ void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
     eng.RenderLine(
         reel_x_pos, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
         reel_x_pos + grid_data.cell_size, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
-        thickness, shadow
+        thickness + 2.0f, shadow
     );
 
     eng.RenderLine(
         reel_x_pos + 2.0f, visible_reel_y,
         reel_x_pos + grid_data.cell_size - 2.0f, visible_reel_y,
-        thickness - 4.0f, golden_brown
+        thickness - 2.0f, golden_brown
     );
     eng.RenderLine(
         reel_x_pos, visible_reel_y + 2.0f,
@@ -222,7 +222,7 @@ void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
     eng.RenderLine(
         reel_x_pos + 2.0f, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
         reel_x_pos + grid_data.cell_size - 2.0f, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
-        thickness - 4.0f, golden_brown
+        thickness - 2.0f, golden_brown
     );
 }
 
@@ -239,9 +239,9 @@ void Reel::RenderCells(single::Engine& eng, const GridData& grid_data, std::vect
 
     single::Rect reel_rect {
         .x = reel_x_pos,
-        .y = reel_y_pos + grid_data.cell_size - grid_data.cell_size / 2.0f,
+        .y = reel_y_pos + grid_data.cell_size,
         .w = grid_data.cell_size,
-        .h = (float)(grid_data.rows + 1) * grid_data.cell_size
+        .h = (float)grid_data.rows * grid_data.cell_size
     };
 
     eng.RenderGradient(reel_rect, 170, single::GradientType::centered_vertical);

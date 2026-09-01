@@ -140,18 +140,20 @@ SDLObject<SDL_Texture>::SDLObject(SDL_Renderer* renderer, float w, float h, floa
         }
         case GradientType::centered_vertical:
         {
-            SDL_Vertex vertices[6] = {
+            SDL_Vertex vertices[8] = {
                 {{0.0f, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
                 {{w, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{0.0f, h / 2.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
-                {{w, h / 2.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
+                {{0.0f, h / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
+                {{w, h / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
+                {{0.0f, h * 2.0f / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0,0}},
+                {{w, h * 2.0f / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0,0}},
                 {{0.0f, h}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
                 {{w, h}, {min_br, min_br, min_br, 1.0f}, {0, 0}}
             };
 
-            int indices[12] = {0, 1, 2, 1, 2, 3, 2, 3, 4, 3, 4, 5};
+            int indices[18] = {0,1,2,1,2,3,2,3,4,3,4,5,4,5,6,5,6,7};
 
-            SDL_RenderGeometry(renderer, nullptr, vertices, 6, indices, 12);
+            SDL_RenderGeometry(renderer, nullptr, vertices, 8, indices, 18);
 
             break;
         }

@@ -28,7 +28,7 @@ void ExtraReelReeling::Update(single::Engine& eng, double delta_t) {
     timer -= delta_t;
     if (timer <= 0.0) reeling = false; 
 
-    extra_reel.SpinReel(eng, grid.GetGridData(), 12.0, delta_t, reeling);
+    extra_reel.SpinReel(eng, grid.GetGridData(), 13.0, delta_t, reeling);
 
     if (extra_reel.AnimationFinished()) {
         grid.UpdateGridState();
