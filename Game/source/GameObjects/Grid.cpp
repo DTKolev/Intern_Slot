@@ -35,7 +35,7 @@ void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
 
     for (int i = 0; i < reels.size(); i++) {
 
-        constexpr double reeling_speed = 10.0;
+        constexpr double reeling_speed = 13.0;
 
         if (i >= reels.size() - active_reels) reels[i].SpinReel(eng, data, reeling_speed, delta_time, true);
         else reels[i].SpinReel(eng, data, reeling_speed, delta_time, false);

@@ -65,9 +65,22 @@ void Reel::ResetCell(single::Engine& eng, const GridData& grid_data, Cell& cell)
 
 
 
+double Reel::AccelerationCurve(double min, double max, double time) const {
+
+    double fraction = 2.0 * (time * time * time) - (time * time);
+    double result = min + (max - min) * fraction;
+
+    if (result > max) return max;
+    else return result;
+}
+
+
+
 void Reel::StartReelSpin(single::Engine& eng, const GridData& grid_data) {
 
     animation_finished = false;
+    acceleration_timer = 0.0;
+    distance_travelled = 0.0f;
     
     for (Cell& cell : cells) {
         if (cell.location.y >= (grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size) - grid_data.cell_size / 5.0f) {
@@ -119,7 +132,10 @@ void Reel::SpinReel(single::Engine& eng, const GridData& grid_data, double speed
 
     if (!animation_finished) {
 
-        float distance_to_travel = grid_data.cell_size * (float)(speed * delta_time);
+        acceleration_timer += delta_time * 2.5;
+        double real_speed = AccelerationCurve(0.0, speed, acceleration_timer);
+
+        float distance_to_travel = grid_data.cell_size * (float)(real_speed * delta_time);
 
         for (Cell& cell : cells) {
             cell.location.y += distance_to_travel;

@@ -38,15 +38,16 @@ class Reel {
     float reel_y_pos;
 
     float distance_travelled;
-
     bool animation_finished;
 
     void ResetCell(single::Engine& eng, const GridData& grid_data, Cell& cell);
     CellContent RandomContent(single::Engine& eng, int last_idx) const;
-
     void SetCellRow(const GridData& grid_data, Cell& cell);
 
     void RenderFrame(single::Engine& eng, const GridData& grid_data) const;
+
+    double acceleration_timer;
+    double AccelerationCurve(double min, double max, double time) const;
     
     public:
     Reel(float x_pos, const GridData& grid_data, CellContent starting_content = CellContent::empty);
@@ -75,6 +76,7 @@ class Grid {
     GridData data;
 
     double animation_delay;
+    double acceleration_timer;
     int active_reels;
 
     std::vector<CellContent> grid_state;
