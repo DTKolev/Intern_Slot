@@ -5,6 +5,7 @@
 namespace single {
 
     class Engine;
+    class Visualizer;
 
     class Sprite {
 
@@ -13,6 +14,7 @@ namespace single {
         SurfacePtr surface;
 
         friend class Engine;
+        friend class Visualizer;
 
         public:
         Sprite();

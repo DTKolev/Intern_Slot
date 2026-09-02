@@ -1,4 +1,5 @@
 #include "GameObjects/Grid.hpp"
+#include "Singleton_Visualizer.hpp"
 
 Grid::Grid(float x, float y, int rows, int columns, float cell_size) :
     data{rows, columns, x, y, cell_size}, reeling_finished{false} 
@@ -78,34 +79,34 @@ void Grid::UpdateGridState() {
 
 
 
-void Grid::RenderGrid(single::Engine& eng) {
+void Grid::RenderGrid(const single::Visualizer& vis) {
 
     if (sprites.empty()) {
         sprites.assign({
-            eng.LoadSprite("../src/cherry.png"),
-            eng.LoadSprite("../src/lemon.png"),
-            eng.LoadSprite("../src/orange.png"),
-            eng.LoadSprite("../src/bell.png"),
-            eng.LoadSprite("../src/seven.png"),
-            eng.LoadSprite("../src/diamond.png"),
-            eng.LoadSprite("../src/scatter.png"),
-            eng.LoadSprite("../src/wild.png"),
-            eng.LoadSprite("../src/empty.png"),
+            vis.LoadSprite("../src/cherry.png"),
+            vis.LoadSprite("../src/lemon.png"),
+            vis.LoadSprite("../src/orange.png"),
+            vis.LoadSprite("../src/bell.png"),
+            vis.LoadSprite("../src/seven.png"),
+            vis.LoadSprite("../src/diamond.png"),
+            vis.LoadSprite("../src/scatter.png"),
+            vis.LoadSprite("../src/wild.png"),
+            vis.LoadSprite("../src/empty.png"),
         });
     }
 
-    if (bottom_pannel.Empty()) bottom_pannel = eng.LoadSprite("../src/wood.png");
-    if (background.Empty()) background = eng.LoadSprite("../src/background.png");
+    if (bottom_pannel.Empty()) bottom_pannel = vis.LoadSprite("../src/wood.png");
+    if (background.Empty()) background = vis.LoadSprite("../src/background.png");
 
     single::Rect background_rect {0.0f, 0.0f, 1000.0f, 600.0f};
-    eng.RenderSprite(background, &background_rect);
+    vis.RenderSprite(background, background_rect);
 
     for (const Reel& reel : reels) {
-        reel.RenderCells(eng, data, sprites);
+        reel.RenderCells(vis, data, sprites);
     }
 
     single::Rect bottom_pannel_rect {0.0f, 600.0f, 1000.0f, 200.0f};
-    eng.RenderSprite(bottom_pannel, &bottom_pannel_rect);
+    vis.RenderSprite(bottom_pannel, bottom_pannel_rect);
 
     single::Color border_color {238, 188, 29, 255}; // golden color
     float grid_x_size = (float)(data.cell_size * data.columns);

@@ -12,10 +12,8 @@ struct TTF_Font;
 namespace single {
 
     enum class GradientType {
-        linear_vertical,
-        linear_horizontal,
-        centered_vertical,
-        centered_horizontal
+        linear,
+        centered
     };
 
 
@@ -134,7 +132,7 @@ namespace single {
     class SDLObject<SDL_Texture> : public SDLObjectRoot<SDL_Texture> {
         public:
         SDLObject(SDL_Renderer* renderer, SDL_Surface* surface);
-        SDLObject(SDL_Renderer* renderer, float w, float h, float min_br, const GradientType& type);
+        SDLObject(SDL_Renderer* renderer, float w, float h);
 
         // Disable copying for SDL_Texture
         SDLObject(const SDLObject& copy_src) = delete;

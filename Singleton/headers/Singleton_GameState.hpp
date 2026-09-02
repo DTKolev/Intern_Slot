@@ -15,7 +15,7 @@ namespace single {
         virtual void OnEntry(Engine& eng) = 0;
         virtual void HandleInput(Engine& eng, SDL_Event& input_event) = 0;
         virtual void Update(Engine& eng, double delta_t) = 0;
-        virtual void Render(Engine& eng) = 0;
+        virtual void Render() = 0;
         virtual void OnExit() = 0;
     };
 
@@ -32,7 +32,7 @@ namespace single {
 
         virtual void OnEntry(Engine& eng) = 0;
         virtual void Update(Engine& eng, double delta_t) = 0;
-        virtual void Render(Engine& eng) = 0;
+        virtual void Render() = 0;
         virtual void OnExit() = 0;
     };
 }

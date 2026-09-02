@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Singleton.hpp"
+#include "Singleton_Visualizer.hpp"
 
 class MasterDoorTransition : public single::OverlayState {
 
     protected:
+    single::Visualizer& vis = single::Visualizer::GetInstance();
+
     single::Sprite wooden_door;
 
     single::Rect left_door_location;
@@ -23,6 +26,6 @@ class MasterDoorTransition : public single::OverlayState {
     public:
     void OnEntry(single::Engine& eng) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
     void OnExit() override;
 };

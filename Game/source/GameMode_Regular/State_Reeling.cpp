@@ -6,8 +6,8 @@ void Reeling::OnEntry(single::Engine& eng) {
 
     common_manager.credits -= common_manager.bet;
 
-    credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
-    title = eng.CreateText("REELING", 32.0);
+    credits = vis.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
+    title = vis.CreateText("REELING", 32.0);
 }
 
 void Reeling::Update(single::Engine& eng, double delta_t) {
@@ -17,10 +17,10 @@ void Reeling::Update(single::Engine& eng, double delta_t) {
     if (common_manager.GetGrid().ReelingFinished()) eng.StateChange<Results>();
 }
 
-void Reeling::Render(single::Engine& eng) {
+void Reeling::Render() {
 
-    MasterReeling::Render(eng);
+    MasterReeling::Render();
 
-    eng.RenderText(credits, 50.0, 610.0);
-    eng.RenderText(title, 260.0, 690.0);
+    vis.RenderText(credits, 50.0, 610.0);
+    vis.RenderText(title, 260.0, 690.0);
 }

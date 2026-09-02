@@ -2,10 +2,13 @@
 
 #include "MasterStates/MasterState_Reeling.hpp"
 #include "MasterStates/MasterState_Results.hpp"
+#include "Singleton_Visualizer.hpp"
 
 class Betting : public single::GameState {
 
     private:
+    single::Visualizer& vis = single::Visualizer::GetInstance();
+
     single::Text credits;
     single::Text bet;
     single::Text title;
@@ -14,20 +17,22 @@ class Betting : public single::GameState {
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
     void OnExit() override;
 };
 
 class MainMenu : public single::GameState {
 
     private:
+    single::Visualizer& vis = single::Visualizer::GetInstance();
+
     single::Text title;
 
     public:
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
     void OnExit() override;
 };
 
@@ -40,7 +45,7 @@ class Reeling : public MasterReeling {
     public:
     void OnEntry(single::Engine& eng) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
 };
 
 class Results : public MasterResults {
@@ -54,5 +59,5 @@ class Results : public MasterResults {
     public:
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
 };

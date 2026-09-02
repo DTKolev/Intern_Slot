@@ -92,7 +92,7 @@ SDLObject<SDL_Texture>::SDLObject(SDL_Renderer* renderer, SDL_Surface* surface) 
     if (raw_pointer == nullptr) throw FailedTextureCreate{};
 }
 
-SDLObject<SDL_Texture>::SDLObject(SDL_Renderer* renderer, float w, float h, float min_br, const GradientType& type) {
+SDLObject<SDL_Texture>::SDLObject(SDL_Renderer* renderer, float w, float h) {
 
     raw_pointer = nullptr;
     raw_pointer = SDL_CreateTexture(
@@ -102,81 +102,6 @@ SDLObject<SDL_Texture>::SDLObject(SDL_Renderer* renderer, float w, float h, floa
         w, h
     );
     if (raw_pointer == nullptr) throw FailedTextureCreate{};
-
-    SDL_SetTextureBlendMode(raw_pointer, SDL_BLENDMODE_MUL);
-
-    SDL_SetRenderTarget(renderer, raw_pointer);
-
-    switch (type) {
-        case GradientType::linear_vertical:
-        {
-            SDL_Vertex vertices[4] = {
-                {{0.0f, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{w, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{0.0f, h}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
-                {{w, h}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}}
-            };
-            
-            int indices[6] = {0, 1, 2, 1, 2, 3};
-
-            SDL_RenderGeometry(renderer, nullptr, vertices, 4, indices, 6);
-
-            break;
-        }
-        case GradientType::linear_horizontal:
-        {
-            SDL_Vertex verices[4] = {
-                {{0.0f, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{0.0f, h}, {min_br, min_br,  min_br, 1.0f}, {0, 0}},
-                {{w, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
-                {{w, h}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}}
-            };
-
-            int indices[6] = {0, 1, 2, 1, 2, 3};
-
-            SDL_RenderGeometry(renderer, nullptr, verices, 4, indices, 6);
-
-            break;
-        }
-        case GradientType::centered_vertical:
-        {
-            SDL_Vertex vertices[8] = {
-                {{0.0f, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{w, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{0.0f, h / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
-                {{w, h / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
-                {{0.0f, h * 2.0f / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0,0}},
-                {{w, h * 2.0f / 3.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0,0}},
-                {{0.0f, h}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{w, h}, {min_br, min_br, min_br, 1.0f}, {0, 0}}
-            };
-
-            int indices[18] = {0,1,2,1,2,3,2,3,4,3,4,5,4,5,6,5,6,7};
-
-            SDL_RenderGeometry(renderer, nullptr, vertices, 8, indices, 18);
-
-            break;
-        }
-        case GradientType::centered_horizontal:
-        {
-            SDL_Vertex vertices[6] = {
-                {{0.0f, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{0.0f, h}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{w / 2.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
-                {{w / 2.0f, h}, {1.0f, 1.0f, 1.0f, 1.0f}, {0, 0}},
-                {{w, 0.0f}, {min_br, min_br, min_br, 1.0f}, {0, 0}},
-                {{w, h}, {min_br, min_br, min_br, 1.0f}, {0, 0}}
-            };
-
-            int indices[12] = {0, 1, 2, 1, 2, 3, 2, 3, 4, 3, 4, 5};
-
-            SDL_RenderGeometry(renderer, nullptr, vertices, 6, indices, 12);
-
-            break;
-        }
-    }
-
-    SDL_SetRenderTarget(renderer, nullptr);
 }
 
 

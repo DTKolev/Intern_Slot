@@ -10,8 +10,8 @@ void FreeSpinsTransitionOut::OnEntry(single::Engine& eng) {
     
     CommonManager& common_manager = CommonManager::GetInstance();
     
-    title = eng.CreateText("TOTAL CREDITS WON", 64.0f, eng.RandomColor());
-    winnings = eng.CreateText(std::to_string(common_manager.free_spins_winnings), 64.0f, eng.RandomColor());
+    title = vis.CreateText("TOTAL CREDITS WON", 64.0f, vis.RandomColor());
+    winnings = vis.CreateText(std::to_string(common_manager.free_spins_winnings), 64.0f, vis.RandomColor());
 }
 
 void FreeSpinsTransitionOut::Update(single::Engine& eng, double delta_t) {
@@ -27,17 +27,17 @@ void FreeSpinsTransitionOut::Update(single::Engine& eng, double delta_t) {
     if (transition_finished) eng.RemoveOverlayState();
 }
 
-void FreeSpinsTransitionOut::Render(single::Engine& eng) {
+void FreeSpinsTransitionOut::Render() {
 
-    MasterDoorTransition::Render(eng);
+    MasterDoorTransition::Render();
 
     if (doors_closed) {
 
         float title_x = 500.0f - (title.GetWidth() / 2.0f);
         float winnings_x = 500.0f - (winnings.GetWidth() / 2.0f);
 
-        eng.RenderText(title, title_x, 300.0f);
-        eng.RenderText(winnings, winnings_x, 310.0f + title.GetHeight());
+        vis.RenderText(title, title_x, 300.0f);
+        vis.RenderText(winnings, winnings_x, 310.0f + title.GetHeight());
     }
 }
 

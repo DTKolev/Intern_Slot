@@ -10,6 +10,7 @@
 #include "Singleton_Text.hpp"
 #include "Singleton_GameState.hpp"
 #include "Singleton_TimeManager.hpp"
+#include "Singleton_Visualizer.hpp"
 
 namespace single {
 
@@ -20,39 +21,26 @@ namespace single {
 
     class Engine {
 
+        using OverlayStatesList = std::list<std::unique_ptr<OverlayState>>;
+
         private:
         SDLContextPtr context;
 
         WindowPtr window;
-        RendererPtr renderer;
-        FontPtr font;
 
         EngineState current_state;
         TimeManager time_manager;
 
         std::unique_ptr<GameState> current_game_state;
-        std::list<std::unique_ptr<OverlayState>> overlay_states;
+        OverlayStatesList overlay_states;
 
-        void RenderOverlayStates(std::list<std::unique_ptr<OverlayState>>::iterator start);
-        std::list<std::unique_ptr<OverlayState>>::iterator FindHighestFullCover();
+        auto RenderOverlayStates(OverlayStatesList::const_iterator start) const -> void;
+        auto FindHighestFullCover() const -> OverlayStatesList::const_iterator;
 
-        std::vector<TexturePtr> gradient_textures;
+        friend class Visualizer;
 
         public:
         Engine(std::string window_title, int window_w, int window_h);
-
-        Sprite LoadSprite(const std::string source_file_path) const;
-        void RenderSprite(Sprite& sprite, const Rect* dest_rect) const;
-        void RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, const Color& color) const;
-        void RenderRect(Rect rect, const Color& color) const;
-        void RenderGradient(Rect dest, uint8_t brightness, const GradientType& type) const;
-        Color RandomColor() const;
-
-        void EnableClippedRendering(Rect clip_area);
-        void DisableClipping();
-
-        Text CreateText(const std::string& txt, float font_sz, const Color& text_color = {255, 255, 255, 255}) const;
-        void RenderText(const Text& text, float x, float y) const;
 
         int RandomNumber(int high, int low = 0) const;
         void Delay(int ms) const;

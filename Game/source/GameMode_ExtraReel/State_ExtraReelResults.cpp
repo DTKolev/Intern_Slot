@@ -5,8 +5,8 @@ void ExtraReelResults::OnEntry(single::Engine& eng) {
 
     MasterResults::OnEntry(eng);
 
-    if (scatters_found) outcome = eng.CreateText("You found the third scatter!", 32.0f, (single::Color){0, 255, 0, 255});
-    else outcome = eng.CreateText("No scatter found!", 32.0f, (single::Color){255, 255, 255, 255});
+    if (scatters_found) outcome = vis.CreateText("You found the third scatter!", 32.0f, (single::Color){0, 255, 0, 255});
+    else outcome = vis.CreateText("No scatter found!", 32.0f, (single::Color){255, 255, 255, 255});
 }
 
 void ExtraReelResults::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -18,9 +18,9 @@ void ExtraReelResults::HandleInput(single::Engine& eng, SDL_Event& input_event) 
     }
 }
 
-void ExtraReelResults::Render(single::Engine& eng) {
+void ExtraReelResults::Render() {
 
-    MasterResults::Render(eng);
+    MasterResults::Render();
 
-    eng.RenderText(outcome, 260.0f, 650.0f);
+    vis.RenderText(outcome, 260.0f, 650.0f);
 }

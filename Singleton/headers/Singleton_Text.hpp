@@ -6,6 +6,7 @@
 namespace single {
 
     class Engine;
+    class Visualizer;
 
     class Text {
 
@@ -20,6 +21,7 @@ namespace single {
         float height;
 
         friend class Engine;
+        friend class Visualizer;
 
         public:
         Text() = default;
@@ -31,7 +33,7 @@ namespace single {
         Text(Text&& move_src);
         Text& operator=(Text&& move_src);
 
-        void Update(Engine& eng, const std::string& new_txt, float new_sz, const Color& new_color = {255, 255, 255, 255});
+        void Update(const Visualizer& vis, const std::string& new_txt, float new_sz, const Color& new_color = {255, 255, 255, 255});
 
         float GetWidth() const {return width;}
         float GetHeight() const {return height;}

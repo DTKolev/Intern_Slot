@@ -4,41 +4,26 @@
 #include "SDL3_ttf/SDL_ttf.h"
 #include "Singleton_Common.hpp"
 #include "Singleton_GameState.hpp"
+#include "Singleton_Visualizer.hpp"
 #include <memory>
-#include <utility>
+#include <variant>
 
 using namespace single;
 
 Engine::Engine(std::string window_title, int window_w, int window_h) :
     context{std::make_unique<SDLContext>()},
-    window{nullptr}, renderer{nullptr}, font{nullptr},
+    window{nullptr},
     current_state{EngineState::on},
     time_manager{},
     current_game_state{nullptr},
     overlay_states{}
 {
 
+    Visualizer& vis = Visualizer::GetInstance();
+
     window = std::make_unique<SDLObject<SDL_Window>>("Slot Game", window_w, window_h);
-    renderer = std::make_unique<SDLObject<SDL_Renderer>>(window->Get());
-    font = std::make_unique<SDLObject<TTF_Font>>("../src/JetBrainsMono-Bold.ttf", 24.0);
 
-    TexturePtr lin_v = std::make_unique<SDLObject<SDL_Texture>>(
-        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::linear_vertical
-    );
-    TexturePtr lin_h = std::make_unique<SDLObject<SDL_Texture>>(
-        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::linear_horizontal
-    );
-    TexturePtr cen_v = std::make_unique<SDLObject<SDL_Texture>>(
-        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::centered_vertical
-    );
-     TexturePtr cen_h = std::make_unique<SDLObject<SDL_Texture>>(
-        renderer->Get(), 100.0f, 100.0f, 0.6f, GradientType::centered_horizontal
-    );
-
-    gradient_textures.push_back(std::move(lin_v));
-    gradient_textures.push_back(std::move(lin_h));
-    gradient_textures.push_back(std::move(cen_v));
-    gradient_textures.push_back(std::move(cen_h));
+    vis.Init(*this);
 }
 
 
@@ -57,14 +42,14 @@ void Engine::Delay(int ms) const {
 
 
 
-void Engine::RenderOverlayStates(std::list<std::unique_ptr<OverlayState>>::iterator start) {
+void Engine::RenderOverlayStates(OverlayStatesList::const_iterator start) const {
 
     for (auto it = start; it != overlay_states.end(); it++) {
-        it->get()->Render(*this);
+        it->get()->Render();
     }
 }
 
-std::list<std::unique_ptr<OverlayState>>::iterator Engine::FindHighestFullCover() {
+Engine::OverlayStatesList::const_iterator Engine::FindHighestFullCover() const {
 
     auto highest_cover = overlay_states.end();
 
@@ -78,6 +63,8 @@ std::list<std::unique_ptr<OverlayState>>::iterator Engine::FindHighestFullCover(
 
 void Engine::Run() {
 
+    Visualizer& vis = Visualizer::GetInstance();
+
     while (current_state == EngineState::on) {
 
         SDL_Event input_event;
@@ -89,8 +76,10 @@ void Engine::Run() {
             if (overlay_states.empty()) current_game_state->HandleInput(*this, input_event);
         }
 
-        SDL_SetRenderDrawColor(renderer->Get(), 0, 0, 0, 255);
-        SDL_RenderClear(renderer->Get());
+        if(current_state == EngineState::off) break;
+
+        SDL_SetRenderDrawColor(vis.renderer->Get(), 0, 0, 0, 255);
+        SDL_RenderClear(vis.renderer->Get());
 
         if (!overlay_states.empty()) overlay_states.back()->Update(*this, time_manager.DeltaTime());
         else current_game_state->Update(*this, time_manager.DeltaTime());
@@ -102,11 +91,11 @@ void Engine::Run() {
         }
         else {
 
-            current_game_state->Render(*this);
+            current_game_state->Render();
             RenderOverlayStates(overlay_states.begin());
         }
 
-        SDL_RenderPresent(renderer->Get());
+        SDL_RenderPresent(vis.renderer->Get());
 
         time_manager.CalcuateDeltaTime();
     }
@@ -117,4 +106,5 @@ void Engine::Run() {
 void Engine::Quit() {
 
     current_state = EngineState::off;
+    Visualizer::GetInstance().Shutdown();    
 }

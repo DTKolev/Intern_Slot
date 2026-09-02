@@ -2,7 +2,7 @@
 
 void MasterDoorTransition::OnEntry(single::Engine& eng) {
 
-    wooden_door = eng.LoadSprite("../src/wooden_tiles.png");
+    wooden_door = vis.LoadSprite("../src/wooden_tiles.png");
 
     door_width = 500.0f;
     door_height = 800.0f;
@@ -60,10 +60,10 @@ void MasterDoorTransition::Update(single::Engine& eng, double delta_t) {
     }
 }
 
-void MasterDoorTransition::Render(single::Engine& eng) {
+void MasterDoorTransition::Render() {
 
-    eng.RenderSprite(wooden_door, &left_door_location);
-    eng.RenderSprite(wooden_door,&right_door_location);
+    vis.RenderSprite(wooden_door, left_door_location);
+    vis.RenderSprite(wooden_door, right_door_location);
 }
 
 void MasterDoorTransition::OnExit() {}

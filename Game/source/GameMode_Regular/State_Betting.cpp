@@ -6,9 +6,9 @@ void Betting::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
-    bet = eng.CreateText("Bet: ", 32.0);
-    title = eng.CreateText("BETTING", 32.0);
+    credits = vis.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
+    bet = vis.CreateText("Bet: ", 32.0);
+    title = vis.CreateText("BETTING", 32.0);
 }
 
 void Betting::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -34,18 +34,18 @@ void Betting::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 
 void Betting::Update(single::Engine& eng, double delta_t) {}
 
-void Betting::Render(single::Engine& eng) {
+void Betting::Render() {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    common_manager.GetGrid().RenderGrid(eng);
+    common_manager.GetGrid().RenderGrid(vis);
 
-    bet.Update(eng, "Bet: " + std::to_string(common_manager.bet), 32.0);
+    bet.Update(vis, "Bet: " + std::to_string(common_manager.bet), 32.0);
 
-    eng.RenderText(credits, 50.0, 610.0);
-    eng.RenderText(bet, 50.0, 650.0);
+    vis.RenderText(credits, 50.0, 610.0);
+    vis.RenderText(bet, 50.0, 650.0);
 
-    eng.RenderText(title, 260.0, 690.0);
+    vis.RenderText(title, 260.0, 690.0);
 }
 
 void Betting::OnExit() {}

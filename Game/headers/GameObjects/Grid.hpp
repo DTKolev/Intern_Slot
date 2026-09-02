@@ -2,6 +2,7 @@
 
 #include "Singleton.hpp"
 #include "Singleton_Engine.hpp"
+#include "Singleton_Visualizer.hpp"
 #include <vector>
 
 enum class CellContent {
@@ -44,7 +45,7 @@ class Reel {
     CellContent RandomContent(single::Engine& eng, int last_idx) const;
     void SetCellRow(const GridData& grid_data, Cell& cell);
 
-    void RenderFrame(single::Engine& eng, const GridData& grid_data) const;
+    void RenderFrame(const single::Visualizer& vis, const GridData& grid_data) const;
 
     double acceleration_timer;
     double AccelerationCurve(double min, double max, double time) const;
@@ -59,7 +60,7 @@ class Reel {
     int GetScatters(const GridData& grid_data) const;
     bool AnimationFinished() const {return animation_finished;}
 
-    void RenderCells(single::Engine& eng, const GridData& grid_data, std::vector<single::Sprite>& source_Sprites) const;
+    void RenderCells(const single::Visualizer& vis, const GridData& grid_data, std::vector<single::Sprite>& source_Sprites) const;
 
     void RelocateReel(float new_x, const GridData& grid_data);
     float GetPosX() const {return reel_x_pos;}
@@ -90,7 +91,7 @@ class Grid {
     void PrepareReelSpin(single::Engine& eng);
     void SpinReels(single::Engine& eng, double delta_time, bool reeling);
 
-    void RenderGrid(single::Engine& eng);
+    void RenderGrid(const single::Visualizer& vis);
 
     void UpdateGridState();
     const std::vector<CellContent>& ExportState() const {return grid_state;}

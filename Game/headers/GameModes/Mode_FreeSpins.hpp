@@ -3,6 +3,7 @@
 #include "MasterStates/MasterState_Reeling.hpp"
 #include "MasterStates/MasterState_Results.hpp"
 #include "MasterStates/MasterState_DoorTransition.hpp"
+#include "Singleton_Visualizer.hpp"
 
 class FreeSpinsTransitionIn : public MasterDoorTransition {
 
@@ -13,12 +14,14 @@ class FreeSpinsTransitionIn : public MasterDoorTransition {
     public:
     void OnEntry(single::Engine& eng) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
 };
 
 class FreeSpinsEntry : public single::GameState {
 
     private:
+    single::Visualizer& vis = single::Visualizer::GetInstance();
+
     single::Text prompt;
     single::Text bet;
     single::Text free_spins;
@@ -27,7 +30,7 @@ class FreeSpinsEntry : public single::GameState {
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
     void OnExit() override;
 };
 
@@ -40,7 +43,7 @@ class FreeSpinsReeling : public MasterReeling{
     public:
     void OnEntry(single::Engine& eng) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
 };
 
 class FreeSpinsResults : public MasterResults {
@@ -52,7 +55,7 @@ class FreeSpinsResults : public MasterResults {
     public:
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
     void OnExit() override;
 };
 
@@ -65,6 +68,6 @@ class FreeSpinsTransitionOut : public MasterDoorTransition {
     public:
     void OnEntry(single::Engine& eng) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
     void OnExit() override;
 };

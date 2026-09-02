@@ -7,8 +7,8 @@ void FreeSpinsReeling::OnEntry(single::Engine& eng) {
 
     common_manager.free_spins--;
 
-    winnings = eng.CreateText("Free Spin Winnings: " + std::to_string(common_manager.free_spins_winnings), 32.0f);
-    free_spins = eng.CreateText("Free Spins Remaining: " + std::to_string(common_manager.free_spins), 32.0f, (single::Color){0, 255, 0, 255});
+    winnings = vis.CreateText("Free Spin Winnings: " + std::to_string(common_manager.free_spins_winnings), 32.0f);
+    free_spins = vis.CreateText("Free Spins Remaining: " + std::to_string(common_manager.free_spins), 32.0f, (single::Color){0, 255, 0, 255});
 }
 
 void FreeSpinsReeling::Update(single::Engine& eng, double delta_t) {
@@ -18,10 +18,10 @@ void FreeSpinsReeling::Update(single::Engine& eng, double delta_t) {
     if (common_manager.GetGrid().ReelingFinished()) eng.StateChange<FreeSpinsResults>();
 }
 
-void FreeSpinsReeling::Render(single::Engine& eng) {
+void FreeSpinsReeling::Render() {
 
-    MasterReeling::Render(eng);
+    MasterReeling::Render();
 
-    eng.RenderText(winnings, 50.0f, 610.0f);
-    eng.RenderText(free_spins, 260.0f, 650.0f);
+    vis.RenderText(winnings, 50.0f, 610.0f);
+    vis.RenderText(free_spins, 260.0f, 650.0f);
 }

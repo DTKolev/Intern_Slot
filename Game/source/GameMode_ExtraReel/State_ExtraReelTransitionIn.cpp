@@ -79,11 +79,11 @@ void ExtraReelTransitionIn::Update(single::Engine& eng, double delta_t) {
     }
 }
 
-void ExtraReelTransitionIn::Render(single::Engine& eng) {
+void ExtraReelTransitionIn::Render() {
 
     Grid& grid = CommonManager::GetInstance().GetGrid();
 
-    grid.RenderGrid(eng);
+    grid.RenderGrid(vis);
 }
 
 void ExtraReelTransitionIn::OnExit() {

@@ -2,12 +2,14 @@
 
 #include "GameObjects/CommonManager.hpp"
 #include "GameObjects/InputManager.hpp"
+#include "Singleton_Visualizer.hpp"
 
 class MasterReeling : public single::GameState {
 
     protected:
     CommonManager& common_manager = CommonManager::GetInstance();
     InputManager& input_manager = InputManager::GetInstance();
+    single::Visualizer& vis = single::Visualizer::GetInstance();
 
     double timer;
     bool reeling;
@@ -17,6 +19,6 @@ class MasterReeling : public single::GameState {
     void OnEntry(single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
-    void Render(single::Engine& eng) override;
+    void Render() override;
     void OnExit() override;
 };

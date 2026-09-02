@@ -1,5 +1,6 @@
 #include "GameObjects/Grid.hpp"
 #include "Singleton_Common.hpp"
+#include "Singleton_Visualizer.hpp"
 #include <cmath>
 
 Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content) 
@@ -174,7 +175,7 @@ int Reel::GetScatters(const GridData& grid_data) const {
 
 
 
-void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
+void Reel::RenderFrame(const single::Visualizer& vis, const GridData& grid_data) const {
 
     constexpr single::Color golden_brown {153, 101, 21, 255};
     constexpr single::Color shadow{76, 50, 10, 255};
@@ -183,43 +184,43 @@ void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
 
     float visible_reel_y = reel_y_pos + grid_data.cell_size;
 
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos, visible_reel_y, 
         reel_x_pos + grid_data.cell_size, visible_reel_y, 
         thickness + 2.0f, shadow
     );
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos, visible_reel_y, 
         reel_x_pos, visible_reel_y + (float)grid_data.rows * grid_data.cell_size, 
         thickness, shadow
     );
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos + grid_data.cell_size, visible_reel_y,
         reel_x_pos + grid_data.cell_size, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
         thickness, shadow
     );
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
         reel_x_pos + grid_data.cell_size, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
         thickness + 2.0f, shadow
     );
 
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos + 2.0f, visible_reel_y,
         reel_x_pos + grid_data.cell_size - 2.0f, visible_reel_y,
         thickness - 2.0f, golden_brown
     );
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos, visible_reel_y + 2.0f,
         reel_x_pos, visible_reel_y + (float)grid_data.rows * grid_data.cell_size - 2.0f,
         thickness - 4.0f, golden_brown
     );
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos + grid_data.cell_size, visible_reel_y + 2.0f,
         reel_x_pos + grid_data.cell_size, visible_reel_y + (float)grid_data.rows * grid_data.cell_size - 2.0f,
         thickness -  4.0f, golden_brown
     );
-    eng.RenderLine(
+    vis.RenderLine(
         reel_x_pos + 2.0f, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
         reel_x_pos + grid_data.cell_size - 2.0f, visible_reel_y + (float)grid_data.rows * grid_data.cell_size,
         thickness - 2.0f, golden_brown
@@ -228,27 +229,37 @@ void Reel::RenderFrame(single::Engine& eng, const GridData& grid_data) const {
 
 
 
-void Reel::RenderCells(single::Engine& eng, const GridData& grid_data, std::vector<single::Sprite>& source_sprites) const {
+void Reel::RenderCells(const single::Visualizer& vis, const GridData& grid_data, std::vector<single::Sprite>& source_sprites) const {
 
-    eng.EnableClippedRendering((single::Rect){0.0f, grid_data.grid_y, 1000.0f, (float)grid_data.rows * grid_data.cell_size});
+    vis.EnableClippedRendering((single::Rect){0.0f, grid_data.grid_y, 1000.0f, (float)grid_data.rows * grid_data.cell_size});
     for (const Cell& cell : cells) {
 
         int sprite_idx = static_cast<int>(cell.content);
-        eng.RenderSprite(source_sprites[sprite_idx], &cell.location);
+        vis.RenderSprite(source_sprites[sprite_idx], cell.location);
     }
 
-    single::Rect reel_rect {
+    float reel_visible_y = reel_y_pos + grid_data.cell_size;
+    float reel_height = (float)grid_data.rows * grid_data.cell_size;
+
+    single::Rect top_gradient_rect {
         .x = reel_x_pos,
-        .y = reel_y_pos + grid_data.cell_size,
+        .y = reel_visible_y,
         .w = grid_data.cell_size,
-        .h = (float)grid_data.rows * grid_data.cell_size
+        .h = reel_height / 6.0f
+    };
+    single::Rect bottom_gradient_rect {
+        .x = reel_x_pos,
+        .y = reel_visible_y + reel_height - reel_height / 6.0f,
+        .w = grid_data.cell_size,
+        .h = reel_height / 6.0f
     };
 
-    eng.RenderGradient(reel_rect, 170, single::GradientType::centered_vertical);
+    vis.RenderGradient(top_gradient_rect, 0.5f, 0.0, single::GradientType::linear);
+    vis.RenderGradient(bottom_gradient_rect, 0.5f, 180.0f, single::GradientType::linear);
 
-    eng.DisableClipping();
+    vis.DisableClipping();
 
-    RenderFrame(eng, grid_data);
+    RenderFrame(vis, grid_data);
 }
 
 

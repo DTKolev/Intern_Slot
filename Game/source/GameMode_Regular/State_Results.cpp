@@ -11,10 +11,10 @@ void Results::OnEntry(single::Engine& eng) {
         common_manager.extra_reel_mode = true;
     }
 
-    credits = eng.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
-    title = eng.CreateText("RESULTS", 32.0);
-    free_spins = eng.CreateText("FREE SPINS MODE ACTIVATED", 32.0f, (single::Color){0, 255, 0, 255});
-    extra_reel = eng.CreateText("EXTRA REEL", 32.0f, (single::Color){0, 255, 0, 255});
+    credits = vis.CreateText("Credits: " + std::to_string(common_manager.credits), 32.0);
+    title = vis.CreateText("RESULTS", 32.0);
+    free_spins = vis.CreateText("FREE SPINS MODE ACTIVATED", 32.0f, (single::Color){0, 255, 0, 255});
+    extra_reel = vis.CreateText("EXTRA REEL", 32.0f, (single::Color){0, 255, 0, 255});
 }
 
 void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -34,13 +34,13 @@ void Results::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     }
 }
 
-void Results::Render(single::Engine& eng) {
+void Results::Render() {
 
-    MasterResults::Render(eng);
+    MasterResults::Render();
 
-    eng.RenderText(credits, 50.0, 610.0);
-    eng.RenderText(title, 260.0, 690.0);
+    vis.RenderText(credits, 50.0, 610.0);
+    vis.RenderText(title, 260.0, 690.0);
 
-    if (common_manager.free_spins_mode) eng.RenderText(free_spins, 260.0f, 650.0f);
-    if (common_manager.extra_reel_mode) eng.RenderText(extra_reel, 260.0f, 650.0f);
+    if (common_manager.free_spins_mode) vis.RenderText(free_spins, 260.0f, 650.0f);
+    if (common_manager.extra_reel_mode) vis.RenderText(extra_reel, 260.0f, 650.0f);
 }

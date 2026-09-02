@@ -1,7 +1,5 @@
-#include "../headers/Singleton_Text.hpp"
-#include "../headers/Singleton_Engine.hpp"
-#include "SDL3/SDL.h"
-#include "SDL3_ttf/SDL_ttf.h"
+#include "Singleton_Text.hpp"
+#include "Singleton_Visualizer.hpp"
 
 using namespace single;
 
@@ -26,11 +24,11 @@ Text& Text::operator=(Text&& move_src) {
     return *this;
 }
 
-void Text::Update(Engine& eng, const std::string& new_txt, float new_sz, const Color& new_color) {
+void Text::Update(const Visualizer& vis, const std::string& new_txt, float new_sz, const Color& new_color) {
 
     if ((content == new_txt) && (font_size == new_sz) && (color == new_color)) return;
 
-    Text updated_text = eng.CreateText(new_txt, new_sz, new_color);
+    Text updated_text = vis.CreateText(new_txt, new_sz, new_color);
 
     *this = std::move(updated_text);
 }

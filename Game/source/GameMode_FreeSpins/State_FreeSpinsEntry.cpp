@@ -7,9 +7,9 @@ void FreeSpinsEntry::OnEntry(single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    prompt = eng.CreateText("PRESS ENTER TO START REELING", 32.0f, eng.RandomColor());
-    bet = eng.CreateText("Bet: " + std::to_string(common_manager.bet), 32.0f);
-    free_spins = eng.CreateText("Free Spins: " + std::to_string(common_manager.free_spins), 32.0f, (single::Color){0, 255, 0, 255});
+    prompt = vis.CreateText("PRESS ENTER TO START REELING", 32.0f, vis.RandomColor());
+    bet = vis.CreateText("Bet: " + std::to_string(common_manager.bet), 32.0f);
+    free_spins = vis.CreateText("Free Spins: " + std::to_string(common_manager.free_spins), 32.0f, (single::Color){0, 255, 0, 255});
 } 
 
 void FreeSpinsEntry::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -23,15 +23,15 @@ void FreeSpinsEntry::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 
 void FreeSpinsEntry::Update(single::Engine& eng, double delta_t) {}
 
-void FreeSpinsEntry::Render(single::Engine& eng) {
+void FreeSpinsEntry::Render() {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 
-    common_manager.GetGrid().RenderGrid(eng);
+    common_manager.GetGrid().RenderGrid(vis);
 
-    eng.RenderText(prompt, 50.0f, 610.0f);
-    eng.RenderText(bet, 50.0f, 650.0f);
-    eng.RenderText(free_spins, 260.0f, 650.0f);
+    vis.RenderText(prompt, 50.0f, 610.0f);
+    vis.RenderText(bet, 50.0f, 650.0f);
+    vis.RenderText(free_spins, 260.0f, 650.0f);
 }
 
 void FreeSpinsEntry::OnExit() {}
