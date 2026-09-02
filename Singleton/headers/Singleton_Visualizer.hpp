@@ -31,24 +31,24 @@ namespace single {
 
         public:
         ~Visualizer() = default;
-        auto Shutdown() -> void;
+        void Init(const Engine& eng);
+        void Shutdown();
 
         static auto GetInstance() -> Visualizer&;
-        auto Init(const Engine& eng) -> void;
 
         auto RandomColor() const -> Color;
 
         auto LoadSprite(const std::string& source_file_path) const -> Sprite;
-        auto RenderSprite(Sprite& sprite, const Rect& dest_rect) const -> void;
+        void RenderSprite(Sprite& sprite, const Rect& dest_rect) const;
         
         auto CreateText(const std::string& txt, float font_sz, const Color& text_color = {255, 255, 255, 255}) const -> Text;
-        auto RenderText(const Text& text, float x, float y) const -> void;
+        void RenderText(const Text& text, float x, float y) const;
 
-        auto RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, const Color& color) const -> void;
-        auto RenderRect(const Rect& rect, const Color& color) const -> void;
-        auto RenderGradient(const Rect& dest_rect, float brightness, double angle, const GradientType& type) const -> void;
+        void RenderLine(float begin_x, float begin_y, float end_x, float end_y, float thickness, const Color& color) const;
+        void RenderRect(const Rect& rect, const Color& color) const;
+        void RenderGradient(const Rect& dest_rect, float brightness, double angle, const GradientType& type) const;
 
-        auto EnableClippedRendering(const Rect& clip_area) const -> void;
-        auto DisableClipping() const -> void;
+        void EnableClippedRendering(const Rect& clip_area) const;
+        void DisableClipping() const;
     };
 }
