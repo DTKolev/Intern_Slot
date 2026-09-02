@@ -10,16 +10,18 @@ Analyzer::Analyzer() : scatters{0} {
         {2, {Direction::forward, Direction::forward, Direction::forward, Direction::forward}},
         {0, {Direction::down, Direction::down, Direction::up, Direction::up}},
         {2, {Direction::up, Direction::up, Direction::down, Direction::down}},
-        {1, {Direction::down, Direction::up, Direction::up, Direction::down}},
-        {1, {Direction::up, Direction::down, Direction::down, Direction::up}}
+        {1, {Direction::down, Direction::forward, Direction::forward, Direction::up}},
+        {1, {Direction::up, Direction::forward, Direction::forward, Direction::down}},
+        {0, {Direction::forward, Direction::down, Direction::down, Direction::forward}},
+        {2, {Direction::forward, Direction::up, Direction::up, Direction::forward}}
     });
 
     pay_table[CellContent::cherry] = {0, 0, 0, 0, 1, 3};
     pay_table[CellContent::lemon] = {0, 0, 0,1, 2, 5};
     pay_table[CellContent::orange] = {0, 0,0,1, 3, 10};
     pay_table[CellContent::bell] = {0, 0, 0, 2, 5, 20};
-    pay_table[CellContent::seven] = {0, 0, 1, 3, 15, 100};
-    pay_table[CellContent::diamond] = {0, 0, 1, 5, 20, 200};
+    pay_table[CellContent::seven] = {0, 0, 0, 3, 15, 100};
+    pay_table[CellContent::diamond] = {0, 0, 0, 5, 20, 200};
 }
 
 
