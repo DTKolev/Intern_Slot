@@ -20,7 +20,7 @@ Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content)
 
 
 
-CellContent Reel::RandomContent(const single::Engine& eng, int last_idx) const {
+auto Reel::RandomContent(const single::Engine& eng, int last_idx) const -> CellContent {
 
     // Values have been calculated externally to acheive wheighted randomness when picking cell content
     last_idx++;
@@ -67,7 +67,7 @@ void Reel::ResetCell(const single::Engine& eng, const GridData& grid_data, Cell&
 
 
 
-double Reel::AccelerationCurve(double min, double max, double time) const {
+auto Reel::AccelerationCurve(double min, double max, double time) const -> double {
 
     double fraction = 2.0 * (time * time * time) - (time * time);
     double result = min + (max - min) * fraction;
@@ -150,7 +150,7 @@ void Reel::SpinReel(const single::Engine& eng, const GridData& grid_data, double
 
 
 
-const Cell& Reel::GetCellAt(const GridData& grid_data, int row) const {
+auto Reel::GetCellAt(const GridData& grid_data, int row) const -> const Cell& {
 
     for (const Cell& cell : cells) {
 
@@ -162,7 +162,7 @@ const Cell& Reel::GetCellAt(const GridData& grid_data, int row) const {
 
 
 
-int Reel::GetScatters(const GridData& grid_data) const {
+auto Reel::GetScatters(const GridData& grid_data) const -> int {
 
     int scatter_amount = 0;
 

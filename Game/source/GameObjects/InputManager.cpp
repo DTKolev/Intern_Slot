@@ -63,19 +63,19 @@ void InputManager::ProcessInput(SDL_Event& input_event) {
 
 
 
-bool InputManager::IsPressed(Key button_id) const {
+auto InputManager::IsPressed(Key button_id) const -> bool {
 
     size_t id = static_cast<size_t>(button_id);
     return buttons[id].has_changed && buttons[id].is_down;
 }
 
-bool InputManager::IsReleased(Key button_id) const {
+auto InputManager::IsReleased(Key button_id) const -> bool {
 
     size_t id = static_cast<size_t>(button_id);
     return buttons[id].has_changed && !buttons[id].is_down;
 }
 
-bool InputManager::IsDown(Key button_id) const {
+auto InputManager::IsDown(Key button_id) const -> bool {
 
     size_t id = static_cast<size_t>(button_id);
     return buttons[id].is_down;

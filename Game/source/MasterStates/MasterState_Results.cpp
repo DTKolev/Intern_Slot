@@ -98,7 +98,7 @@ void MasterResults::OnExit() {
 
 
 
-float MasterResults::CalculateX(int cell_id, const GridData& grid_data, bool reverse_lines) const {
+auto MasterResults::CalculateX(int cell_id, const GridData& grid_data, bool reverse_lines) const -> float {
 
     if (!reverse_lines) {
         return grid_data.grid_x + (float)(cell_id % grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
@@ -109,7 +109,7 @@ float MasterResults::CalculateX(int cell_id, const GridData& grid_data, bool rev
     }
 }
 
-float MasterResults::CalculateY(int cell_id, const GridData& grid_data, bool reverse_lines) const {
+auto MasterResults::CalculateY(int cell_id, const GridData& grid_data, bool reverse_lines) const -> float {
 
     return grid_data.grid_y + (float)(cell_id / grid_data.columns) * grid_data.cell_size + grid_data.cell_size / 2.0f;
 }

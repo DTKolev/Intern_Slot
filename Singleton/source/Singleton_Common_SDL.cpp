@@ -9,7 +9,7 @@
 
 using namespace single;
 
-SDL_Color EngineColorToSDL(const Color& color) {
+auto EngineColorToSDL(const Color& color) -> SDL_Color {
 
     SDL_Color output {
         .r = (Uint8)color.r,
@@ -23,7 +23,7 @@ SDL_Color EngineColorToSDL(const Color& color) {
 
 
 
-bool Color::operator==(const Color& other) const {
+auto Color::operator==(const Color& other) const -> bool{
 
     return (r == other.r) && (g == other.g) && (b == other.b) && (a == other.a);
 }
@@ -72,7 +72,7 @@ SDLObject<SDL_Surface>::SDLObject(const SDLObject<SDL_Surface>& copy_src) {
         raw_pointer = SDL_DuplicateSurface(copy_src.raw_pointer);
     }
 }
-SDLObject<SDL_Surface>& SDLObject<SDL_Surface>::operator=(const SDLObject<SDL_Surface>& copy_src) {
+auto SDLObject<SDL_Surface>::operator=(const SDLObject<SDL_Surface>& copy_src) -> SDLObject<SDL_Surface>& {
 
     if (this == &copy_src) return *this;
 

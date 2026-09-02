@@ -26,7 +26,7 @@ Analyzer::Analyzer() : scatters{0} {
 
 
 
-Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, bool reverse_lines) {
+auto Analyzer::LineCombination(const Line& ln, const Grid& game_grid, bool reverse_lines) -> Combination {
 
     const GridData& grid_data = game_grid.GetGridData();
 
@@ -74,7 +74,7 @@ Combination Analyzer::LineCombination(const Line& ln, const Grid& game_grid, boo
 
 
 
-int Analyzer::CombinationMultiplier(const Combination& combination) const {
+auto Analyzer::CombinationMultiplier(const Combination& combination) const -> int {
 
     if (combination.matching_symbols > 5) return pay_table.at(combination.type)[5];
 
@@ -83,7 +83,7 @@ int Analyzer::CombinationMultiplier(const Combination& combination) const {
 
 
 
-int Analyzer::CalculateMultiplier(const Grid& game_grid, bool reverse_lines) {
+auto Analyzer::CalculateMultiplier(const Grid& game_grid, bool reverse_lines) -> int {
 
     int multiplier = 0;
     winning_lines.clear();
@@ -102,7 +102,7 @@ int Analyzer::CalculateMultiplier(const Grid& game_grid, bool reverse_lines) {
 
 
 
-const std::vector<Line>& Analyzer::GetWinningLines() const {
+auto Analyzer::GetWinningLines() const -> const std::vector<Line>& {
 
     return winning_lines;
 }

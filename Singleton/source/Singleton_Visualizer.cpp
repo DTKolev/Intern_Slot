@@ -40,7 +40,7 @@ void Visualizer::Shutdown() {
 
 
 
-TexturePtr Visualizer::CreateLinearGradient(float w, float h) const {
+auto Visualizer::CreateLinearGradient(float w, float h) const -> TexturePtr {
 
     TexturePtr output = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), w, h);
 
@@ -67,7 +67,7 @@ TexturePtr Visualizer::CreateLinearGradient(float w, float h) const {
     return output;
 }
 
-TexturePtr Visualizer::CreateCenteredGradient(float w, float h) const {
+auto Visualizer::CreateCenteredGradient(float w, float h) const -> TexturePtr {
 
     TexturePtr output = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), w, h);
 
@@ -122,7 +122,7 @@ void Visualizer::RenderGradient(const Rect& dest_rect, float brightness, double 
 
 
 
-Color Visualizer::RandomColor() const {
+auto Visualizer::RandomColor() const -> Color {
 
     double phase = (double)SDL_rand(100);
 
@@ -210,7 +210,7 @@ void Visualizer::RenderRect(const Rect& rect, const Color& color) const {
 
 
 
-Sprite Visualizer::LoadSprite(const std::string& source_file_path) const {
+auto Visualizer::LoadSprite(const std::string& source_file_path) const -> Sprite {
 
     Sprite new_sprite;
 
@@ -264,7 +264,7 @@ void Visualizer::RenderSprite(Sprite& sprite, const Rect& dest_rect) const {
 
 
 
-Text Visualizer::CreateText(const std::string& txt, float font_sz, const Color& text_color) const {
+auto Visualizer::CreateText(const std::string& txt, float font_sz, const Color& text_color) const -> Text {
 
     Text new_text{txt, font_sz};
 

@@ -1,4 +1,4 @@
-#include "../headers/Singleton_Engine.hpp"
+#include "Singleton_Engine.hpp"
 #include "SDL3/SDL.h"
 #include "SDL3_image/SDL_image.h"
 #include "SDL3_ttf/SDL_ttf.h"
@@ -6,7 +6,6 @@
 #include "Singleton_GameState.hpp"
 #include "Singleton_Visualizer.hpp"
 #include <memory>
-#include <variant>
 
 using namespace single;
 
@@ -28,7 +27,7 @@ Engine::Engine(std::string window_title, int window_w, int window_h) :
 
 
 
-int Engine::RandomNumber(int high, int low) const {
+auto Engine::RandomNumber(int high, int low) const -> int {
 
     int range = high - low + 1;
 
@@ -49,7 +48,7 @@ void Engine::RenderOverlayStates(OverlayStatesList::const_iterator start) const 
     }
 }
 
-Engine::OverlayStatesList::const_iterator Engine::FindHighestFullCover() const {
+auto Engine::FindHighestFullCover() const -> OverlayStatesList::const_iterator {
 
     auto highest_cover = overlay_states.end();
 

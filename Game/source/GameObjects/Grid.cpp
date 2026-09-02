@@ -115,7 +115,7 @@ void Grid::RenderGrid(const single::Visualizer& vis) {
 
 
 
-int Grid::ScatterAmount() const {
+auto Grid::ScatterAmount() const -> int {
 
     int total_scatters = 0;
     for (const Reel& reel : reels) {
@@ -167,7 +167,7 @@ void Grid::RemoveExtraReel() {
     data.columns--;
 }
 
-Reel& Grid::GetReel(int column) {
+auto Grid::GetReel(int column) -> Reel& {
 
     return reels.at(column);
 }

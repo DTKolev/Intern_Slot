@@ -20,4 +20,4 @@ void TimeManager::CalcuateDeltaTime() {
 
 
 
-double TimeManager::DeltaTime() const {return delta_t;}
+auto TimeManager::DeltaTime() const -> double {return delta_t;}

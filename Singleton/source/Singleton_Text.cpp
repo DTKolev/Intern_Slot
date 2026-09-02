@@ -13,7 +13,7 @@ Text::Text(Text&& move_src) :
     width{move_src.width}, height{move_src.height}
 {}
 
-Text& Text::operator=(Text&& move_src) {
+auto Text::operator=(Text&& move_src) -> Text& {
 
     content = std::move(move_src.content);
     font_size = move_src.font_size;

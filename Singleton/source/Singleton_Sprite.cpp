@@ -35,7 +35,7 @@ Sprite::Sprite(Sprite&& move_src) : texture{nullptr}, surface{nullptr} {
     surface = std::move(move_src.surface);
 }
 
-Sprite& Sprite::operator=(Sprite&& move_src) {
+auto Sprite::operator=(Sprite&& move_src) -> Sprite& {
 
     texture = std::move(move_src.texture);
     surface = std::move(move_src.surface);
@@ -45,7 +45,7 @@ Sprite& Sprite::operator=(Sprite&& move_src) {
 
 
 
-bool Sprite::Empty() const {
+auto Sprite::Empty() const -> bool {
 
     if (surface == nullptr) return true;
     else return false;

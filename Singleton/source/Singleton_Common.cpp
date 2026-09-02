@@ -49,7 +49,7 @@ Error::Error() : message{"Unspecified error"} {}
 
 Error::Error(std::string msg) : message{msg} {}
 
-const std::string& Error::GetMessage() const {return message;}
+auto Error::GetMessage() const -> const std::string& {return message;}
 
 
 
