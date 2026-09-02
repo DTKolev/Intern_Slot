@@ -7,14 +7,12 @@
 class Betting : public single::GameState {
 
     private:
-    single::Visualizer& vis = single::Visualizer::GetInstance();
-
     single::Text credits;
     single::Text bet;
     single::Text title;
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render() override;
@@ -24,12 +22,10 @@ class Betting : public single::GameState {
 class MainMenu : public single::GameState {
 
     private:
-    single::Visualizer& vis = single::Visualizer::GetInstance();
-
     single::Text title;
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render() override;
@@ -43,7 +39,7 @@ class Reeling : public MasterReeling {
     single::Text title;
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render() override;
 };
@@ -57,7 +53,7 @@ class Results : public MasterResults {
     single::Text extra_reel;
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Render() override;
 };

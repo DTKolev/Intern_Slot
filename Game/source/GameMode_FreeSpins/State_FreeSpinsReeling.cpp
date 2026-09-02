@@ -1,7 +1,7 @@
 #include "GameModes/Mode_FreeSpins.hpp"
 #include <string>
 
-void FreeSpinsReeling::OnEntry(single::Engine& eng) {
+void FreeSpinsReeling::OnEntry(const single::Engine& eng) {
 
     MasterReeling::OnEntry(eng);
 

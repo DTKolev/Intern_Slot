@@ -2,7 +2,7 @@
 #include "MasterStates/MasterState_DoorTransition.hpp"
 #include <string>
 
-void FreeSpinsTransitionIn::OnEntry(single::Engine& eng) {
+void FreeSpinsTransitionIn::OnEntry(const single::Engine& eng) {
 
     MasterDoorTransition::OnEntry(eng);
     title = vis.CreateText("FREE SPINS MODE", 64.0f, vis.RandomColor());

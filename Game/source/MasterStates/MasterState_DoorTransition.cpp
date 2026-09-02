@@ -1,6 +1,6 @@
 #include "MasterStates/MasterState_DoorTransition.hpp"
 
-void MasterDoorTransition::OnEntry(single::Engine& eng) {
+void MasterDoorTransition::OnEntry(const single::Engine& eng) {
 
     wooden_door = vis.LoadSprite("../src/wooden_tiles.png");
 

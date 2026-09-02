@@ -1,6 +1,6 @@
 #include "GameModes/Mode_Regular.hpp"
 
-void Reeling::OnEntry(single::Engine& eng) {
+void Reeling::OnEntry(const single::Engine& eng) {
 
     MasterReeling::OnEntry(eng);
 

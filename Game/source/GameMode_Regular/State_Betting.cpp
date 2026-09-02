@@ -2,7 +2,7 @@
 #include "GameObjects/InputManager.hpp"
 #include "GameObjects/CommonManager.hpp"
 
-void Betting::OnEntry(single::Engine& eng) {
+void Betting::OnEntry(const single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 

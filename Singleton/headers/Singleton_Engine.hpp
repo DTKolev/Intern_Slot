@@ -42,7 +42,7 @@ namespace single {
         public:
         Engine(std::string window_title, int window_w, int window_h);
 
-        int RandomNumber(int high, int low = 0) const;
+        auto RandomNumber(int high, int low = 0) const -> int;
         void Delay(int ms) const;
 
         void Run();

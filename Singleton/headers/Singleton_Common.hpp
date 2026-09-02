@@ -169,7 +169,7 @@ namespace single {
         Error();
         Error(std::string msg);
 
-        const std::string GetMessage() const;
+        auto GetMessage() const -> const std::string&;
     };
 
     class FailedSurfaceCreate : public Error {

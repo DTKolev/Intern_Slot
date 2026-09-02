@@ -1,7 +1,7 @@
 #include "GameModes/Mode_ExtraReel.hpp"
 #include <string>
 
-void ExtraReelResults::OnEntry(single::Engine& eng) {
+void ExtraReelResults::OnEntry(const single::Engine& eng) {
 
     MasterResults::OnEntry(eng);
 

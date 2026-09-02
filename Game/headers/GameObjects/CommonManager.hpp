@@ -15,10 +15,10 @@ class CommonManager {
     CommonManager(const CommonManager& copy_src) = delete;
     CommonManager& operator=(const CommonManager& copy_src) = delete;
 
-    static CommonManager& GetInstance();
+    static auto GetInstance() -> CommonManager&;
 
-    Grid& GetGrid() {return game_grid;}
-    Analyzer& GetAnalyzer() {return analyzer;}
+    auto GetGrid() -> Grid& {return game_grid;}
+    auto GetAnalyzer() -> Analyzer& {return analyzer;}
 
     int credits;
     int bet;

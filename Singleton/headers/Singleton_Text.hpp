@@ -35,7 +35,7 @@ namespace single {
 
         void Update(const Visualizer& vis, const std::string& new_txt, float new_sz, const Color& new_color = {255, 255, 255, 255});
 
-        float GetWidth() const {return width;}
-        float GetHeight() const {return height;}
+        auto GetWidth() const -> float {return width;}
+        auto GetHeight() const -> float {return height;}
     };
 }

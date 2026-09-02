@@ -7,8 +7,6 @@
 class ExtraReelTransitionIn : public single::GameState {
 
     private:
-    single::Visualizer& vis = single::Visualizer::GetInstance();
-
     float target_cell_size;
     float target_grid_y;
 
@@ -29,7 +27,7 @@ class ExtraReelTransitionIn : public single::GameState {
     bool transition_finished;
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render() override;
@@ -39,7 +37,7 @@ class ExtraReelTransitionIn : public single::GameState {
 class ExtraReelReeling : public MasterReeling {
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
 };
@@ -50,7 +48,7 @@ class ExtraReelResults : public MasterResults {
     single::Text outcome;
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Render() override;
 };
@@ -58,8 +56,6 @@ class ExtraReelResults : public MasterResults {
 class ExtraReelTransitionOut : public single::GameState {
 
     private:
-    single::Visualizer& vis = single::Visualizer::GetInstance();
-
     float target_cell_size;
     float target_grid_y;
     float current_cell_size;
@@ -77,7 +73,7 @@ class ExtraReelTransitionOut : public single::GameState {
     bool transition_finished;
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render() override;

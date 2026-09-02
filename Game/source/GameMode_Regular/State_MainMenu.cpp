@@ -1,7 +1,7 @@
 #include "GameModes/Mode_Regular.hpp"
 #include "GameObjects/InputManager.hpp"
 
-void MainMenu::OnEntry(single::Engine& eng) {
+void MainMenu::OnEntry(const single::Engine& eng) {
 
     title = vis.CreateText("Slot Game", 48.0);
 }

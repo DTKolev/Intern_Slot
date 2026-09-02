@@ -3,7 +3,7 @@
 #include "GameObjects/InputManager.hpp"
 #include <string>
 
-void FreeSpinsEntry::OnEntry(single::Engine& eng) {
+void FreeSpinsEntry::OnEntry(const single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
 

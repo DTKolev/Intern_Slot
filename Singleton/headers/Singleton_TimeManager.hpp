@@ -17,6 +17,6 @@ namespace single {
         TimeManager();
 
         void CalcuateDeltaTime();
-        double DeltaTime() const;
+        auto DeltaTime() const -> double;
     };
 }

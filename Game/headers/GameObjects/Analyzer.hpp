@@ -32,13 +32,12 @@ class Analyzer {
 
     int scatters;
 
-    Combination LineCombination(const Line& ln, const Grid& game_grid, bool reverse_lines);
-
-    int CombinationMultiplier(const Combination& combination) const;
+    auto LineCombination(const Line& ln, const Grid& game_grid, bool reverse_lines) -> Combination;
+    auto CombinationMultiplier(const Combination& combination) const -> int;
 
     public:
     Analyzer();
 
-    int CalculateMultiplier(const Grid& game_grid, bool reverse_lines);
-    const std::vector<Line>& GetWinningLines() const;
+    auto CalculateMultiplier(const Grid& game_grid, bool reverse_lines) -> int;
+    auto GetWinningLines() const -> const std::vector<Line>&;
 };

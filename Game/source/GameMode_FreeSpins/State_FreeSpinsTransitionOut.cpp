@@ -4,7 +4,7 @@
 #include "MasterStates/MasterState_DoorTransition.hpp"
 #include <string>
 
-void FreeSpinsTransitionOut::OnEntry(single::Engine& eng) {
+void FreeSpinsTransitionOut::OnEntry(const single::Engine& eng) {
  
     MasterDoorTransition::OnEntry(eng);
     

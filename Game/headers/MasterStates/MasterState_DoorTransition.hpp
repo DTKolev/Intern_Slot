@@ -6,7 +6,6 @@
 class MasterDoorTransition : public single::OverlayState {
 
     protected:
-    single::Visualizer& vis = single::Visualizer::GetInstance();
 
     single::Sprite wooden_door;
 
@@ -24,7 +23,7 @@ class MasterDoorTransition : public single::OverlayState {
 
 
     public:
-    void OnEntry(single::Engine& eng) override;
+    void OnEntry(const single::Engine& eng) override;
     void Update(single::Engine& eng, double delta_t) override;
     void Render() override;
     void OnExit() override;

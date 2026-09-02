@@ -1,7 +1,7 @@
 #include "MasterStates/MasterState_Results.hpp"
 #include <string>
 
-void MasterResults::OnEntry(single::Engine& eng) {
+void MasterResults::OnEntry(const single::Engine& eng) {
 
     Analyzer& analyzer = common_manager.GetAnalyzer();
     Grid& grid = common_manager.GetGrid();

@@ -24,6 +24,6 @@ namespace single {
         Sprite& operator=(const Sprite& copy_src);
         Sprite& operator=(Sprite&& move_src);
 
-        bool Empty() const;
+        auto Empty() const -> bool;
     };
 }

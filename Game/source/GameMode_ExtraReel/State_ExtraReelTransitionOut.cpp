@@ -3,7 +3,7 @@
 #include "GameModes/Mode_FreeSpins.hpp"
 #include "GameObjects/CommonManager.hpp"
 
-void ExtraReelTransitionOut::OnEntry(single::Engine& eng) {
+void ExtraReelTransitionOut::OnEntry(const single::Engine& eng) {
 
     Grid& grid = CommonManager::GetInstance().GetGrid();
     const GridData& grid_data = grid.GetGridData();

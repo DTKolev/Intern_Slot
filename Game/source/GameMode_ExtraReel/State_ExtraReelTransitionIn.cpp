@@ -1,7 +1,7 @@
 #include "GameModes/Mode_ExtraReel.hpp"
 #include "GameObjects/CommonManager.hpp"
 
-void ExtraReelTransitionIn::OnEntry(single::Engine& eng) {
+void ExtraReelTransitionIn::OnEntry(const single::Engine& eng) {
 
     CommonManager& common_manager = CommonManager::GetInstance();
     const GridData& grid_data = common_manager.GetGrid().GetGridData();

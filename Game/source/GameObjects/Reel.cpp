@@ -20,7 +20,7 @@ Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content)
 
 
 
-CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
+CellContent Reel::RandomContent(const single::Engine& eng, int last_idx) const {
 
     // Values have been calculated externally to acheive wheighted randomness when picking cell content
     last_idx++;
@@ -38,7 +38,7 @@ CellContent Reel::RandomContent(single::Engine& eng, int last_idx) const {
 
 
 
-void Reel::ResetCell(single::Engine& eng, const GridData& grid_data, Cell& cell) {
+void Reel::ResetCell(const single::Engine& eng, const GridData& grid_data, Cell& cell) {
 
     cell.location.y -= (float)(grid_data.rows + 1) * grid_data.cell_size;
 
@@ -78,7 +78,7 @@ double Reel::AccelerationCurve(double min, double max, double time) const {
 
 
 
-void Reel::StartReelSpin(single::Engine& eng, const GridData& grid_data) {
+void Reel::StartReelSpin(const single::Engine& eng, const GridData& grid_data) {
 
     animation_finished = false;
     acceleration_timer = 0.0;
@@ -103,7 +103,7 @@ void Reel::SetCellRow(const GridData& grid_data, Cell& cell) {
 
 
 
-void Reel::SpinReel(single::Engine& eng, const GridData& grid_data, double speed, double delta_time, bool reeling) {
+void Reel::SpinReel(const single::Engine& eng, const GridData& grid_data, double speed, double delta_time, bool reeling) {
 
     if (distance_travelled >= grid_data.cell_size) {
 

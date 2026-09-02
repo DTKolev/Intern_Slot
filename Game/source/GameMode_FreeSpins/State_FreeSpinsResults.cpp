@@ -1,7 +1,7 @@
 #include "GameModes/Mode_FreeSpins.hpp"
 #include <string>
 
-void FreeSpinsResults::OnEntry(single::Engine& eng) {
+void FreeSpinsResults::OnEntry(const single::Engine& eng) {
 
     MasterResults::OnEntry(eng);
 

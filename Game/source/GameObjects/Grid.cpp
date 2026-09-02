@@ -16,14 +16,14 @@ Grid::Grid(float x, float y, int rows, int columns, float cell_size) :
 
 
 
-void Grid::PrepareReelSpin(single::Engine& eng) {
+void Grid::PrepareReelSpin(const single::Engine& eng) {
 
     animation_delay = 0.0;
     active_reels = reels.size();
     for (Reel& reel : reels) reel.StartReelSpin(eng, data);
 }
 
-void Grid::SpinReels(single::Engine& eng, double delta_time, bool reeling) {
+void Grid::SpinReels(const single::Engine& eng, double delta_time, bool reeling) {
 
     if (!reeling) {
         animation_delay -= delta_time;

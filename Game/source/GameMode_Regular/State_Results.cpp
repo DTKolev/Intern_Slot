@@ -2,7 +2,7 @@
 #include "GameModes/Mode_FreeSpins.hpp"
 #include "GameModes/Mode_ExtraReel.hpp"
 
-void Results::OnEntry(single::Engine& eng) {
+void Results::OnEntry(const single::Engine& eng) {
 
     MasterResults::OnEntry(eng);
 

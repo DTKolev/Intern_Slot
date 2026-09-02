@@ -1,6 +1,6 @@
 #include "MasterStates/MasterState_Reeling.hpp"
 
-void MasterReeling::OnEntry(single::Engine& eng) {
+void MasterReeling::OnEntry(const single::Engine& eng) {
 
     timer = 1.5;
     reeling = true;

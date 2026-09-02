@@ -31,11 +31,11 @@ class InputManager {
     InputManager(const InputManager& copy_src) = delete;
     InputManager& operator=(const InputManager& copy_src) = delete;
 
-    static InputManager& GetInstance();
+    static auto GetInstance() -> InputManager&;
 
     void ProcessInput(SDL_Event& input_event);
 
-    bool IsPressed(Key button_id) const;
-    bool IsReleased(Key button_id) const;
-    bool IsDown(Key button_id) const;
+    auto IsPressed(Key button_id) const -> bool;
+    auto IsReleased(Key button_id) const -> bool;
+    auto IsDown(Key button_id) const -> bool;
 };
