@@ -14,6 +14,9 @@
 
 namespace single {
 
+    /**
+    * Enumerator class that represents the two possible engine states
+    */
     enum class EngineState {
         on,
         off

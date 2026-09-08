@@ -17,7 +17,7 @@ void MasterReeling::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 
     if ((input_manager.IsReleased(Key::enter) || input_manager.IsReleased(Key::escape)) && timer <= 1.0) {
         if (active_reels == total_columns) reeling = false;
-    }   
+    }
 }
 
 void MasterReeling::Update(single::Engine& eng, double delta_t) {
