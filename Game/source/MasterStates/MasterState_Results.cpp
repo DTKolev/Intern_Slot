@@ -1,5 +1,6 @@
 #include "MasterStates/MasterState_Results.hpp"
 #include <string>
+#include <iostream>
 
 void MasterResults::OnEntry(const single::Engine& eng) {
 
@@ -11,6 +12,8 @@ void MasterResults::OnEntry(const single::Engine& eng) {
     display_win = 0;
     win_display_timer = 0.01;
     win = vis.CreateText("Win: " + std::to_string(display_win), 32.0f);
+
+    LogGameResults();
 
     if (grid.ScatterAmount() >= 3) {
         common_manager.free_spins += 10;
@@ -179,4 +182,15 @@ void MasterResults::DrawCellFrame(const Cell& cell, const single::Color& color) 
     vis.RenderLine(cell_x, cell_y, cell_x + cell_size, cell_y, 10.0f, color);
     vis.RenderLine(cell_x, cell_y + cell_size, cell_x + cell_size, cell_y + cell_size, 10.0f, color);
     vis.RenderLine(cell_x + cell_size, cell_y, cell_x + cell_size, cell_y + cell_size, 10.0f, color);
+}
+
+
+
+void MasterResults::LogGameResults() const {
+    
+    std::string game_mode {"Regular"};
+    if (common_manager.extra_reel_mode) game_mode = "Extra Reel";
+    else if (common_manager.free_spins_mode) game_mode = "Free Spins";
+
+    std::cout << "Bet: " << common_manager.bet << ", Win: " << win_amount << ", Mode: " << game_mode << '\n';
 }

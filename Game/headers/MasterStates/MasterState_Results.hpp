@@ -34,6 +34,8 @@ class MasterResults : public single::GameState {
     void DrawLine(const Line& ln, const single::Color& color) const;
     void DrawCellFrame(const Cell& cell, const single::Color& color) const;
 
+    void LogGameResults() const;
+
 
     public:
     void OnEntry(const single::Engine& eng) override;
