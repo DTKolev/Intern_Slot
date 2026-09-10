@@ -1,6 +1,7 @@
 #include "MasterStates/MasterState_Results.hpp"
+#include "GameObjects/Log.hpp"
+#include <fstream>
 #include <string>
-#include <iostream>
 
 void MasterResults::OnEntry(const single::Engine& eng) {
 
@@ -187,10 +188,54 @@ void MasterResults::DrawCellFrame(const Cell& cell, const single::Color& color) 
 
 
 void MasterResults::LogGameResults() const {
-    
-    std::string game_mode {"Regular"};
-    if (common_manager.extra_reel_mode) game_mode = "Extra Reel";
-    else if (common_manager.free_spins_mode) game_mode = "Free Spins";
 
-    std::cout << "Bet: " << common_manager.bet << ", Win: " << win_amount << ", Mode: " << game_mode << '\n';
+    std::string log_file_name {"../src/game_log.txt"};
+
+    std::ifstream input_str {log_file_name};
+    if (!input_str) {
+        std::cout << "Failed to open file for reading from: " << log_file_name << '\n';
+        return;
+    }
+
+    // Count the number of rows that are already in the log file
+    int row_count = 0;
+    std::string line;
+
+    while (std::getline(input_str, line)) row_count++;
+    input_str.clear();
+    input_str.seekg(0, std::ios::beg);
+
+    // Log file should only contain record from the last 10 spins
+    // Free a row if the file already contains 10 entrees by removing the first row of the file
+    if (row_count >= 10) {
+
+        std::vector<std::string> remaining_lines;
+
+        // Skip the first line of the file and store the remaining ones
+        std::getline(input_str, line); 
+        while (std::getline(input_str, line)) {
+            remaining_lines.push_back(line);
+        }
+        input_str.close();
+
+        std::ofstream temp_out {log_file_name}; // Discard all of the existing file contents
+        if (!temp_out) {
+            std::cout << "Failed to open file for writing from: " << log_file_name << '\n';
+            return;
+        }
+
+        // Re-write all lines from the original file except the first one
+        for (const std::string& remaining_line : remaining_lines) {
+            temp_out << remaining_line << '\n';
+        }
+        temp_out.close();
+    }
+    else input_str.close();
+
+    std::ofstream output_str {log_file_name, std::ios::app};
+
+    Log new_log;
+    new_log.GetLogData(common_manager, win_amount);
+
+    output_str << new_log << '\n';
 }
