@@ -1,11 +1,8 @@
 #include "GameObjects/Log.hpp"
 
-void Log::GetLogData(const CommonManager& common_manager, int win) {
-
-	bet = common_manager.bet;
-	this->win = win;
-	game_mode = "Regular";
-
+Log::Log(const CommonManager& common_manager, int win) :
+	bet{common_manager.bet}, win{win}, game_mode{"Regular"}
+{
 	if (common_manager.extra_reel_mode) game_mode = "Extra Reel";
 	else if (common_manager.free_spins_mode) game_mode = "Free Spins";
 }

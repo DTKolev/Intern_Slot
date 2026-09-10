@@ -13,7 +13,7 @@ private:
 
 	friend std::ostream& operator<<(std::ostream& out_str, const Log& log);
 public:
-	void GetLogData(const CommonManager& common_manager, int win);
+	Log(const CommonManager& common_manager, int win);
 };
 
 std::ostream& operator<<(std::ostream& out_str, const Log& log);

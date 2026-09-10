@@ -1,5 +1,6 @@
 #include "MasterStates/MasterState_Results.hpp"
 #include "GameObjects/Log.hpp"
+#include <filesystem>
 #include <fstream>
 #include <string>
 
@@ -188,54 +189,41 @@ void MasterResults::DrawCellFrame(const Cell& cell, const single::Color& color) 
 
 
 void MasterResults::LogGameResults() const {
+    
+    std::string log_file {"../src/game_log.txt"};
 
-    std::string log_file_name {"../src/game_log.txt"};
+    std::ifstream read_str {log_file};
+    if (!read_str) return;
 
-    std::ifstream input_str {log_file_name};
-    if (!input_str) {
-        std::cout << "Failed to open file for reading from: " << log_file_name << '\n';
-        return;
+    int lines = 0;
+    std::string current_line;
+
+    while (std::getline(read_str, current_line)) lines++;
+    read_str.clear();
+    read_str.seekg(0, std::ios::beg);
+
+    if (lines >= 10) {
+
+        std::string temp_file {"../src/temp.txt"};
+        std::ofstream temp_str {temp_file};
+
+        std::getline(read_str, current_line);
+        while (std::getline(read_str, current_line)) {
+            temp_str << current_line << '\n';
+        }
+
+        read_str.close();
+        temp_str.close();
+
+        std::filesystem::remove(log_file);
+        std::filesystem::rename(temp_file, log_file);
+    }
+    else {
+        read_str.close();
     }
 
-    // Count the number of rows that are already in the log file
-    int row_count = 0;
-    std::string line;
+    std::ofstream write_str {log_file, std::ios::app};
 
-    while (std::getline(input_str, line)) row_count++;
-    input_str.clear();
-    input_str.seekg(0, std::ios::beg);
-
-    // Log file should only contain record from the last 10 spins
-    // Free a row if the file already contains 10 entrees by removing the first row of the file
-    if (row_count >= 10) {
-
-        std::vector<std::string> remaining_lines;
-
-        // Skip the first line of the file and store the remaining ones
-        std::getline(input_str, line); 
-        while (std::getline(input_str, line)) {
-            remaining_lines.push_back(line);
-        }
-        input_str.close();
-
-        std::ofstream temp_out {log_file_name}; // Discard all of the existing file contents
-        if (!temp_out) {
-            std::cout << "Failed to open file for writing from: " << log_file_name << '\n';
-            return;
-        }
-
-        // Re-write all lines from the original file except the first one
-        for (const std::string& remaining_line : remaining_lines) {
-            temp_out << remaining_line << '\n';
-        }
-        temp_out.close();
-    }
-    else input_str.close();
-
-    std::ofstream output_str {log_file_name, std::ios::app};
-
-    Log new_log;
-    new_log.GetLogData(common_manager, win_amount);
-
-    output_str << new_log << '\n';
+    Log new_log {common_manager, win_amount};
+    write_str << new_log << '\n';
 }
