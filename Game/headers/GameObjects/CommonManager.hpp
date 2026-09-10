@@ -12,6 +12,8 @@ class CommonManager {
     CommonManager();
 
     public:
+    ~CommonManager();
+
     CommonManager(const CommonManager& copy_src) = delete;
     CommonManager& operator=(const CommonManager& copy_src) = delete;
 
