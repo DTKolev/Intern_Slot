@@ -41,4 +41,7 @@ void FreeSpinsResults::OnExit() {
     CommonManager& common_manager = CommonManager::GetInstance();
 
     common_manager.free_spins_winnings += win_amount;
+    common_manager.credits += win_amount;
+
+    if (!common_manager.free_spins_mode) common_manager.free_spins_winnings = 0;
 }

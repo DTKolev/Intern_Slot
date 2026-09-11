@@ -21,7 +21,6 @@ void FreeSpinsTransitionOut::Update(single::Engine& eng, double delta_t) {
     CommonManager& common_manager = CommonManager::GetInstance();
 
     if (change_state) {
-        common_manager.credits += common_manager.free_spins_winnings;
         eng.StateChange<Betting>();
     }
     if (transition_finished) eng.RemoveOverlayState();
@@ -41,8 +40,4 @@ void FreeSpinsTransitionOut::Render() {
     }
 }
 
-void FreeSpinsTransitionOut::OnExit() {
-
-    CommonManager& common_manager = CommonManager::GetInstance();
-    common_manager.free_spins_winnings = 0;
-}
+void FreeSpinsTransitionOut::OnExit() {}

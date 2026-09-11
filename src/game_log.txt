@@ -1,10 +1,10 @@
 Bet: 1, Win: 0, Mode: Free Spins
 Bet: 1, Win: 0, Mode: Free Spins
-Bet: 1, Win: 0, Mode: Free Spins
-Bet: 1, Win: 3, Mode: Free Spins
 Bet: 1, Win: 1, Mode: Free Spins
-Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 3, Mode: Regular
+Bet: 1, Win: 3, Mode: Regular
 Bet: 1, Win: 0, Mode: Regular
 Bet: 1, Win: 0, Mode: Regular
+Bet: 1, Win: 6, Mode: Regular
 Bet: 1, Win: 0, Mode: Regular
 Bet: 1, Win: 0, Mode: Regular
