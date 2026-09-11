@@ -1,10 +1,10 @@
-Bet: 5, Win: 0, Mode: Regular
-Bet: 5, Win: 0, Mode: Regular
-Bet: 5, Win: 0, Mode: Extra Reel
-Bet: 5, Win: 0, Mode: Regular
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 3, Mode: Free Spins
+Bet: 1, Win: 1, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
 Bet: 1, Win: 0, Mode: Regular
-Bet: 1, Win: 0, Mode: Regular
-Bet: 1, Win: 0, Mode: Regular
-Bet: 1, Win: 0, Mode: Regular
-Bet: 10, Win: 10, Mode: Regular
-Bet: 10, Win: 60, Mode: Extra Reel

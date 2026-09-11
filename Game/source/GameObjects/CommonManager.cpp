@@ -13,6 +13,13 @@ CommonManager::CommonManager() :
     if (input_str){
         input_str >> credits;
         input_str >> bet;
+
+        int temp_mode;
+        input_str >> temp_mode;
+        free_spins_mode = (bool)temp_mode;
+
+        input_str >> free_spins;
+        input_str >> free_spins_winnings;
     }
 
     const GridData& grid_data = game_grid.GetGridData();
@@ -27,7 +34,11 @@ CommonManager::CommonManager() :
 CommonManager::~CommonManager() {
 
     std::ofstream output_str {"../src/save_file.txt"};
-    output_str << credits << ' ' << bet;
+
+    int mode = 0;
+    if (free_spins_mode) mode = 1;
+
+    output_str << credits << ' ' << bet << ' ' << mode << ' ' << free_spins << ' ' << free_spins_winnings;
 }
 
 

@@ -1,4 +1,5 @@
 #include "GameModes/Mode_FreeSpins.hpp"
+#include "GameModes/Mode_Regular.hpp"
 #include <string>
 
 void FreeSpinsResults::OnEntry(const single::Engine& eng) {
@@ -24,6 +25,7 @@ void FreeSpinsResults::HandleInput(single::Engine& eng, SDL_Event& input_event) 
             eng.AddOverlayState<FreeSpinsTransitionOut>();
         }
     }
+    else if (input_manager.IsReleased(Key::escape)) eng.StateChange<MainMenu>();
 }
 
 void FreeSpinsResults::Render() {

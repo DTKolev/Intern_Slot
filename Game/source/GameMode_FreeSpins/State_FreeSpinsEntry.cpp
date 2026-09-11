@@ -1,4 +1,5 @@
 #include "GameModes/Mode_FreeSpins.hpp"
+#include "GameModes/Mode_Regular.hpp"
 #include "GameObjects/CommonManager.hpp"
 #include "GameObjects/InputManager.hpp"
 #include <string>
@@ -19,6 +20,7 @@ void FreeSpinsEntry::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     input_manager.ProcessInput(input_event);
 
     if (input_manager.IsReleased(Key::enter)) eng.StateChange<FreeSpinsReeling>();
+    else if (input_manager.IsReleased(Key::escape)) eng.StateChange<MainMenu>();
 }
 
 void FreeSpinsEntry::Update(single::Engine& eng, double delta_t) {}
