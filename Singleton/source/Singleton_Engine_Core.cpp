@@ -73,6 +73,7 @@ void Engine::Run() {
             if (input_event.type == SDL_EVENT_QUIT) Quit();
 
             if (overlay_states.empty()) current_game_state->HandleInput(*this, input_event);
+            else overlay_states.back()->HandleInput(*this, input_event);
         }
 
         if(current_state == EngineState::off) break;

@@ -9,10 +9,10 @@ namespace single {
 
     class GameState {
 
-        protected:
+    protected:
         Visualizer& vis = Visualizer::GetInstance();
 
-        public:
+    public:
         GameState() = default;
         virtual ~GameState() = default;
 
@@ -25,18 +25,19 @@ namespace single {
 
     class OverlayState {
 
-        protected:
+    protected:
         Visualizer& vis = Visualizer::GetInstance();
 
         bool covers_entire_screen;
 
         friend class Engine;
 
-        public:
+    public:
         OverlayState() : covers_entire_screen{false} {}
         ~OverlayState() = default;
 
         virtual void OnEntry(const Engine& eng) = 0;
+        virtual void HandleInput(single::Engine& eng, SDL_Event& input_event) {}
         virtual void Update(Engine& eng, double delta_t) = 0;
         virtual void Render() = 0;
         virtual void OnExit() = 0;

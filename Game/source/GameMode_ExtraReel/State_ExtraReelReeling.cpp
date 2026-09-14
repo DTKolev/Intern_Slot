@@ -1,9 +1,10 @@
 #include "GameModes/Mode_ExtraReel.hpp"
+#include "GameObjects/Grid.hpp"
 
 void ExtraReelReeling::OnEntry(const single::Engine& eng) {
 
     Grid& grid = common_manager.GetGrid();
-    grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData());
+    grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData(), {CellContent::empty, CellContent::empty, CellContent::empty});
 
     timer = 1.5;
     reeling = true;

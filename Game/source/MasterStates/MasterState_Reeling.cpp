@@ -1,11 +1,17 @@
 #include "MasterStates/MasterState_Reeling.hpp"
+#include "GameObjects/Grid.hpp"
 
 void MasterReeling::OnEntry(const single::Engine& eng) {
 
     timer = 1.5;
     reeling = true;
 
-    common_manager.GetGrid().PrepareReelSpin(eng);
+    std::vector<CellContent> test = {
+        CellContent::scatter, CellContent::empty, CellContent::empty, CellContent::empty, CellContent::scatter,
+        CellContent::diamond, CellContent::diamond, CellContent::scatter, CellContent::diamond, CellContent::diamond,
+            CellContent::seven, CellContent::scatter, CellContent::seven, CellContent::scatter, CellContent::seven
+    };
+    common_manager.GetGrid().PrepareReelSpin(eng, test);
 }
 
 void MasterReeling::HandleInput(single::Engine& eng, SDL_Event& input_event) {

@@ -2,6 +2,11 @@
 #include "Singleton_Common.hpp"
 #include "Singleton_Visualizer.hpp"
 #include <cmath>
+#include <iostream>
+
+// ****************************************************************
+// Class constructor
+// ****************************************************************
 
 Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content) 
 : reel_x_pos{x_pos}, reel_y_pos{grid_data.grid_y -grid_data.cell_size}, distance_travelled{0.0f}, animation_finished{true} 
@@ -19,11 +24,17 @@ Reel::Reel(float x_pos, const GridData& grid_data, CellContent starting_content)
 }
 
 
+// ****************************************************************
+// Internal utility methods
+// ****************************************************************
 
-auto Reel::RandomContent(const single::Engine& eng, int last_idx) const -> CellContent {
+auto Reel::RandomContent(const single::Engine& eng, const GridData& grid_data) const -> CellContent {
 
     // Values have been calculated externally to acheive wheighted randomness when picking cell content
-    last_idx++;
+    int last_idx = static_cast<int>(CellContent::wild) + 1;
+
+    float last_reel_x = grid_data.grid_x + (float)(grid_data.columns - 1) * grid_data.cell_size;
+    if (reel_x_pos == grid_data.grid_x || reel_x_pos == last_reel_x) last_idx--;
 
     float max_x = std::sqrt((float)last_idx) - 0.05;
     int rng_high = (int)std::floor(max_x * 10.0f);
@@ -37,6 +48,60 @@ auto Reel::RandomContent(const single::Engine& eng, int last_idx) const -> CellC
 }
 
 
+
+void Reel::SetOutcome(const single::Engine& eng, const std::vector<CellContent>& target_outcome, const GridData& grid_data) {
+
+    spin_outcome.clear();
+
+    bool scatter_set = false;
+    for (const CellContent& sample : target_outcome) {
+        if (sample == CellContent::scatter) {
+            scatter_set = true;
+            break;
+        }
+    }
+
+    for (const CellContent& cell_outcome : target_outcome) {
+
+        CellContent result;
+
+        if (cell_outcome == CellContent::empty) {
+
+            bool content_set;
+            do {
+                content_set = true;
+                result = RandomContent(eng, grid_data);
+
+                if (result == CellContent::scatter) {
+                    if (scatter_set) content_set = false;
+                    else scatter_set = true;
+                }
+
+           } while (!content_set);
+        }
+        else {
+            result = cell_outcome;
+        }
+
+        spin_outcome.push_back(result);
+    }
+}
+
+
+auto Reel::AccelerationCurve(double min, double max, double time) const -> double {
+
+    double fraction = 2.0 * (time * time * time) - (time * time);
+    double result = min + (max - min) * fraction;
+
+    if (result > max) return max;
+    else return result;
+}
+
+
+
+// ****************************************************************
+// Cell and reel manipulation
+// ****************************************************************
 
 void Reel::ResetCell(const single::Engine& eng, const GridData& grid_data, Cell& cell) {
 
@@ -54,43 +119,9 @@ void Reel::ResetCell(const single::Engine& eng, const GridData& grid_data, Cell&
     do {
         correct_symbol_found = true;
 
-        int last_idx = static_cast<int>(CellContent::wild);
-        
-        float last_column_x = grid_data.grid_x + (float)(grid_data.columns - 1) * grid_data.cell_size;
-
-        if (reel_x_pos == grid_data.grid_x || reel_x_pos == last_column_x) last_idx--;
-
-        cell.content = RandomContent(eng, last_idx);
+        cell.content = RandomContent(eng, grid_data);
         if (reel_has_scatter && cell.content == CellContent::scatter) correct_symbol_found = false;
     } while (!correct_symbol_found);
-}
-
-
-
-auto Reel::AccelerationCurve(double min, double max, double time) const -> double {
-
-    double fraction = 2.0 * (time * time * time) - (time * time);
-    double result = min + (max - min) * fraction;
-
-    if (result > max) return max;
-    else return result;
-}
-
-
-
-void Reel::StartReelSpin(const single::Engine& eng, const GridData& grid_data) {
-
-    animation_finished = false;
-    acceleration_timer = 0.0;
-    distance_travelled = 0.0f;
-    
-    for (Cell& cell : cells) {
-        if (cell.location.y >= (grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size) - grid_data.cell_size / 5.0f) {
-            ResetCell(eng, grid_data, cell);
-            SetCellRow(grid_data, cell);
-            break;
-        }
-    }
 }
 
 
@@ -99,6 +130,46 @@ void Reel::SetCellRow(const GridData& grid_data, Cell& cell) {
 
     if (cell.location.y < grid_data.grid_y) cell.row = -1;
     else cell.row = (int)std::ceil(cell.location.y - grid_data.grid_y) / (int)grid_data.cell_size; 
+}
+
+
+
+void Reel::RelocateReel(float new_x, const GridData& grid_data) {
+
+    reel_x_pos = new_x;
+    reel_y_pos = grid_data.grid_y -grid_data.cell_size;
+
+    for (Cell& cell : cells) {
+
+        cell.location.x = new_x;
+        cell.location.y = grid_data.grid_y + cell.row * grid_data.cell_size;
+        cell.location.w = grid_data.cell_size;
+        cell.location.h = grid_data.cell_size;
+    }
+}
+
+
+
+// ****************************************************************
+// Rell spin functionality
+// ****************************************************************
+
+void Reel::StartReelSpin(const single::Engine& eng, const GridData& grid_data, const std::vector<CellContent>& target_outcome) {
+
+    animation_finished = false;
+    acceleration_timer = 0.0;
+    distance_travelled = 0.0f;
+    set_cells = 0;
+
+    for (Cell& cell : cells) {
+        if (cell.location.y >= (grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size) - grid_data.cell_size / 5.0f) {
+            ResetCell(eng, grid_data, cell);
+            SetCellRow(grid_data, cell);
+            break;
+        }
+    }
+
+    SetOutcome(eng, target_outcome, grid_data);
 }
 
 
@@ -124,11 +195,27 @@ void Reel::SpinReel(const single::Engine& eng, const GridData& grid_data, double
         else {
 
             for (Cell& cell : cells) {
-                cell.location.y = SDL_roundf(cell.location.y);
-                cell.location.y = grid_data.grid_y + cell.row * grid_data.cell_size;
+                if (set_cells < grid_data.rows) {
+                    if (cell.location.y >= (grid_data.grid_y + (float)grid_data.rows * grid_data.cell_size) - grid_data.cell_size / 5.0f) {
+                        ResetCell(eng, grid_data, cell);
+                        SetCellRow(grid_data, cell);
+                        cell.content = spin_outcome.at(spin_outcome.size() - 1 - set_cells);
+                        set_cells++;
+                        break;
+                    }
+                }
+                else {
+                    SetCellRow(grid_data, cell);
+                    cell.location.y = grid_data.grid_y + cell.row * grid_data.cell_size;
+                    animation_finished = true;
+                }
+
+                distance_travelled = diff;
             }
-            animation_finished = true;
-            distance_travelled = 0.0;
+
+            if (set_cells == grid_data.rows) {
+                distance_travelled = 0.0;
+            }
         }
     }
 
@@ -149,6 +236,9 @@ void Reel::SpinReel(const single::Engine& eng, const GridData& grid_data, double
 
 
 
+// ****************************************************************
+// Getters
+// ****************************************************************
 
 auto Reel::GetCellAt(const GridData& grid_data, int row) const -> const Cell& {
 
@@ -174,6 +264,10 @@ auto Reel::GetScatters(const GridData& grid_data) const -> int {
 }
 
 
+
+// ****************************************************************
+// Rendering
+// ****************************************************************
 
 void Reel::RenderFrame(const single::Visualizer& vis, const GridData& grid_data) const {
 
@@ -260,20 +354,4 @@ void Reel::RenderCells(const single::Visualizer& vis, const GridData& grid_data,
     vis.DisableClipping();
 
     RenderFrame(vis, grid_data);
-}
-
-
-
-void Reel::RelocateReel(float new_x, const GridData& grid_data) {
-
-    reel_x_pos = new_x;
-    reel_y_pos = grid_data.grid_y -grid_data.cell_size;
-
-    for (Cell& cell : cells) {
-
-        cell.location.x = new_x;
-        cell.location.y = grid_data.grid_y + cell.row * grid_data.cell_size;
-        cell.location.w = grid_data.cell_size;
-        cell.location.h = grid_data.cell_size;
-    }
 }
