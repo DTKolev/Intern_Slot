@@ -13,8 +13,11 @@ void DebugPickCell::OnEntry(const single::Engine& eng) {
 	GridData grid_data = debug_grid.GetGridData();
 
 	debug_manager.ClearDebugInput();
-
 	debug_manager.GetGrid().UpdateGridState();
+
+	debug_manager.debug_config_available = false;
+
+	debug_manager.cursor = {0, 0};
 }
 
 void DebugPickCell::HandleInput(single::Engine& eng, SDL_Event& input_event) {
@@ -48,7 +51,22 @@ void DebugPickCell::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 	}
 }
 
-void DebugPickCell::Update(single::Engine& eng, double delta_t) {}
+void DebugPickCell::Update(single::Engine& eng, double delta_t) {
+
+	if (debug_manager.scatters_set == 2 && !debug_manager.extra_reel_added) {
+
+		GridData grid_data = debug_manager.GetGrid().GetGridData();
+		debug_manager.GetGrid().AddExtraReel(grid_data.grid_x + (float)grid_data.columns * grid_data.cell_size);
+
+		debug_manager.extra_reel_added = true;
+	}
+	else if (debug_manager.scatters_set != 2 && debug_manager.extra_reel_added) {
+
+		debug_manager.GetGrid().RemoveExtraReel();
+		debug_manager.extra_reel_added = false;
+	}
+
+}
 
 void DebugPickCell::Render() {
 
@@ -58,4 +76,12 @@ void DebugPickCell::Render() {
 
 }
 
-void DebugPickCell::OnExit() {}
+void DebugPickCell::OnExit() {
+
+	for (const CellContent& sample : debug_manager.GetGrid().ExportState()) {
+		if (sample != CellContent::empty) {
+			debug_manager.debug_config_available = true;
+			break;
+		}
+	}
+}

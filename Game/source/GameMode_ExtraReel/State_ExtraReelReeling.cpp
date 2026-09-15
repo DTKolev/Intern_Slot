@@ -1,10 +1,13 @@
 #include "GameModes/Mode_ExtraReel.hpp"
 #include "GameObjects/Grid.hpp"
+#include "GameObjects/DebugManager.hpp"
 
 void ExtraReelReeling::OnEntry(const single::Engine& eng) {
 
+    DebugManager& debug_manager = DebugManager::GetInstance();
     Grid& grid = common_manager.GetGrid();
-    grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData(), {CellContent::empty, CellContent::empty, CellContent::empty});
+
+    grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData(), debug_manager.extra_reel_added, debug_manager.ExportExtraReelState());
 
     timer = 1.5;
     reeling = true;

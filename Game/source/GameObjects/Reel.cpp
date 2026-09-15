@@ -1,3 +1,4 @@
+#include "GameObjects/DebugManager.hpp"
 #include "GameObjects/Grid.hpp"
 #include "Singleton_Common.hpp"
 #include "Singleton_Visualizer.hpp"
@@ -49,41 +50,65 @@ auto Reel::RandomContent(const single::Engine& eng, const GridData& grid_data) c
 
 
 
-void Reel::SetOutcome(const single::Engine& eng, const std::vector<CellContent>& target_outcome, const GridData& grid_data) {
+void Reel::SetOutcome(const single::Engine& eng, bool config_available, const std::vector<CellContent>& target_outcome, const GridData& grid_data) {
 
     spin_outcome.clear();
 
     bool scatter_set = false;
-    for (const CellContent& sample : target_outcome) {
-        if (sample == CellContent::scatter) {
-            scatter_set = true;
-            break;
+    if (config_available) {
+
+        for (const CellContent& sample : target_outcome) {
+            if (sample == CellContent::scatter) {
+                scatter_set = true;
+                break;
+            }
+        }
+
+        for (const CellContent& cell_outcome : target_outcome) {
+
+            CellContent result;
+
+            if (cell_outcome == CellContent::empty) {
+
+                bool content_set;
+                do {
+                    content_set = true;
+                    result = RandomContent(eng, grid_data);
+
+                    if (result == CellContent::scatter) {
+                        if (scatter_set || DebugManager::GetInstance().scatters_set != 0) content_set = false;
+                        else scatter_set = true;
+                    }
+
+               } while (!content_set);
+            }
+            else {
+                result = cell_outcome;
+            }
+
+            spin_outcome.push_back(result);
         }
     }
+    else { // !config_available
 
-    for (const CellContent& cell_outcome : target_outcome) {
+        for (int row = 0; row <grid_data.rows; row++) {
 
-        CellContent result;
-
-        if (cell_outcome == CellContent::empty) {
-
+            CellContent result;
             bool content_set;
-            do {
+
+            do{
                 content_set = true;
+
                 result = RandomContent(eng, grid_data);
 
                 if (result == CellContent::scatter) {
                     if (scatter_set) content_set = false;
                     else scatter_set = true;
                 }
+            } while (!content_set);
 
-           } while (!content_set);
+            spin_outcome.push_back(result);
         }
-        else {
-            result = cell_outcome;
-        }
-
-        spin_outcome.push_back(result);
     }
 }
 
@@ -154,7 +179,7 @@ void Reel::RelocateReel(float new_x, const GridData& grid_data) {
 // Rell spin functionality
 // ****************************************************************
 
-void Reel::StartReelSpin(const single::Engine& eng, const GridData& grid_data, const std::vector<CellContent>& target_outcome) {
+void Reel::StartReelSpin(const single::Engine& eng, const GridData& grid_data, bool config_available, const std::vector<CellContent>& target_outcome) {
 
     animation_finished = false;
     acceleration_timer = 0.0;
@@ -169,7 +194,7 @@ void Reel::StartReelSpin(const single::Engine& eng, const GridData& grid_data, c
         }
     }
 
-    SetOutcome(eng, target_outcome, grid_data);
+    SetOutcome(eng, config_available, target_outcome, grid_data);
 }
 
 

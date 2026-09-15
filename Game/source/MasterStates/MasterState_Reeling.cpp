@@ -9,7 +9,8 @@ void MasterReeling::OnEntry(const single::Engine& eng) {
     timer = 1.5;
     reeling = true;
 
-    common_manager.GetGrid().PrepareReelSpin(eng, debug_manager.ExportState());
+    common_manager.GetGrid().PrepareReelSpin(eng, debug_manager.debug_config_available, debug_manager.ExportState());
+    debug_manager.debug_config_available = false; // Debug config consumed
 }
 
 void MasterReeling::HandleInput(single::Engine& eng, SDL_Event& input_event) {

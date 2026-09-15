@@ -40,6 +40,7 @@ void DebugSetCell::Render() {}
 void DebugSetCell::OnExit() {
 
 	debug_manager.cursor_color = {255, 0, 0, 255};
+	debug_manager.scatters_set = debug_manager.GetGrid().ScatterAmount();
 }
 
 

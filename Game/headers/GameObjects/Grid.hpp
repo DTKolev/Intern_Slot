@@ -59,7 +59,7 @@ private:
     // Reeling outcome control
     std::vector<CellContent> spin_outcome;
     int set_cells;
-    void SetOutcome(const single::Engine& eng, const std::vector<CellContent>& target_outcome, const GridData& grid_data);
+    void SetOutcome(const single::Engine& eng, bool config_available, const std::vector<CellContent>& target_outcome, const GridData& grid_data);
 
     // Cell manipulation
     void ResetCell(const single::Engine& eng, const GridData& grid_data, Cell& cell);
@@ -74,7 +74,7 @@ public:
     Reel(float x_pos, const GridData& grid_data, CellContent starting_content = CellContent::empty);
 
     // Reel spin controls
-    void StartReelSpin(const single::Engine& eng, const GridData& grid_data, const std::vector<CellContent>& target_outcome);
+    void StartReelSpin(const single::Engine& eng, const GridData& grid_data, bool config_available, const std::vector<CellContent>& target_outcome);
     void SpinReel(const single::Engine& eng, const GridData& grid_data, double speed, double delta_time, bool reeling);
 
     // Getters
@@ -127,7 +127,7 @@ private:
     Grid(float x, float y, int rows, int columns, float cell_size);
 
     // Animation controls
-    void PrepareReelSpin(const single::Engine& eng, const std::vector<CellContent>& target_state);
+    void PrepareReelSpin(const single::Engine& eng, bool config_available, const std::vector<CellContent>& target_state);
     void SpinReels(const single::Engine& eng, double delta_time, bool reeling);
 
     // Rendering

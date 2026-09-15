@@ -24,4 +24,11 @@ public:
 	void RenderCursor(const single::Visualizer& vis) const;
 	Cursor cursor;
 	single::Color cursor_color;
+	
+	bool debug_config_available;
+
+	int scatters_set;
+	bool extra_reel_added;
+	std::vector<CellContent> extra_reel_outcome;
+	auto ExportExtraReelState() -> std::vector<CellContent>;
 };

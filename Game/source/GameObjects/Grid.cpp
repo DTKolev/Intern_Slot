@@ -16,7 +16,7 @@ Grid::Grid(float x, float y, int rows, int columns, float cell_size) :
 
 
 
-void Grid::PrepareReelSpin(const single::Engine& eng, const std::vector<CellContent>& target_state) {
+void Grid::PrepareReelSpin(const single::Engine& eng, bool config_available, const std::vector<CellContent>& target_state) {
 
     animation_delay = 0.0;
     active_reels = reels.size();
@@ -25,12 +25,14 @@ void Grid::PrepareReelSpin(const single::Engine& eng, const std::vector<CellCont
 
         std::vector<CellContent> reel_outcome;
 
-        for (int row = 0; row < data.rows; row++) {
-            CellContent sample = target_state.at(i + row * data.columns);
-            reel_outcome.push_back(sample);
+        if (config_available) {
+            for (int row = 0; row < data.rows; row++) {
+                CellContent sample = target_state.at(i + row * data.columns);
+                reel_outcome.push_back(sample);
+            }
         }
 
-        reels[i].StartReelSpin(eng, data, reel_outcome);
+        reels[i].StartReelSpin(eng, data, config_available, reel_outcome);
     }
 }
 
