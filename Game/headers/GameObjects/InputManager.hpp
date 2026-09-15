@@ -8,6 +8,7 @@ enum class Key {
     up, down, left, right,
     plus, minus,
     escape, enter, shift,
+    d,
     amount
 };
 

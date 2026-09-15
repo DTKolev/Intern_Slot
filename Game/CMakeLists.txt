@@ -4,6 +4,7 @@ file(GLOB GAME_SRC
     "source/GameMode_ExtraReel/*.cpp"
     "source/GameMode_FreeSpins/*.cpp"
     "source/GameMode_Regular/*.cpp"
+    "source/GameMode_Debug/*.cpp"
     "source/GameObjects/*.cpp"
     "source/MasterStates/*.cpp"
 )

@@ -78,7 +78,7 @@ public:
     void SpinReel(const single::Engine& eng, const GridData& grid_data, double speed, double delta_time, bool reeling);
 
     // Getters
-    auto GetCellAt(const GridData& grid_data, int row) const -> const Cell&;
+    auto GetCellAt(const GridData& grid_data, int row) -> Cell&;
     auto GetScatters(const GridData& grid_data) const -> int;
     auto AnimationFinished() const -> bool {return animation_finished;}
     auto GetPosX() const -> float {return reel_x_pos;}
@@ -145,6 +145,7 @@ private:
     auto ReelingFinished() const -> bool {return reeling_finished;}
     auto GetActiveReels() const -> int {return active_reels;}
     auto GetReel(int column) -> Reel&;
+    auto GetCellAt(int row, int column) -> Cell&;
 
     // Grid re-location
     void RelocateGrid(float new_x, float new_y, float new_cell_size);

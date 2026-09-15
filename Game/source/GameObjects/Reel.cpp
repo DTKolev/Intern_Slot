@@ -240,9 +240,9 @@ void Reel::SpinReel(const single::Engine& eng, const GridData& grid_data, double
 // Getters
 // ****************************************************************
 
-auto Reel::GetCellAt(const GridData& grid_data, int row) const -> const Cell& {
+auto Reel::GetCellAt(const GridData& grid_data, int row) -> Cell& {
 
-    for (const Cell& cell : cells) {
+    for (Cell& cell : cells) {
 
         if (cell.row == row) return cell;
     }

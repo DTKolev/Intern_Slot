@@ -10,6 +10,7 @@ InputManager::InputManager() {
     bindings[SDLK_ESCAPE] = Key::escape;
     bindings[SDLK_LSHIFT] = Key::shift;
     bindings[SDLK_RSHIFT] = Key::shift;
+    bindings[SDLK_D] = Key::d;
     bindings[SDLK_UP] = Key::up;
     bindings[SDLK_DOWN] = Key::down;
     bindings[SDLK_LEFT] = Key::left;

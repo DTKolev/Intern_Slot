@@ -1,27 +1,21 @@
 #pragma once
 
-#include "Singleton.hpp"
 #include "GameObjects/Grid.hpp"
+#include "Singleton.hpp"
+#include "GameObjects/DebugManager.hpp"
+#include "GameObjects/CommonManager.hpp"
+#include "GameObjects/InputManager.hpp"
 #include "Singleton_Engine.hpp"
 #include "Singleton_GameState.hpp"
 
-struct Cursor {
-	int row;
-	int column;
-};
 
-class DebugManager {
-
-private:
-	Grid debug_grid;
-	DebugManager();
-
-public:
-	static auto GetInstance() -> DebugManager&;
-	auto ExportGridData() -> GridData const;
-};
 
 class DebugPickCell : public single::GameState {
+
+private:
+	CommonManager& common_manager = CommonManager::GetInstance();
+	InputManager& input_manager = InputManager::GetInstance();
+	DebugManager& debug_manager = DebugManager::GetInstance();
 
 public:
 	void OnEntry(const single::Engine& eng) override;
@@ -32,6 +26,16 @@ public:
 };
 
 class DebugSetCell : public single::OverlayState {
+
+private:
+	CommonManager& common_manager = CommonManager::GetInstance();
+	InputManager& input_manager = InputManager::GetInstance();
+	DebugManager& debug_manager = DebugManager::GetInstance();
+
+	CellContent sample_cell_content;
+	bool reel_has_scatter;
+
+	auto SetContent(CellContent start, bool increment) const -> CellContent;
 
 public:
 	void OnEntry(const single::Engine& eng) override;

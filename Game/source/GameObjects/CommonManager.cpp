@@ -27,7 +27,7 @@ CommonManager::CommonManager() :
     float cell_size = 175.0f;
     float pos_x = 500.0f - ((float)grid_data.columns * cell_size) / 2.0f;
     float pos_y = 300.0f - ((float)grid_data.rows * cell_size) / 2.0f;
-    
+
     game_grid.RelocateGrid(pos_x, pos_y, cell_size);
 }
 

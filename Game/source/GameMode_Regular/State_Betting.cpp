@@ -1,6 +1,8 @@
 #include "GameModes/Mode_Regular.hpp"
+#include "GameModes/Mode_Debug.hpp"
 #include "GameObjects/InputManager.hpp"
 #include "GameObjects/CommonManager.hpp"
+#include <iostream>
 
 void Betting::OnEntry(const single::Engine& eng) {
 
@@ -25,6 +27,10 @@ void Betting::HandleInput(single::Engine& eng, SDL_Event& input_event) {
     }
     if (input_manager.IsReleased(Key::down)) {
         if (common_manager.bet - 1 >= 1) common_manager.bet--;
+    }
+
+    if (input_manager.IsReleased(Key::d)) {
+        eng.StateChange<DebugPickCell>();
     }
 
     if (input_manager.IsReleased(Key::enter)) {

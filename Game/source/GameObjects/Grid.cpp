@@ -182,3 +182,8 @@ auto Grid::GetReel(int column) -> Reel& {
 
     return reels.at(column);
 }
+
+auto Grid::GetCellAt(int row, int column) -> Cell& {
+
+    return reels.at(column).GetCellAt(data, row);
+}
