@@ -1,10 +1,10 @@
-Bet: 1, Win: 0, Mode: Extra Reel
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 200, Mode: Free Spins
 Bet: 1, Win: 0, Mode: Regular
-Bet: 1, Win: 0, Mode: Extra Reel
-Bet: 1, Win: 0, Mode: Regular
-Bet: 1, Win: 840, Mode: Regular
-Bet: 1, Win: 1200, Mode: Extra Reel
-Bet: 1, Win: 0, Mode: Regular
-Bet: 1, Win: 0, Mode: Regular
-Bet: 1, Win: 1, Mode: Regular
-Bet: 1, Win: 0, Mode: Regular
+Bet: 1, Win: 1800, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 1, Mode: Free Spins
+Bet: 1, Win: 101, Mode: Free Spins
+Bet: 1, Win: 0, Mode: Free Spins
+Bet: 1, Win: 15, Mode: Free Spins

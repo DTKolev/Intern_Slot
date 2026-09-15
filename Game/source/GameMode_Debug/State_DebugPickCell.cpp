@@ -53,7 +53,7 @@ void DebugPickCell::HandleInput(single::Engine& eng, SDL_Event& input_event) {
 
 void DebugPickCell::Update(single::Engine& eng, double delta_t) {
 
-	if (debug_manager.scatters_set == 2 && !debug_manager.extra_reel_added) {
+	if (debug_manager.scatters_set == 2 && !debug_manager.extra_reel_added && !common_manager.free_spins_mode) {
 
 		GridData grid_data = debug_manager.GetGrid().GetGridData();
 		debug_manager.GetGrid().AddExtraReel(grid_data.grid_x + (float)grid_data.columns * grid_data.cell_size);
@@ -62,8 +62,13 @@ void DebugPickCell::Update(single::Engine& eng, double delta_t) {
 	}
 	else if (debug_manager.scatters_set != 2 && debug_manager.extra_reel_added) {
 
-		debug_manager.GetGrid().RemoveExtraReel();
-		debug_manager.extra_reel_added = false;
+		Grid& debug_grid = debug_manager.GetGrid();
+		GridData grid_data = debug_grid.GetGridData();
+
+		if (debug_grid.GetReel(grid_data.columns - 1).GetScatters(grid_data) == 0) {
+			debug_manager.GetGrid().RemoveExtraReel();
+			debug_manager.extra_reel_added = false;
+		}
 	}
 
 }

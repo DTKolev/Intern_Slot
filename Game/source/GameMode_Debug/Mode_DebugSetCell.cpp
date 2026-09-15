@@ -59,21 +59,24 @@ auto DebugSetCell::SetContent(CellContent start, bool increment) const -> CellCo
 	current_content_idx += change;
 	current_content_idx %= last_idx + 1;
 
-	bool reel_first_or_last = debug_manager.cursor.column == 0 || debug_manager.cursor.column == grid_data.columns - 1;
+	bool reel_is_first = debug_manager.cursor.column == 0;
+	bool reel_is_last = debug_manager.cursor.column == grid_data.columns - 1;
+
+	bool extra_reel_has_scatter = debug_manager.extra_reel_added && (debug_manager.GetGrid().GetReel(grid_data.columns - 1).GetScatters(grid_data) != 0);
 	
 	bool correct_content_found;
 
 	do {
 		correct_content_found = true;
 
-		if (reel_first_or_last && current_content_idx == static_cast<int>(CellContent::wild)) {
+		if ((reel_is_first || (reel_is_last && debug_manager.extra_reel_added)) && current_content_idx == static_cast<int>(CellContent::wild)) {
 			current_content_idx += change;
 			current_content_idx %= last_idx + 1;
 			
 			correct_content_found = false;
 		}
 
-		if (reel_has_scatter && current_content_idx == static_cast<int>(CellContent::scatter)) {
+		if ((extra_reel_has_scatter || reel_has_scatter) && current_content_idx == static_cast<int>(CellContent::scatter)) {
 			current_content_idx += change;
 			current_content_idx %= last_idx + 1;
 

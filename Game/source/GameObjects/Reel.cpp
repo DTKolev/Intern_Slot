@@ -3,7 +3,6 @@
 #include "Singleton_Common.hpp"
 #include "Singleton_Visualizer.hpp"
 #include <cmath>
-#include <iostream>
 
 // ****************************************************************
 // Class constructor
