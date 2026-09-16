@@ -1,5 +1,10 @@
 #include "GameObjects/CommonManager.hpp"
 #include <fstream>
+#include <filesystem>
+
+#if defined(__linux__)
+#include <unistd.h>
+#endif
 
 CommonManager::CommonManager() : 
     game_grid{0.0f, 0.0f, 3, 5, 200.0f},
@@ -9,7 +14,10 @@ CommonManager::CommonManager() :
     extra_reel_mode{false},
     reverse_lines{false}
 {
-    std::ifstream input_str {"../src/save_file.txt"};
+    std::string base_path = GetBinaryPath();
+    save_file_path = base_path + "../src/save_file.txt";
+
+    std::ifstream input_str {save_file_path};
     if (input_str){
         input_str >> credits;
         input_str >> bet;
@@ -33,7 +41,7 @@ CommonManager::CommonManager() :
 
 CommonManager::~CommonManager() {
 
-    std::ofstream output_str {"../src/save_file.txt"};
+    std::ofstream output_str {save_file_path};
 
     int mode = 0;
     if (free_spins_mode) mode = 1;
@@ -47,4 +55,22 @@ CommonManager& CommonManager::GetInstance() {
 
     static CommonManager manager;
     return manager;
+}
+
+
+
+auto CommonManager::GetBinaryPath() const -> std::string {
+
+    std::filesystem::path binary_path;
+
+#if defined(__linux__)
+    binary_path = std::filesystem::read_symlink("/proc/self/exe");
+#else
+    return "";
+#endif
+
+    std::filesystem::path binary_dir = binary_path.parent_path();
+    binary_dir /= "";
+
+    return binary_dir.generic_string();
 }

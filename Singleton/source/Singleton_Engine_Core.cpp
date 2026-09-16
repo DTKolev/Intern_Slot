@@ -20,7 +20,7 @@ Engine::Engine(std::string window_title, int window_w, int window_h) :
 
     Visualizer& vis = Visualizer::GetInstance();
 
-    window = std::make_unique<SDLObject<SDL_Window>>("Slot Game", window_w, window_h);
+    window = MakeSDLWindow("Slot Game", window_w, window_h);
 
     vis.Init(*this);
 }
@@ -78,8 +78,8 @@ void Engine::Run() {
 
         if(current_state == EngineState::off) break;
 
-        SDL_SetRenderDrawColor(vis.renderer->Get(), 0, 0, 0, 255);
-        SDL_RenderClear(vis.renderer->Get());
+        SDL_SetRenderDrawColor(vis.renderer.get(), 0, 0, 0, 255);
+        SDL_RenderClear(vis.renderer.get());
 
         if (!overlay_states.empty()) overlay_states.back()->Update(*this, time_manager.DeltaTime());
         else current_game_state->Update(*this, time_manager.DeltaTime());
@@ -95,7 +95,7 @@ void Engine::Run() {
             RenderOverlayStates(overlay_states.begin());
         }
 
-        SDL_RenderPresent(vis.renderer->Get());
+        SDL_RenderPresent(vis.renderer.get());
 
         time_manager.CalcuateDeltaTime();
     }

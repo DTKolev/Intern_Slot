@@ -1,5 +1,6 @@
 #include "../headers/Singleton_Sprite.hpp"
 #include "SDL3/SDL.h"
+#include "Singleton_Common.hpp"
 
 using namespace single;
 
@@ -10,7 +11,7 @@ Sprite::Sprite() : texture{nullptr}, surface{nullptr} {}
 Sprite::Sprite(const Sprite& copy_src) : texture{nullptr}, surface{nullptr} {
 
     if (copy_src.surface != nullptr) {
-        surface = std::make_unique<SDLObject<SDL_Surface>>(*copy_src.surface.get());
+        surface = CopySDLSurface(copy_src.surface.get());
     }
 }
 
@@ -21,7 +22,7 @@ Sprite& Sprite::operator=(const Sprite& copy_src) {
     }
 
     if (copy_src.surface != nullptr) {
-        surface = std::make_unique<SDLObject<SDL_Surface>>(*copy_src.surface.get());
+        surface = CopySDLSurface(copy_src.surface.get());
     }
 
     return *this;

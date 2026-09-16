@@ -2,6 +2,7 @@
 
 #include "Grid.hpp"
 #include "Analyzer.hpp"
+#include <string>
 
 class CommonManager {
 
@@ -10,6 +11,9 @@ class CommonManager {
     Analyzer analyzer;
 
     CommonManager();
+
+    std::string save_file_path;
+    auto GetBinaryPath() const -> std::string;
 
     public:
     ~CommonManager();

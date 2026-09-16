@@ -34,7 +34,7 @@ namespace single {
 
     public:
         OverlayState() : covers_entire_screen{false} {}
-        ~OverlayState() = default;
+        virtual ~OverlayState() = default;
 
         virtual void OnEntry(const Engine& eng) = 0;
         virtual void HandleInput(single::Engine& eng, SDL_Event& input_event) {}

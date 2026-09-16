@@ -16,8 +16,8 @@ Visualizer& Visualizer::GetInstance() {
 
 void Visualizer::Init(const Engine& eng) {
 
-    renderer = std::make_unique<SDLObject<SDL_Renderer>>(eng.window->Get());
-    font = std::make_unique<SDLObject<TTF_Font>>("../src/JetBrainsMono-Bold.ttf", 24.0);
+    renderer = MakeSDLRenderer(eng.window.get());
+    font = MakteTTFFont("../src/JetBrainsMono-Bold.ttf", 24.0);
 
     gradient_textures.emplace_back(CreateLinearGradient(100.0f, 100.0f));
     gradient_textures.emplace_back(CreateCenteredGradient(100.0f, 100.0f));
@@ -38,12 +38,12 @@ void Visualizer::Shutdown() {
 
 auto Visualizer::CreateLinearGradient(float w, float h) const -> TexturePtr {
 
-    TexturePtr output = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), w, h);
+    TexturePtr output = MakeSDLTexture(renderer.get(), w, h);
 
-    SDL_SetRenderTarget(renderer->Get(), output->Get());
+    SDL_SetRenderTarget(renderer.get(), output.get());
 
-    SDL_SetRenderDrawColor(renderer->Get(), 0, 0, 0, 0);
-    SDL_RenderClear(renderer->Get());
+    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
+    SDL_RenderClear(renderer.get());
 
     SDL_FColor opaque_black {0.0f, 0.0f, 0.0f, 1.0f};
     SDL_FColor transparent {0.0f, 0.0f, 0.0f, 0.0f};
@@ -57,20 +57,20 @@ auto Visualizer::CreateLinearGradient(float w, float h) const -> TexturePtr {
 
     int indices[6] = {0, 1, 2, 1, 2, 3};
 
-    SDL_RenderGeometry(renderer->Get(), nullptr, vertices, 4, indices, 6);
-    SDL_SetRenderTarget(renderer->Get(), nullptr);
+    SDL_RenderGeometry(renderer.get(), nullptr, vertices, 4, indices, 6);
+    SDL_SetRenderTarget(renderer.get(), nullptr);
 
     return output;
 }
 
 auto Visualizer::CreateCenteredGradient(float w, float h) const -> TexturePtr {
 
-    TexturePtr output = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), w, h);
+    TexturePtr output = MakeSDLTexture(renderer.get(), w, h);
 
-    SDL_SetRenderTarget(renderer->Get(), output->Get());
+    SDL_SetRenderTarget(renderer.get(), output.get());
 
-    SDL_SetRenderDrawColor(renderer->Get(), 0, 0, 0, 0);
-    SDL_RenderClear(renderer->Get());
+    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
+    SDL_RenderClear(renderer.get());
 
     SDL_FColor opaque_black {0.0f, 0.0f, 0.0f, 1.0f};
     SDL_FColor transparent {0.0f, 0.0f, 0.0f, 0.0f};
@@ -86,8 +86,8 @@ auto Visualizer::CreateCenteredGradient(float w, float h) const -> TexturePtr {
 
     int indices[12] = {0,1,2,1,2,3,2,3,4,3,4,5};
 
-    SDL_RenderGeometry(renderer->Get(), nullptr, vertices, 6, indices, 12);
-    SDL_SetRenderTarget(renderer->Get(), nullptr);
+    SDL_RenderGeometry(renderer.get(), nullptr, vertices, 6, indices, 12);
+    SDL_SetRenderTarget(renderer.get(), nullptr);
 
     return output;
 }
@@ -105,11 +105,11 @@ void Visualizer::RenderGradient(const Rect& dest_rect, float brightness, double 
 
     Uint8 alpha = (Uint8)(brightness * 255.0f);
 
-    SDL_SetTextureAlphaMod(gradient_textures[gradient_idx]->Get(), alpha);
-    SDL_SetTextureBlendMode(gradient_textures[gradient_idx]->Get(), SDL_BLENDMODE_MUL);
+    SDL_SetTextureAlphaMod(gradient_textures[gradient_idx].get(), alpha);
+    SDL_SetTextureBlendMode(gradient_textures[gradient_idx].get(), SDL_BLENDMODE_MUL);
 
     SDL_RenderTextureRotated(
-        renderer->Get(), gradient_textures[gradient_idx]->Get(),
+        renderer.get(), gradient_textures[gradient_idx].get(),
         nullptr, &sdl_rect, 
         angle, nullptr, 
         SDL_FLIP_NONE
@@ -140,12 +140,12 @@ void Visualizer::EnableClippedRendering(const Rect& clip_area) const {
         .h = (int)clip_area.h
     };
 
-    SDL_SetRenderClipRect(renderer->Get(), &clip_sdl);
+    SDL_SetRenderClipRect(renderer.get(), &clip_sdl);
 }
 
 void Visualizer::DisableClipping() const {
 
-    SDL_SetRenderClipRect(renderer->Get(), nullptr);
+    SDL_SetRenderClipRect(renderer.get(), nullptr);
 }
 
 
@@ -186,7 +186,7 @@ void Visualizer::RenderLine(float begin_x, float begin_y, float end_x, float end
 
     int indecies[] = {0, 1, 2, 1, 2, 3, 0, 1, 4, 2, 3, 5};
 
-    SDL_RenderGeometry(renderer->Get(), nullptr, vertecies, 6, indecies, 12);
+    SDL_RenderGeometry(renderer.get(), nullptr, vertecies, 6, indecies, 12);
 }
 
 
@@ -200,8 +200,8 @@ void Visualizer::RenderRect(const Rect& rect, const Color& color) const {
         .h = (float)rect.h
     };
 
-    SDL_SetRenderDrawColor(renderer->Get(), color.r, color.g, color.b, color.a);
-    SDL_RenderFillRect(renderer->Get(), &rect_sdl);
+    SDL_SetRenderDrawColor(renderer.get(), color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(renderer.get(), &rect_sdl);
 }
 
 
@@ -211,8 +211,8 @@ auto Visualizer::LoadSprite(const std::string& source_file_path) const -> Sprite
     Sprite new_sprite;
 
     try {
-        new_sprite.surface = std::make_unique<SDLObject<SDL_Surface>>(source_file_path);
-        new_sprite.texture = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), new_sprite.surface->Get());
+        new_sprite.surface = MakeSDLSurface(source_file_path);
+        new_sprite.texture = MakeSDLTexture(renderer.get(), new_sprite.surface.get());
     }
     catch (FailedSurfaceCreate& err) {
         new_sprite.surface.reset(nullptr);
@@ -235,7 +235,7 @@ void Visualizer::RenderSprite(Sprite& sprite, const Rect& dest_rect) const {
         
         try {
             if (sprite.surface != nullptr) {
-                sprite.texture = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), sprite.surface->Get());
+                sprite.texture = MakeSDLTexture(renderer.get(), sprite.surface.get());
             }
         }
         catch (FailedTextureCreate& err) {
@@ -254,7 +254,7 @@ void Visualizer::RenderSprite(Sprite& sprite, const Rect& dest_rect) const {
     };
 
     if (sprite.texture != nullptr) {
-        SDL_RenderTexture(renderer->Get(), sprite.texture->Get(), nullptr, &dest_sdl);
+        SDL_RenderTexture(renderer.get(), sprite.texture.get(), nullptr, &dest_sdl);
     }
 }
 
@@ -264,12 +264,12 @@ auto Visualizer::CreateText(const std::string& txt, float font_sz, const Color& 
 
     Text new_text{txt, font_sz};
 
-    TTF_SetFontSize(font->Get(), font_sz);
+    TTF_SetFontSize(font.get(), font_sz);
 
-    SurfacePtr temp_surface = std::make_unique<SDLObject<SDL_Surface>>(font->Get(), txt, text_color);
+    SurfacePtr temp_surface = MakeSDLSurface(font.get(), txt, text_color);
     
     try {
-        new_text.text_texture = std::make_unique<SDLObject<SDL_Texture>>(renderer->Get(), temp_surface->Get());
+        new_text.text_texture = MakeSDLTexture(renderer.get(), temp_surface.get());
     }
     catch (FailedTextureCreate& err) {
         new_text.text_texture.reset(nullptr);
@@ -277,8 +277,8 @@ auto Visualizer::CreateText(const std::string& txt, float font_sz, const Color& 
         SDL_Log("%s", err.GetMessage().c_str());
     }
 
-    new_text.width = temp_surface->Get()->w;
-    new_text.height = temp_surface->Get()->h;
+    new_text.width = temp_surface.get()->w;
+    new_text.height = temp_surface.get()->h;
 
     return new_text;
 }
@@ -301,9 +301,9 @@ void Visualizer::RenderText(const Text& text, float x, float y) const {
         .h = dest.h
     };
 
-    SDL_SetTextureColorMod(text.text_texture->Get(), 0, 0, 0);
-    SDL_RenderTexture(renderer->Get(), text.text_texture->Get(), nullptr, &shadow_dest);
+    SDL_SetTextureColorMod(text.text_texture.get(), 0, 0, 0);
+    SDL_RenderTexture(renderer.get(), text.text_texture.get(), nullptr, &shadow_dest);
 
-    SDL_SetTextureColorMod(text.text_texture->Get(), 255, 255, 255);
-    SDL_RenderTexture(renderer->Get(), text.text_texture->Get(), nullptr, &dest);
+    SDL_SetTextureColorMod(text.text_texture.get(), 255, 255, 255);
+    SDL_RenderTexture(renderer.get(), text.text_texture.get(), nullptr, &dest);
 }
