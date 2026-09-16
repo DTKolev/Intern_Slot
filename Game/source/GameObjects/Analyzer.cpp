@@ -69,6 +69,13 @@ auto Analyzer::LineCombination(const Line& ln, const Grid& game_grid, bool rever
         else break;
     }
 
+    if (grid_data.columns > 5) {
+        current_cell++;
+        if (grid_state[current_cell] == new_combination.type || grid_state[current_cell] == CellContent::wild) {
+            new_combination.matching_symbols++;
+        }
+    }
+
     return new_combination;
 }
 
