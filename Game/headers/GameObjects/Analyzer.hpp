@@ -20,6 +20,10 @@ struct Combination {
     int matching_symbols;
 };
 
+// Calculates the win multiplier based on the current contents of the game grid
+//
+// Defines the paylines of the game
+// Contains the paytable for the different symbol combinations
 class Analyzer {
 
     private:

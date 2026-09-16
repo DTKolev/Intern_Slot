@@ -2,6 +2,7 @@
 #include <fstream>
 #include <filesystem>
 
+// Needed for getting the file path of the binary with std::filesystem
 #if defined(__linux__)
 #include <unistd.h>
 #endif
@@ -66,7 +67,7 @@ auto CommonManager::GetBinaryPath() const -> std::string {
 #if defined(__linux__)
     binary_path = std::filesystem::read_symlink("/proc/self/exe");
 #else
-    return "";
+    return ""; // Other OS than linux are currently not supported
 #endif
 
     std::filesystem::path binary_dir = binary_path.parent_path();

@@ -36,10 +36,13 @@ struct GridData {
 
 
 
-// *******************************************************************
-// Reel class - contains 'rows + 1' amount of cells and manages them
-// *******************************************************************
-
+// Contains and manages the cells of a single column of the grid
+//
+// Handles the reeling animation (continous spin simulation)
+// Assigns the cell content of the cells that it contains
+//
+// Handles assigning random values during the reeling animation and guarantees
+// the desired reeling outcome (if provided explixcitly)
 class Reel {
 
 private:
@@ -91,11 +94,15 @@ public:
 };
 
 
-
-// *******************************************************************
-// Grid class - contains 'columns' amount of reels and manages them
-// *******************************************************************
-
+// Contains and manages multiple reels
+//
+// Handles the rendering of the cells
+// Controls the start/end of the reelig animation
+//
+// Tracks its state and is able to export it for usage in other parts of the program
+//
+// Separates the desired reeling outcome (if provided) and feeds it to the 
+// corresponding reels
 class Grid {
 
 private:

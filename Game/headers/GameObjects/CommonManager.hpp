@@ -4,6 +4,13 @@
 #include "Analyzer.hpp"
 #include <string>
 
+// Static manager class for the Slot Game
+//
+// Functions as a public container for storing game data
+// All game states can read and write to/from it
+//
+// Handles the savig of the current game data after quitting the game and 
+// loading saved data if available on launch
 class CommonManager {
 
     private:
