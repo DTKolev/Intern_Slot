@@ -48,6 +48,7 @@ auto Analyzer::LineCombination(const Line& ln, const Grid& game_grid, bool rever
     };
 
     int current_cell = starting_cell;
+    bool combination_broken = false;
 
     for (const Direction& dir : ln.line_directions) {
         
@@ -66,10 +67,13 @@ auto Analyzer::LineCombination(const Line& ln, const Grid& game_grid, bool rever
         if (grid_state[current_cell] == new_combination.type || grid_state[current_cell] == CellContent::wild) {
             new_combination.matching_symbols++;
         }
-        else break;
+        else {
+            combination_broken = true;
+            break;
+        }
     }
 
-    if (grid_data.columns > 5) {
+    if (grid_data.columns > 5 && !combination_broken) {
         current_cell++;
         if (grid_state[current_cell] == new_combination.type || grid_state[current_cell] == CellContent::wild) {
             new_combination.matching_symbols++;
