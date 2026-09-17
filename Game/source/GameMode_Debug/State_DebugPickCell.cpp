@@ -16,6 +16,7 @@ void DebugPickCell::OnEntry(const single::Engine& eng) {
 	debug_manager.GetGrid().UpdateGridState();
 
 	debug_manager.debug_config_available = false;
+	debug_manager.extra_config_available = false;
 
 	debug_manager.cursor = {0, 0};
 }
@@ -87,6 +88,15 @@ void DebugPickCell::OnExit() {
 		if (sample != CellContent::empty) {
 			debug_manager.debug_config_available = true;
 			break;
+		}
+	}
+
+	if (debug_manager.extra_reel_added) {
+		for (const CellContent& sample : debug_manager.ExportExtraReelState()) {
+			if (sample != CellContent::empty) {
+				debug_manager.extra_config_available = true;
+				break;
+			}
 		}
 	}
 }

@@ -6,6 +6,7 @@ DebugManager::DebugManager() :
 	debug_grid{20.0f, 0.0f, 3, 5, 160.0f}, 
 	cursor {0, 0} , cursor_color{255, 0, 0, 255}, 
 	debug_config_available{false}, 
+	extra_config_available{false},
 	scatters_set{0}, extra_reel_added{false}
 {
 	GridData grid_data = debug_grid.GetGridData();

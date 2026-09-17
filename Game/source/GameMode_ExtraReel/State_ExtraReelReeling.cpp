@@ -7,7 +7,8 @@ void ExtraReelReeling::OnEntry(const single::Engine& eng) {
     DebugManager& debug_manager = DebugManager::GetInstance();
     Grid& grid = common_manager.GetGrid();
 
-    grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData(), debug_manager.extra_reel_added, debug_manager.ExportExtraReelState());
+    grid.GetReel(grid.GetGridData().columns - 1).StartReelSpin(eng, grid.GetGridData(), debug_manager.extra_config_available, debug_manager.ExportExtraReelState());
+    debug_manager.extra_config_available = false; // Debug config for extra reel consumed
 
     timer = 1.5;
     reeling = true;

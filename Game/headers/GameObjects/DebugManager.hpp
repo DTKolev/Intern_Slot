@@ -29,6 +29,7 @@ public:
 
 	int scatters_set;
 	bool extra_reel_added;
+	bool extra_config_available;
 	std::vector<CellContent> extra_reel_outcome;
 	auto ExportExtraReelState() -> std::vector<CellContent>;
 };
