@@ -5,37 +5,57 @@
 
 namespace single {
 
-    class Engine;
-    class Visualizer;
+// Forward declaration to avoid including Engine.hpp and Visualizer.hpp
+class Engine;
+class Visualizer;
 
-    class Text {
 
-        private:
-        std::string content;
-        float font_size;
-        Color color;
+// A text object represents a 2D static text
+//
+// Its main component is the SDL texture that it contains, since
+// this is what gets passed to the Visualizer for rendering
+//
+// Other member variables represent the metadata of the 
+// underlying texture (for easy access and comparison)
+//
+// Copying of text objects is disabled because of the technicalities
+// around duplicating an SDL texture (it's stored in GPU VRAM and
+// not in RAM)
+//
+// The text object supports being updated (new text, size or color)
+// and it's generally more optimized than crating a new text object,
+// since the Update method checks if the new data is the same as the
+// old one and bypasses updating entirely if so
 
-        TexturePtr text_texture;
+class Text {
 
-        float width;
-        float height;
+    private:
+    std::string content;
+    float font_size;
+    Color color;
 
-        friend class Engine;
-        friend class Visualizer;
+    TexturePtr text_texture;
 
-        public:
-        Text() = default;
-        Text(const std::string& txt, float font_sz, const Color& text_color = {255, 255, 255, 255});
+    float width;
+    float height;
 
-        Text(const Text& copy_src) = delete;
-        Text& operator=(const Text& copy_src) = delete;
+    friend class Engine;
+    friend class Visualizer;
 
-        Text(Text&& move_src);
-        Text& operator=(Text&& move_src);
+    public:
+    Text() = default;
+    Text(const std::string& txt, float font_sz, const Color& text_color = {255, 255, 255, 255});
 
-        void Update(const Visualizer& vis, const std::string& new_txt, float new_sz, const Color& new_color = {255, 255, 255, 255});
+    Text(const Text& copy_src) = delete;
+    Text& operator=(const Text& copy_src) = delete;
 
-        auto GetWidth() const -> float {return width;}
-        auto GetHeight() const -> float {return height;}
-    };
-}
+    Text(Text&& move_src);
+    Text& operator=(Text&& move_src);
+
+    void Update(const Visualizer& vis, const std::string& new_txt, float new_sz, const Color& new_color = {255, 255, 255, 255});
+
+    // Useful for alingment of multiple text objects
+    auto GetWidth() const -> float {return width;}
+    auto GetHeight() const -> float {return height;}
+};
+} // end of namespace single

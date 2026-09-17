@@ -106,5 +106,5 @@ void Engine::Run() {
 void Engine::Quit() {
 
     current_state = EngineState::off;
-    Visualizer::GetInstance().Shutdown();    
+    Visualizer::GetInstance().Shutdown();
 }

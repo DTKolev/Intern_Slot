@@ -12,9 +12,7 @@ struct TTF_Font;
 
 namespace single {
 
-//********************************************
-// GLOBAL STRUCTS USED ACROSS THE ENGINE LOGIC
-//********************************************
+// Global structs shared across the engine logic
 
 enum class GradientType {
     linear,
@@ -33,9 +31,19 @@ struct Rect {
 
 
 
-//****************************************
 // CUSTOM LOGIC FOR MANAGING SDL RESOURCES
-//****************************************
+//
+// The SDL3 sub-system is managed automatically by a wrapper class to
+// ensure that it's initialized before and destroyed after all SDL resources
+// have been allocated and deallocated
+//
+// Opaque SDL3 data structures that can only be accessed through pointers
+// are wrapped inside std::unique_ptr for automated memory management
+//
+// SDL3 data structures are created through custom factory functions that
+// function similar to std::make_unique, but assign the appropreate SDL
+// deleters instead of std::default_delete to the std::unique_ptr that
+// they return
 
 // Generic deleter for SDL3 resources
 struct SDLDeleter {
@@ -74,29 +82,22 @@ using FontPtr = std::unique_ptr<TTF_Font, SDLDeleter>;
 
 // Factory functions for creating SDL resources
 
-//SDL_WINDOW
 auto MakeSDLWindow(std::string window_title, int width, int height) -> WindowPtr;
 
-//SDL_RENDERER
 auto MakeSDLRenderer(SDL_Window* window, const char* name = nullptr) -> RendererPtr;
 
-//SDL_SURFACE
 auto MakeSDLSurface(std::string source_file_path) -> SurfacePtr;
 auto MakeSDLSurface(TTF_Font* font, std::string text, Color text_color = {255, 255, 255, 255}) -> SurfacePtr;
 auto CopySDLSurface(SDL_Surface* copy_src) -> SurfacePtr;
 
-//SDL_TEXTURE
 auto MakeSDLTexture(SDL_Renderer* renderer, SDL_Surface* surface) -> TexturePtr;
 auto MakeSDLTexture(SDL_Renderer* renderer, float w, float h) -> TexturePtr;
 
-//TTF_FONT
 auto MakteTTFFont(std::string source_file_path, float size) -> FontPtr;
 
 
 
-//**************
-// ERROR LOGGING
-//**************
+// Error handling
 
 class Error {
 
@@ -106,6 +107,7 @@ class Error {
     public:
     Error();
     Error(std::string msg);
+    virtual ~Error() = default;
 
     auto GetMessage() const -> const std::string&;
 };

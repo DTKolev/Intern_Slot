@@ -3,7 +3,6 @@
 #include <string>
 #include <list>
 #include <memory>
-#include <vector>
 
 #include "Singleton_Common.hpp"
 #include "Singleton_Sprite.hpp"
@@ -14,93 +13,112 @@
 
 namespace single {
 
-    /**
-    * Enumerator class that represents the two possible engine states
-    */
-    enum class EngineState {
-        on,
-        off
-    };
+// Enumerator class for the two possible engine states
+enum class EngineState {
+    on,
+    off
+};
 
-    class Engine {
+// INTERNAL STRUCTURE OF THE ENGINE CLASS
+//
+// The Engine class is the core of the Singleton engine.
+// It's responsible for initializing the SDL3 sub-system,
+// creating a window for the program to be displayed in,
+// for maintaining the continous game-loop and for managing
+// the active game states
+//
+// It ensures that the SDL3 sub-system will be initialized
+// before any other SDL resources and destroyed after they
+// have been deallocated. The program will crash otherwise
+//
+// The core of the Engine class is the Run method. It contains the
+// continous program loop and is the part responsible for
+// updating and rendering the active game states
+//
+// The transitions between game states are handled by templated
+// helper methods that ensure that the OnEntry and OnExit
+// methods of the respective game states are called at the right time.
+// These templated methods also maintain the list of overlay states
+// and add/remove states from it
 
-        using OverlayStatesList = std::list<std::unique_ptr<OverlayState>>;
+class Engine {
 
-        private:
-        SDLContextPtr context;
+    using OverlayStatesList = std::list<std::unique_ptr<OverlayState>>;
 
-        WindowPtr window;
+    private:
+    SDLContextPtr context;
 
-        EngineState current_state;
-        TimeManager time_manager;
+    WindowPtr window;
 
-        std::unique_ptr<GameState> current_game_state;
-        OverlayStatesList overlay_states;
+    EngineState current_state;
+    TimeManager time_manager;
 
-        auto RenderOverlayStates(OverlayStatesList::const_iterator start) const -> void;
-        auto FindHighestFullCover() const -> OverlayStatesList::const_iterator;
+    std::unique_ptr<GameState> current_game_state;
+    OverlayStatesList overlay_states;
 
-        friend class Visualizer;
+    auto RenderOverlayStates(OverlayStatesList::const_iterator start) const -> void;
+    auto FindHighestFullCover() const -> OverlayStatesList::const_iterator;
 
-        public:
-        Engine(std::string window_title, int window_w, int window_h);
+    friend class Visualizer;
 
-        auto RandomNumber(int high, int low = 0) const -> int;
-        void Delay(int ms) const;
+    public:
+    Engine(std::string window_title, int window_w, int window_h);
 
-        void Run();
-        void Quit();
+    auto RandomNumber(int high, int low = 0) const -> int;
+    void Delay(int ms) const;
+
+    void Run();
+    void Quit();
 
 
 
-        template<typename T>
-        void Init() {
+    template<typename T>
+    void Init() {
 
-            static_assert(std::is_base_of<GameState, T>::value);
+        static_assert(std::is_base_of<GameState, T>::value);
 
-            std::unique_ptr<GameState> start_state = std::make_unique<T>();
-            
-           current_game_state = std::move(start_state);
-           if (current_game_state != nullptr) current_game_state->OnEntry(*this); 
-        }
+        std::unique_ptr<GameState> start_state = std::make_unique<T>();
+        current_game_state = std::move(start_state);
+        if (current_game_state != nullptr) current_game_state->OnEntry(*this); 
+    }
 
-        template<typename T>
-        void StateChange() {
+    template<typename T>
+    void StateChange() {
 
-            static_assert(std::is_base_of<GameState, T>::value);
-            std::unique_ptr<GameState> new_state = std::make_unique<T>();
+        static_assert(std::is_base_of<GameState, T>::value);
+        std::unique_ptr<GameState> new_state = std::make_unique<T>();
 
-            if (current_game_state != nullptr) current_game_state->OnExit();
-            current_game_state = std::move(new_state);
-            if (current_game_state != nullptr) current_game_state->OnEntry(*this);
-        }
+        if (current_game_state != nullptr) current_game_state->OnExit();
+        current_game_state = std::move(new_state);
+        if (current_game_state != nullptr) current_game_state->OnEntry(*this);
+    }
 
-        template<typename T>
-        void AddOverlayState() {
+    template<typename T>
+    void AddOverlayState() {
 
-            static_assert(std::is_base_of<OverlayState, T>::value);
-            std::unique_ptr<OverlayState> new_overlay_state = std::make_unique<T>();
+        static_assert(std::is_base_of<OverlayState, T>::value);
+        std::unique_ptr<OverlayState> new_overlay_state = std::make_unique<T>();
 
-            overlay_states.push_back(std::move(new_overlay_state));
-            if (overlay_states.back() != nullptr) overlay_states.back()->OnEntry(*this);
-        }
+        overlay_states.push_back(std::move(new_overlay_state));
+        if (overlay_states.back() != nullptr) overlay_states.back()->OnEntry(*this);
+    }
 
-        void RemoveOverlayState() {
+    void RemoveOverlayState() {
 
-            if (overlay_states.back() != nullptr) overlay_states.back()->OnExit();
-            overlay_states.pop_back();
-        }
+        if (overlay_states.back() != nullptr) overlay_states.back()->OnExit();
+        overlay_states.pop_back();
+    }
 
-        void StopOverlay() {
+    void StopOverlay() {
 
-            if (!overlay_states.empty()) {
+        if (!overlay_states.empty()) {
 
-                for (auto& state : overlay_states) {
-                    if (state != nullptr) state->OnExit();
-                }
-
-                overlay_states.clear();
+            for (auto& state : overlay_states) {
+                if (state != nullptr) state->OnExit();
             }
+
+            overlay_states.clear();
         }
-    };
-}
+    }
+};
+} // end of namespace single
