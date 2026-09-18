@@ -18,7 +18,7 @@ void MasterResults::OnEntry(const single::Engine& eng) {
     LogGameResults();
 
     if (grid.ScatterAmount() >= 3) {
-        common_manager.free_spins += 10;
+        common_manager.free_spins += 5;
         common_manager.free_spins_mode = true;
         scatters_found = true;
     }

@@ -1,11 +1,5 @@
 #include "GameObjects/CommonManager.hpp"
 #include <fstream>
-#include <filesystem>
-
-// Needed for getting the file path of the binary with std::filesystem
-#if defined(__linux__)
-#include <unistd.h>
-#endif
 
 CommonManager::CommonManager() : 
     game_grid{0.0f, 0.0f, 3, 5, 200.0f},
