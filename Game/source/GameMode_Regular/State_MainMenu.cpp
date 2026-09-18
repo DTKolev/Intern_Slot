@@ -5,7 +5,10 @@
 
 void MainMenu::OnEntry(const single::Engine& eng) {
 
+    CommonManager& common_manager = CommonManager::GetInstance();
     title = vis.CreateText("Slot Game", 48.0);
+
+    common_manager.LoadSavedData(eng);
 }
 
 void MainMenu::HandleInput(single::Engine& eng, SDL_Event& input_event) {

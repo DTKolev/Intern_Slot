@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Singleton.hpp"
 #include "Grid.hpp"
 #include "Analyzer.hpp"
 #include <string>
@@ -20,7 +21,8 @@ class CommonManager {
     CommonManager();
 
     std::string save_file_path;
-    auto GetBinaryPath() const -> std::string;
+    auto GetSaveFilePath(const single::Engine& eng) -> std::string;
+    void WriteToSaveFile();
 
     public:
     ~CommonManager();
@@ -32,6 +34,8 @@ class CommonManager {
 
     auto GetGrid() -> Grid& {return game_grid;}
     auto GetAnalyzer() -> Analyzer& {return analyzer;}
+
+    void LoadSavedData(const single::Engine& eng);
 
     int credits;
     int bet;

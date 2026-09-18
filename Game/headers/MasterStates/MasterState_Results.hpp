@@ -9,7 +9,6 @@ class MasterResults : public single::GameState {
     protected:
     CommonManager& common_manager = CommonManager::GetInstance();
     InputManager& input_manager = InputManager::GetInstance();
-
     single::Color line_color;
     int winning_lines_amount;
     int display_line_id;
@@ -18,7 +17,7 @@ class MasterResults : public single::GameState {
     single::Color frame_color;
     bool show_frames;
     double frame_display_timer;
-    
+
     single::Text win;
     int win_amount;
     int display_win;

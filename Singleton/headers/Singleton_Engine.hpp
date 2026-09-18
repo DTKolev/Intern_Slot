@@ -56,6 +56,8 @@ class Engine {
     std::unique_ptr<GameState> current_game_state;
     OverlayStatesList overlay_states;
 
+    const std::string path_to_binary;
+
     auto RenderOverlayStates(OverlayStatesList::const_iterator start) const -> void;
     auto FindHighestFullCover() const -> OverlayStatesList::const_iterator;
 
@@ -66,6 +68,7 @@ class Engine {
 
     auto RandomNumber(int high, int low = 0) const -> int;
     void Delay(int ms) const;
+    auto GetBinaryPath() const -> const std::string&;
 
     void Run();
     void Quit();

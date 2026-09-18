@@ -13,24 +13,9 @@ CommonManager::CommonManager() :
     credits{100}, bet{1},
     free_spins{0}, free_spins_winnings{0}, free_spins_mode{false},
     extra_reel_mode{false},
-    reverse_lines{false}
+    reverse_lines{false},
+    save_file_path{""}
 {
-    std::string base_path = GetBinaryPath();
-    save_file_path = base_path + "../src/save_file.txt";
-
-    std::ifstream input_str {save_file_path};
-    if (input_str){
-        input_str >> credits;
-        input_str >> bet;
-
-        int temp_mode;
-        input_str >> temp_mode;
-        free_spins_mode = (bool)temp_mode;
-
-        input_str >> free_spins;
-        input_str >> free_spins_winnings;
-    }
-
     const GridData& grid_data = game_grid.GetGridData();
 
     float cell_size = 175.0f;
@@ -42,12 +27,7 @@ CommonManager::CommonManager() :
 
 CommonManager::~CommonManager() {
 
-    std::ofstream output_str {save_file_path};
-
-    int mode = 0;
-    if (free_spins_mode) mode = 1;
-
-    output_str << credits << ' ' << bet << ' ' << mode << ' ' << free_spins << ' ' << free_spins_winnings;
+    WriteToSaveFile();
 }
 
 
@@ -60,18 +40,39 @@ CommonManager& CommonManager::GetInstance() {
 
 
 
-auto CommonManager::GetBinaryPath() const -> std::string {
+auto CommonManager::GetSaveFilePath(const single::Engine& eng) -> std::string {
 
-    std::filesystem::path binary_path;
+    return eng.GetBinaryPath() + "../src/save_file.txt";
+}
 
-#if defined(__linux__)
-    binary_path = std::filesystem::read_symlink("/proc/self/exe");
-#else
-    return ""; // Other OS than linux are currently not supported
-#endif
+void CommonManager::LoadSavedData(const::single::Engine& eng) {
 
-    std::filesystem::path binary_dir = binary_path.parent_path();
-    binary_dir /= "";
+    if (save_file_path == "") {
 
-    return binary_dir.generic_string();
+        save_file_path = GetSaveFilePath(eng);
+
+        std::ifstream input_str {save_file_path};
+        if (input_str){
+            input_str >> credits;
+            input_str >> bet;
+
+            int temp_mode;
+            input_str >> temp_mode;
+            free_spins_mode = (bool)temp_mode;
+
+            input_str >> free_spins;
+            input_str >> free_spins_winnings;
+        }
+    }
+}
+
+void CommonManager::WriteToSaveFile() {
+
+    std::ofstream output_str {save_file_path};
+
+    int mode = 0;
+    if (free_spins_mode) mode = 1;
+
+    output_str << credits << ' ' << bet << ' ' << mode << ' ' << free_spins << ' ' << free_spins_winnings;
+
 }

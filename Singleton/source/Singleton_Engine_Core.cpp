@@ -15,7 +15,8 @@ Engine::Engine(std::string window_title, int window_w, int window_h) :
     current_state{EngineState::on},
     time_manager{},
     current_game_state{nullptr},
-    overlay_states{}
+    overlay_states{},
+    path_to_binary{SDL_GetBasePath()}
 {
 
     Visualizer& vis = Visualizer::GetInstance();
@@ -37,6 +38,11 @@ auto Engine::RandomNumber(int high, int low) const -> int {
 void Engine::Delay(int ms) const {
 
     SDL_Delay(ms);
+}
+
+auto Engine::GetBinaryPath() const -> const std::string& {
+
+    return path_to_binary;
 }
 
 
