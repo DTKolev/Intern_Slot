@@ -3,3 +3,4 @@
 build/
 .clangd
 src/save_file.txt
+.nvim.lua
