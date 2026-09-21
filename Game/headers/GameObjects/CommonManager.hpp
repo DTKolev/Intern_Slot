@@ -5,13 +5,15 @@
 #include "Analyzer.hpp"
 #include <string>
 
-// Static manager class for the Slot Game
-//
-// Functions as a public container for storing game data
-// All game states can read and write to/from it
-//
-// Handles the savig of the current game data after quitting the game and 
-// loading saved data if available on launch
+/**
+ * @brief Static manager class for the Slot Game
+ *
+ * Functions as a public container for storing game data
+ * All game states can read/write to it
+ *
+ * Handles the saving of the current game data after quitting the game
+ * Handles the loading of saved data if available on launch
+ */
 class CommonManager {
 
     private:
@@ -21,6 +23,10 @@ class CommonManager {
     CommonManager();
 
     std::string save_file_path;
+    /**
+     * @param eng required for providing the absolute path to the
+     * compiled binary
+     */
     auto GetSaveFilePath(const single::Engine& eng) -> std::string;
     void WriteToSaveFile();
 

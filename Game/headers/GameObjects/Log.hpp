@@ -4,6 +4,12 @@
 #include <iostream>
 #include <string>
 
+/**
+ * @brief Represents the record of a single reeling outcome
+ *
+ * This class is meant to be filled with data and its contents
+ * written to a save file at the end of each reeling
+ */
 class Log {
 
 private:

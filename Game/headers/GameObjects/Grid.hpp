@@ -36,13 +36,15 @@ struct GridData {
 
 
 
-// Contains and manages the cells of a single column of the grid
-//
-// Handles the reeling animation (continous spin simulation)
-// Assigns the cell content of the cells that it contains
-//
-// Handles assigning random values during the reeling animation and guarantees
-// the desired reeling outcome (if provided explixcitly)
+/**
+ * @brief Contains and manages the cells of a single column of the grid
+ *
+ * Handles the reeling animation
+ * Assigns the cell content of the cells that it contains
+ *
+ * Handles assigning of random values during the reeling animation
+ * Guarantees the desired reeling outcome (if provided)
+ */
 class Reel {
 
 private:
@@ -62,10 +64,35 @@ private:
     // Reeling outcome control
     std::vector<CellContent> spin_outcome;
     int set_cells;
+    /**
+     * @brief Accepts input for the desired reeling outcome (if available) and
+     * translates it into a usable symbol combination
+     *
+     * The input may contain empty cells, this function will replace them with
+     * randomy-generated content and keep the other intentionally-provided
+     * symbols
+     *
+     * @param eng provides RNG number
+     * @param config_available the function will only look at the input if this
+     * is toggled on; It will generate random content in all cells otherwise
+     * @param target_outcome desired reeling outcome input
+     */
     void SetOutcome(const single::Engine& eng, bool config_available, const std::vector<CellContent>& target_outcome, const GridData& grid_data);
 
-    // Cell manipulation
+    /**
+     * @brief Move a cell back to the top of the reel and assign
+     * random content to it
+     */
     void ResetCell(const single::Engine& eng, const GridData& grid_data, Cell& cell);
+    /**
+     * @brief Draws a random cell content based on a weighted destribution
+     *
+     * Takes a purely random number from the engine and converts it into a valid
+     * cell content index
+     *
+     * @param grid_data provides the information about the location of the reel
+     * (if the reel if first, it may not contain a 'Wild' symbol)
+     */
     auto RandomContent(const single::Engine& eng, const GridData& grid_data) const -> CellContent;
     void SetCellRow(const GridData& grid_data, Cell& cell);
 
@@ -76,13 +103,34 @@ public:
     // Class constructor
     Reel(float x_pos, const GridData& grid_data, CellContent starting_content = CellContent::empty);
 
-    // Reel spin controls
+    /**
+     * @brief Assign starting values to the reeling variables
+     *
+     * Sets all animation variables to their starting values
+     * Determines the outcome of the reeling
+     */
     void StartReelSpin(const single::Engine& eng, const GridData& grid_data, bool config_available, const std::vector<CellContent>& target_outcome);
+    /**
+     * @brief Runs the reeling animation until reeling is finished and ensures that
+     * the desired reeling outcome is acheived
+     *
+     * When reeling is finished, the reel performs 3 additional cell resets before
+     * stopping, so that the 3 cells tha will be visible when the reeling is over
+     * contain the cell contents from the desired reeling outcome
+     *
+     * @param speed the reel rotation speed measured in cell heights per second
+     * @param reeling the reel will start its finishig sequence when this is
+     * toggled off
+     */
     void SpinReel(const single::Engine& eng, const GridData& grid_data, double speed, double delta_time, bool reeling);
 
     // Getters
     auto GetCellAt(const GridData& grid_data, int row) -> Cell&;
     auto GetScatters(const GridData& grid_data) const -> int;
+    /**
+     * @return returns true when the reel has stopped completely
+     * after completing its finishing sequence
+     */
     auto AnimationFinished() const -> bool {return animation_finished;}
     auto GetPosX() const -> float {return reel_x_pos;}
 
@@ -93,16 +141,18 @@ public:
     void RelocateReel(float new_x, const GridData& grid_data);
 };
 
-
-// Contains and manages multiple reels
-//
-// Handles the rendering of the cells
-// Controls the start/end of the reelig animation
-//
-// Tracks its state and is able to export it for usage in other parts of the program
-//
-// Separates the desired reeling outcome (if provided) and feeds it to the 
-// corresponding reels
+/**
+ * @brief Contains and manages multiple reels
+ *
+ * Orders the rendering of the reels and stores the sprites for the
+ * different cell contents
+ * Controls the start/end of the reeling animation
+ *
+ * Tracks its state and is able to export it for usage in other parts of the program
+ *
+ * Handles the desired reeling outcome by separating it column-by-column and
+ * feeding it to the appropriate reel
+ */
 class Grid {
 
 private:
@@ -133,8 +183,19 @@ private:
     // Class constructor
     Grid(float x, float y, int rows, int columns, float cell_size);
 
-    // Animation controls
+    /**
+     * @brief Orders all reels to prepare for the reeling animation
+     */
     void PrepareReelSpin(const single::Engine& eng, bool config_available, const std::vector<CellContent>& target_state);
+    /**
+     * @brief Starts and stops the reeling animation at the appropriate time
+     *
+     * All reels start spinnin simoultaniously and get stopped one-by-one
+     * when the grid receives the signal that the reeling should end
+     *
+     * @param reeling the grid will start stopping the reels when this is
+     * toggled off
+     */
     void SpinReels(const single::Engine& eng, double delta_time, bool reeling);
 
     // Rendering
@@ -149,7 +210,14 @@ private:
 
     // Getters
     auto ScatterAmount() const -> int;
+    /**
+     * @return returns true only when all reels have signaled
+     * that they have stopped completely
+     */
     auto ReelingFinished() const -> bool {return reeling_finished;}
+    /**
+     * @return returns the amound of reels that are currently spinning
+     */
     auto GetActiveReels() const -> int {return active_reels;}
     auto GetReel(int column) -> Reel&;
     auto GetCellAt(int row, int column) -> Cell&;
@@ -158,7 +226,13 @@ private:
     void RelocateGrid(float new_x, float new_y, float new_cell_size);
     void AlignReels();
 
-    // Functionality for 'Extra Reel' mode
+    /**
+     * @brief Constructs an additional reel and updates its
+     * grid data, so that it accounts for the extra reel as well
+     *
+     * @param reel_x the x-location where the reel should be
+     * displayed at (the y-location is the same as the other reels)
+     */
     void AddExtraReel(float reel_x, CellContent starting_content = CellContent::empty);
     void RemoveExtraReel();
 };
