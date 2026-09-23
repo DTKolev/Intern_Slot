@@ -15,7 +15,7 @@ void MasterResults::OnEntry(const single::Engine& eng) {
     win_display_timer = 0.01;
     win = vis.CreateText("Win: " + std::to_string(display_win), 32.0f);
 
-    LogGameResults();
+    LogGameResults(eng);
 
     if (grid.ScatterAmount() >= 3) {
         common_manager.free_spins += 5;
@@ -188,42 +188,45 @@ void MasterResults::DrawCellFrame(const Cell& cell, const single::Color& color) 
 
 
 
-void MasterResults::LogGameResults() const {
-    
-    std::string log_file {"../src/game_log.txt"};
+void MasterResults::LogGameResults(const single::Engine& eng) const {
+
+    std::string binary_path = eng.GetBinaryPath();
+    std::string log_file = binary_path + "../src/game_log.txt";
 
     std::ifstream read_str {log_file};
-    if (!read_str) return;
+    if (read_str) {
 
-    int lines = 0;
-    std::string current_line;
+        int lines = 0;
+        std::string current_line;
 
-    while (std::getline(read_str, current_line)) lines++;
-    read_str.clear();
-    read_str.seekg(0, std::ios::beg);
+        while (std::getline(read_str, current_line)) lines++;
+        read_str.clear();
+        read_str.seekg(0, std::ios::beg);
 
-    if (lines >= 10) {
+        if (lines >= 10) {
 
-        std::string temp_file {"../src/temp.txt"};
-        std::ofstream temp_str {temp_file};
+            std::string temp_file = binary_path + "../src/temp.txt";
+            std::ofstream temp_str {temp_file};
 
-        std::getline(read_str, current_line);
-        while (std::getline(read_str, current_line)) {
-            temp_str << current_line << '\n';
+            std::getline(read_str, current_line);
+            while (std::getline(read_str, current_line)) {
+                temp_str << current_line << '\n';
+            }
+
+            read_str.close();
+            temp_str.close();
+
+            std::filesystem::remove(log_file);
+            std::filesystem::rename(temp_file, log_file);
         }
-
-        read_str.close();
-        temp_str.close();
-
-        std::filesystem::remove(log_file);
-        std::filesystem::rename(temp_file, log_file);
-    }
-    else {
-        read_str.close();
+        else {
+            read_str.close();
+        }
     }
 
     std::ofstream write_str {log_file, std::ios::app};
-
-    Log new_log {common_manager, win_amount};
-    write_str << new_log << '\n';
+    if (write_str) {
+        Log new_log {common_manager, win_amount};
+        write_str << new_log << '\n';
+    }
 }

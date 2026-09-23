@@ -9,6 +9,7 @@ class MasterResults : public single::GameState {
     protected:
     CommonManager& common_manager = CommonManager::GetInstance();
     InputManager& input_manager = InputManager::GetInstance();
+
     single::Color line_color;
     int winning_lines_amount;
     int display_line_id;
@@ -27,13 +28,35 @@ class MasterResults : public single::GameState {
 
     bool scatters_found;
 
-    float CalculateX(int cell_id, const GridData& grid_data, bool reverse_lines) const;
-    float CalculateY(int cell_id, const GridData& grid_data, bool reverse_lines) const;
+    /**
+     * @brief Calculates the x-coordinate of the center of a cell
+     * based on the cell ID
+     */
+    auto CalculateX(int cell_id, const GridData& grid_data, bool reverse_lines) const -> float;
+    /**
+     * @brief Calculates the y-coordinate of the center of a cell
+     * based on the cell ID
+     */
+    auto CalculateY(int cell_id, const GridData& grid_data, bool reverse_lines) const -> float;
 
+    /**
+     * @brief Displays a payline on top of the grid
+     *
+     * @param ln the payline to be drawn
+     */
     void DrawLine(const Line& ln, const single::Color& color) const;
+    /**
+     * @brief Draws a colorful frame around a specified cell
+     */
     void DrawCellFrame(const Cell& cell, const single::Color& color) const;
 
-    void LogGameResults() const;
+    /**
+     * @brief Creates a log entry after each reeling and writes it to a log file;
+     * Maintains a record of the last 10 reelings
+     *
+     * @param eng provides the absolute path to the binary
+     */
+    void LogGameResults(const single::Engine& eng) const;
 
 
     public:
