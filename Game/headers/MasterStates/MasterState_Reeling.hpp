@@ -13,7 +13,6 @@ class MasterReeling : public single::GameState {
     double timer;
     bool reeling;
 
-    
     public:
     void OnEntry(const single::Engine& eng) override;
     void HandleInput(single::Engine& eng, SDL_Event& input_event) override;
